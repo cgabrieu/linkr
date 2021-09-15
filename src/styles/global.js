@@ -10,24 +10,13 @@ export default createGlobalStyle`
         background-color: #333333;
         color: #FFFFFF;
     }
-    h1, h2 {
-        font-family: 'Oswald', sans-serif;
-        font-weight: bold;
-    }
-
     h1 {
-        font-size: 43px;
-    }
-    h2 {
-        font-size: 27px;
+        font-family: 'Oswald', sans-serif;
     }
     input, textarea, button {
         border: none;
         outline: none;
         border-radius: 5px;
-        &:invalid{
-            border-color: red;
-        }
     }
     button {
         background-color: #1877F2;

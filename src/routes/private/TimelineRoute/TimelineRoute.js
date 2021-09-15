@@ -23,6 +23,7 @@ const ContainerTimeline = styled.div`
     width: 610px;
     h1 {
         margin-bottom: 45px;
+        font-size: 43px;
 
         @media(max-width: 935px) {
             margin: 0 auto 19px 17px;
