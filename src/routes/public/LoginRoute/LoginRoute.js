@@ -60,8 +60,6 @@ function LoginRoute() {
       });
   }
 
-  console.log(user)
-
   return (
     <PageContent>
       <Aside>
@@ -71,19 +69,19 @@ function LoginRoute() {
 
       <Main>
         <form onSubmit={loginUser}>
-          <Input
+          <Input required
             type="email"
             name="email"
             value={inputFields.email}
             onChange={handleChange}
             placeholder="e-mail" />
-          <Input
+          <Input required
             type="password"
             name="password"
             value={inputFields.password}
             onChange={handleChange}
             placeholder="password" />
-          <Button disabled={false}>
+          <Button disabled={btnDisabled}>
             {!btnDisabled
               ? "Log In"
               : <Loading visible={true} />
