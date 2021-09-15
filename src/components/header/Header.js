@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom'
 import arrow from '../../assets/HeaderArrow.svg';
 import { HeaderBar, Tittle, ArrowAndPhoto, Arrow, Photo, ExpandableMenu } from "./HeaderStyle";
+import ExpandableMenuContext from '../../contexts/ExpandableMenuContext';
+import { useContext } from 'react';
 
-export default function Header(props) {
-    const { clicked, setClicked } = props;
+export default function Header() {
+    const { clicked, setClicked } = useContext(ExpandableMenuContext);
 
-    function toggleClicked(e){
+    function toggleClicked(e) {
         clicked ? setClicked(false) : setClicked(true);
         e.stopPropagation();
     }
