@@ -7,6 +7,22 @@ const Container = styled.div`
     justify-content: space-between;
 `;
 
+const UserContainer = styled.div`
+    margin-right: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+`;
+
+const UserPic = styled.img`
+    width: 50px;
+    height: 50px;
+    object-fit:cover;
+    border-radius: 50%;
+`;
+
 export {
     Container,
+    UserContainer,
+    UserPic,
 };

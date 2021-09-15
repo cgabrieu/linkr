@@ -10,14 +10,15 @@ export default createGlobalStyle`
         background-color: #333333;
         color: #FFFFFF;
     }
-    h1 {
+    h1, h2 {
         font-family: 'Oswald', sans-serif;
         font-weight: bold;
+    }
+
+    h1 {
         font-size: 43px;
     }
     h2 {
-        font-family: 'Oswald', sans-serif;
-        font-weight: bold;
         font-size: 27px;
     }
     input, textarea, button {
