@@ -29,7 +29,7 @@ const Aside = styled.aside`
 
   h3 {
     font-size: 2.688rem;
-    width: 450px;
+    width: 430px;
     font-weight: 400;
   }
 
@@ -46,6 +46,7 @@ const Aside = styled.aside`
    h3 {
      font-size: 23px;
      width: 237px;
+     padding-left: 15px;
    }
   }
 `

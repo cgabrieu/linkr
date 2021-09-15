@@ -1,9 +1,7 @@
-function LogInRoute() {
+function LoginRoute() {
   return (
-    <>
-      <h1>login</h1>
-    </>
+    <h1>Login</h1>
   );
 }
 
-export default LogInRoute;
+export default LoginRoute;
