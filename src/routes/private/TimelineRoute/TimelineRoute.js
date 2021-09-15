@@ -2,9 +2,11 @@ import "../../../styles/tooltip.css";
 import styled from "styled-components";
 import CreatePost from "./CreatePost";
 import { Container } from "../../../styles/styles";
+import React, { useState } from "react";
 import Post from "../../../components/Post";
 
 export default function Timeline() {
+
     return (
         <Container>
             <ContainerTimeline>
@@ -23,7 +25,7 @@ const ContainerTimeline = styled.div`
         margin-bottom: 45px;
 
         @media(max-width: 935px) {
-            margin-left: 17px;  
+            margin: 0 auto 19px 17px;
         }
     }
     
