@@ -2,6 +2,7 @@ import { PageContent, Aside, Main, Input, Button } from "../LoginAndSignUpStyles
 import { Link, useHistory } from "react-router-dom"
 import { useState } from "react";
 import { SignUp } from "../../../services/api";
+import Loading from "../../../components/Loading";
 
 function SignUpRoute() {
 
@@ -77,7 +78,12 @@ function SignUpRoute() {
             onChange={handleChange}
             value={inputFields.pictureUrl}
             placeholder="picture url" />
-          <Button disabled={btnDisabled}>Sign Up</Button>
+          <Button disabled={btnDisabled}>
+            {!btnDisabled
+              ? "Sign Up"
+              : <Loading visible={true} />
+            }
+          </Button>
         </form>
         <Link to="/">
           <span>Switch back to log in</span>
