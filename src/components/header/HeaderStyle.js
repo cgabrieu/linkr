@@ -1,0 +1,62 @@
+import styled from 'styled-components';
+
+export const HeaderBar = styled.header`
+    position: fixed;
+    background-color: #151515;
+    height: 72px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2%;
+`
+
+export const Tittle = styled.p`
+    font-family: 'Passion One', cursive;
+    font-size: 49px;
+    font-weight: 700;
+    color: #FFFFFF;
+`
+
+export const ArrowAndPhoto = styled.div`
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+`
+
+export const Arrow = styled.img`
+    transform: ${(props) => props.clicked ? 'rotate(180deg)' : 'rotate(0deg)'};
+    height: 14px;
+    width: 20px;
+    margin-right: 15px;
+    cursor: pointer;    
+`
+
+export const Photo = styled.img`
+    height: 53px;
+    width: 53px;
+    border-radius: 50%;
+    cursor: pointer;
+`
+
+export const ExpandableMenu = styled.div`
+    position: absolute;
+    display: ${(props) => props.clicked ? 'flex' : 'none'};
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    bottom: -110px;
+    right: 0;
+    height: 110px;
+    width: 130px;
+    border-radius: 0 0 0 20px;
+    background-color: #151515;
+
+    p{
+        color: #fafafa;
+        font-family: 'Lato', sans-serif;
+        font-weight: 700;
+        font-size: 17px;
+    }
+`
