@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-const PageContent = styled.div`
+const PageContent = styled.div` 
   display: flex;
   align-items: stretch;
   height: 100vh;
@@ -14,21 +14,23 @@ const Aside = styled.aside`
   background-color: #151515;
   color: #FFFFFF;
   width: 65%;
+  height: 100%;
   font-family: 'Passion One', Sans-serif;
-  font-weight: 700;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 301px 319px 478px 144px;
+  padding: 0 150px 70px;
 
   h1 {
     font-size: 6.625rem;
+    font-weight: 700;
   }
 
   h3 {
     font-size: 2.688rem;
-    width: 442px;
+    width: 450px;
+    font-weight: 400;
   }
 
   @media(max-width: 600px) {
