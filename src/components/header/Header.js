@@ -24,7 +24,6 @@ export default function Header() {
 
     useEffect(() => {
         document.addEventListener("mousedown", handleClick);
-
         return () => {
             document.removeEventListener("mousedown", handleClick);
         };
@@ -42,7 +41,6 @@ export default function Header() {
                 <Link to='/my-likes' onClick={toggleAppearingBox}><p>My likes</p></Link>
                 <Link to='/' onClick={toggleAppearingBox}><p>Logout</p></Link>
             </ExpandableMenu>
-
         </HeaderBar>
     )
 }
