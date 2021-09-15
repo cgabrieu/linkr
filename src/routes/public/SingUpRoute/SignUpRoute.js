@@ -23,6 +23,7 @@ function SignUpRoute() {
     setBtnDisabled(true);
 
     if (!inputFields.email || !inputFields.password || !inputFields.username || !inputFields.pictureUrl) {
+      setBtnDisabled(false);
       return alert("Por favor, preencha todos os campos do cadastro.")
     }
 
@@ -31,13 +32,15 @@ function SignUpRoute() {
     SignUp(body)
       .then(response => {
         setBtnDisabled(false);
+        console.log(response)
         if (response.status === 200) {
           history.push("/");
         }
       })
       .catch(err => {
         setBtnDisabled(false);
-        if (err.response.status === 400) return alert("Endereço de email já cadastrado!")
+        console.log(err.response);
+        if (err.response.status === 403) return alert("Endereço de email já cadastrado!")
       });
   }
 
