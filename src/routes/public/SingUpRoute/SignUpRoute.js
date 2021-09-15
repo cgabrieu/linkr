@@ -1,4 +1,5 @@
-import { PageContent, Aside, Main, Input, Button } from "../LoginAndSingUpStyles";
+import { PageContent, Aside, Main, Input, Button } from "../LoginAndSignUpStyles";
+import { Link } from "react-router-dom"
 
 function SignUpRoute() {
   return (
@@ -16,7 +17,9 @@ function SignUpRoute() {
           <Input type="url" placeholder="picture url" />
           <Button>Sign Up</Button>
         </form>
-        <span>Switch back to log in</span>
+        <Link to="/">
+          <span>Switch back to log in</span>
+        </Link>
       </Main>
     </PageContent>
   );

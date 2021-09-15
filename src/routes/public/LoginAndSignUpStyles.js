@@ -67,6 +67,7 @@ const Main = styled.main`
     font-family: 'Lato', sans-serif;
     color: #FFFFFF;
     margin-top: 14px;
+    text-decoration: underline;
   }
 
   @media(max-width: 600px) {
@@ -99,6 +100,12 @@ const Input = styled.input`
     color: #9F9F9F;
   }
 
+  &:focus {
+    box-shadow: 0 0 0 0;
+    border: 0 none;
+    outline: 0;
+  }
+
   @media(max-width: 600px) {
     width: 330px;
     height: 55px;
@@ -115,6 +122,7 @@ const Button = styled.button`
   border: 0;
   font-size: 2.5vh;
   color: #FFFFFF;
+  margin-bottom: 14px;
 
   @media(max-width: 600px) {
     width: 330px;
