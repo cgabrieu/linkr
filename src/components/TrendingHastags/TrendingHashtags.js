@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import Hashtag from "./Hashtag";
 
-export default function HashtagTrending() {
+export default function TrendingHashtags() {
   const hashtags = [
     {
       id: 2,
@@ -26,10 +27,6 @@ export default function HashtagTrending() {
       </Hashtags>
     </FixedContainer>
   );
-}
-
-function Hashtag({ hashtag }) {
-  return <HashtagItem>#{hashtag.name}</HashtagItem>;
 }
 
 const FixedContainer = styled.div`
@@ -63,13 +60,4 @@ const TitleSection = styled.div`
 const Hashtags = styled.ul`
   padding: 15px;
   overflow-y: scroll;
-`;
-
-const HashtagItem = styled.li`
-  font-size: 19px;
-  line-height: 23px;
-  font-weight: 700;
-  font-family: "Lato";
-  color: #fff;
-  margin-bottom: 7px;
 `;
