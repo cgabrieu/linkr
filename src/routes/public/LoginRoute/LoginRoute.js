@@ -56,7 +56,7 @@ function LoginRoute() {
       })
       .catch(err => {
         setBtnDisabled(false);
-        if (err.response.status === 403) return alert("email/senha incorretos, tente novamente!")
+        if (err.response.status === 403 || err.response.status === 400) return alert("email/senha incorretos, tente novamente!");
       });
   }
 
