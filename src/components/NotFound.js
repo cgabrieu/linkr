@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { ReactComponent as SadIcon } from "../assets/error-sad.svg";
 
-export default function NotFound({ type }) {
+export default function NotFound({ typeError }) {
   return (
     <ContainerError>
       <SadIconWhite />
-      Houve uma falha ao obter os {type}, por favor atualize a página.
+      {typeError}
     </ContainerError>
   );
 }

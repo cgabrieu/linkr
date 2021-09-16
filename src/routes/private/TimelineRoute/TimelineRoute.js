@@ -9,7 +9,7 @@ import NotFound from "../../../components/NotFound";
 
 export default function Timeline() {
 
-    const [isLoading, setIsLoading] = useState(null);
+    const [responseData, setResponseData] = useState(null);
 
 /*     useEffect(() => {
         
@@ -18,9 +18,12 @@ export default function Timeline() {
     }, []); */
 
     const renderPostOrNot = () => {
-        if (isLoading) return <LoadingTeste />
-        else if (isLoading === false) return <Post />
-        return <NotFound type={"posts"} />;
+        if (responseData === null) return <LoadingTeste />
+        else if (responseData) return <Post />
+        else if (responseData.length === 0) {
+            return <NotFound typeError={"Nenhum post encontrado."} />;
+        }
+        return <NotFound typeError={"Houve uma falha ao obter os post, por favor atualize a página."} />;
     }
     
     return (
