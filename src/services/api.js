@@ -13,4 +13,13 @@ function SignUp(request) {
   return promise;
 }
 
-export { SignUp }
+function LogIn(request) {
+  const body = {
+    email: request.email,
+    password: request.password,
+  }
+  const promise = axios.post(`${BASE_URL}/sign-in`, body);
+  return promise;
+}
+
+export { SignUp, LogIn }
