@@ -26,7 +26,7 @@ export const ArrowAndPhoto = styled.div`
 `
 
 export const Arrow = styled.img`
-    transform: ${(props) => props.clicked ? 'rotate(180deg)' : 'rotate(0deg)'};
+    transform: ${(props) => props.isExpandableMenuOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
     height: 14px;
     width: 20px;
     margin-right: 15px;
@@ -42,7 +42,7 @@ export const Photo = styled.img`
 
 export const ExpandableMenu = styled.div`
     position: absolute;
-    display: ${(props) => props.clicked ? 'flex' : 'none'};
+    display: ${(props) => props.isExpandableMenuOpen ? 'flex' : 'none'};
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
