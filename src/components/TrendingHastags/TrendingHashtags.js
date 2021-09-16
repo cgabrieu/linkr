@@ -1,18 +1,23 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { getTrendings } from "../../services/api";
 import Hashtag from "./Hashtag";
+import UserContext from "../../contexts/UserContext";
 
 export default function TrendingHashtags() {
+  const { user } = useContext(UserContext);
   const [hashtags, setHashtags] = useState([]);
 
   useEffect(() => {
     let active = true;
-    getTrendings()
-      .then((res) => (active ? sortHashtags(res.data) : null))
-      .catch((err) => console.log(err.response.data));
+    getTrendings({ headers: { Authorization: "Bearer " + user.token } })
+      .then((res) => {
+        console.log(res);
+        return active ? sortHashtags(res.data) : null;
+      })
+      .catch((err) => console.log(err.response));
     return () => (active = false);
-  }, []);
+  }, [user]);
 
   function sortHashtags(data) {
     data.sort((h1, h2) => h1.numberOfMentions - h2.numberOfMentions);
