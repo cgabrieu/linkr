@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 import { UserContainer, UserPic } from "../styles/styles";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import React, { useState } from "react";
@@ -8,6 +9,7 @@ const testePic = "https://img.r7.com/images/meme-sorriso-forcado-hide-the-pain-h
 
 export default function Post() {
 
+    const history = useHistory();
     const [isLiked, setIsLiked] = useState(false);
 
     return (

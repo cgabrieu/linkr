@@ -26,6 +26,7 @@ const PostContainer = styled.div`
     h1 {
         margin-bottom: 45px;
         font-size: 43px;
+        font-weight: bold;
 
         @media(max-width: 935px) {
             margin: 0 auto 19px 17px;
