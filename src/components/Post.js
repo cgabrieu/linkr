@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { UserContainer, UserPic } from "../styles/styles";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import React, { useState } from "react";
+import ReactHashtag from "react-hashtag";
 
 const testePic = "https://img.r7.com/images/meme-sorriso-forcado-hide-the-pain-harold-maurice-andras-arato-08112019141226221";
 
@@ -32,7 +33,7 @@ export default function Post() {
             </MainPostContainer>
         </PostContainer>
     );
-}
+};
 
 const PostContainer = styled.div`
     width: 100%;

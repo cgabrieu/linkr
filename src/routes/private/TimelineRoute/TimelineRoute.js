@@ -1,39 +1,35 @@
 import "../../../styles/tooltip.css";
 import styled from "styled-components";
 import CreatePost from "./CreatePost";
-import { Container } from "../../../styles/styles";
+import { Container, PostContainer } from "../../../styles/styles";
 import React, { useState } from "react";
 import Post from "../../../components/Post";
+import LoadingTeste from "../../../components/LoadingTeste";
 
 export default function Timeline() {
 
+    const [isLoading, setIsLoading] = useState(true);
+
+/*     useEffect(() => {
+        
+
+
+    }, []); */
+    
+
     return (
         <Container>
-            <ContainerTimeline>
+            <PostContainer>
                 <h1>timeline</h1>
                 <CreatePost />
-                <Post />
-            </ContainerTimeline>
+                {isLoading 
+                ? <LoadingTeste />
+                : <Post />}
+            </PostContainer>
             <TesteTrending />
         </Container>
     );
 }
-
-const ContainerTimeline = styled.div`
-    width: 610px;
-    h1 {
-        margin-bottom: 45px;
-        font-size: 43px;
-
-        @media(max-width: 935px) {
-            margin: 0 auto 19px 17px;
-        }
-    }
-    
-    @media(max-width: 935px) {
-        margin: 0 auto;
-    }
-`;
 
 const TesteTrending = styled.div`
     width: 300px;

@@ -21,5 +21,8 @@ export default createGlobalStyle`
     button {
         background-color: #1877F2;
         cursor: pointer;
+        &:disabled {
+            opacity: 0.7;
+        }
     }
 `;
