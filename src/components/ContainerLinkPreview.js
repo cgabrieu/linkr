@@ -15,13 +15,14 @@ export default function ContainerLinkPreview({ content }) {
 
 const ContainerLink = styled.div`
     height: 155px;
-    max-width: 500px;
+    width: 500px;
     border: 1px solid #4D4D4D;
     border-radius: 12px;
     display: flex;
     justify-content: space-between;
     color: #CECECE;
     font-size: 11px;
+    cursor: pointer;
     h3 {
         font-size: 16px;
     }
@@ -34,8 +35,8 @@ const ContainerLink = styled.div`
         object-fit: cover;
         border-radius: 0px 12px 12px 0px;
         @media(max-width: 610px) {
-            max-width: 95px;
-            max-height: 115px;
+            width: 95px;
+            height: 115px;
         }
     }
     @media(max-width: 610px) {

@@ -21,7 +21,7 @@ export default function Post({ user, likes, content }) {
                 <LikesInfo
                     data-tooltip="Ninguém comentou nada ainda no objeto, fazer depois :)"
                     data-flow="bottom">
-                    {likes.length + " Likes"}
+                    {likes.length + (likes.length === 1) ? " like" : " likes"}
                 </LikesInfo>
             </UserContainer>
             <MainPostContainer>
@@ -29,7 +29,9 @@ export default function Post({ user, likes, content }) {
                 <PostDescription>
                     <Hashtags>{content.text}</Hashtags>
                 </PostDescription>
-                <ContainerLinkPreview content={content} />
+                <Link to={{ pathname: content.link }} target="_blank">
+                    <ContainerLinkPreview content={content} />
+                </Link>
             </MainPostContainer>
         </PostContainer>
     );
