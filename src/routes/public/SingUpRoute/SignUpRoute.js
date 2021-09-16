@@ -30,7 +30,7 @@ function SignUpRoute() {
 
     const body = inputFields;
 
-    postSignUp(body)
+    SignUp(body)
       .then(response => {
         setBtnDisabled(false);
         console.log(response)

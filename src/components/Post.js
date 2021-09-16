@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { UserContainer, UserPic } from "../styles/styles";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import React, { useState, useContext } from "react";
 import ReactHashtag from "react-hashtag";
+import ContainerLinkPreview from "./ContainerLinkPreview";
 
-export default function Post({ username, avatar, content }) {
+export default function Post({ user, likes, content }) {
 
     const history = useHistory();
     const [isLiked, setIsLiked] = useState(false);
@@ -13,35 +14,34 @@ export default function Post({ username, avatar, content }) {
     return (
         <PostContainer>
             <UserContainer>
-                <UserPic onClick={() => history.push(`/user/${username}`)} src={avatar} alt="{user.name}" />
+                <UserPic onClick={() => history.push(`/user/${user.username}`)} src={user.avatar} alt="{user.name}" />
                 {isLiked
                     ? <LikeButtonClicked onClick={() => setIsLiked(false)} />
                     : <LikeButton onClick={() => setIsLiked(true)} />}
                 <LikesInfo
-                    data-tooltip="João, Maria e outras 11 pessoas"
+                    data-tooltip="Ninguém comentou nada ainda no objeto, fazer depois :)"
                     data-flow="bottom">
-                    13 likes
+                    {likes.length + " Likes"}
                 </LikesInfo>
             </UserContainer>
             <MainPostContainer>
-                <UserName>{username}</UserName>
+                <UserName>{user.username}</UserName>
                 <PostDescription>
-                    Muito maneiro esse tutorial de Material UI com React, deem uma olhada!
-                    <HashtagsDescription> #react #material</HashtagsDescription>
+                    <Hashtags>{content.text}</Hashtags>
                 </PostDescription>
-                <ContainerSnippetLink />
+                <ContainerLinkPreview content={content} />
             </MainPostContainer>
         </PostContainer>
     );
 };
 
 const PostContainer = styled.div`
-    width: 100%;
+    width: 100h; 
     background-color: #171717;
     border-radius: 16px;
     padding: 18px 20px 20px 18px;
     display: flex;
-
+    margin-bottom: 16px;
     @media(max-width: 610px) {
         border-radius: 0;
     }
@@ -63,30 +63,50 @@ const LikeButtonClicked = styled(AiFillHeart)`
 `;
 
 const MainPostContainer = styled.div`
-    width: 100%;
+    max-width: 505px;
+    position: relative;
+    @media(max-width: 610px) {
+        max-width: 510px;
+    }
+`;
+
+const PostDescription = styled.div`
+    color: #B7B7B7;
+    font-size: 17px;
+    margin: 7px 0;
+    word-wrap: break-word;
+    max-width: 100%;
+    @media(max-width: 610px) {
+        font-size: 15px;
+        width: 288px;
+    }
 `;
 
 const UserName = styled.p`
     font-size: 19px;
-
-`;
-
-const ContainerSnippetLink = styled.div`
-    height: 155px;
-`;
-
-const PostDescription = styled.div`
-   color: #B7B7B7;
-   font-size: 17px;
-   margin: 7px 0;
-`;
-
-const HashtagsDescription = styled.span`
-    font-weight: bold;
-    color: #FFFFFF;
 `;
 
 const LikesInfo = styled.span`
     font-size: 11px;
     margin: 4px;
 `;
+
+const StyledHashtag = styled.a`
+    color: #FFFFFF;
+    font-weight: bold;
+    cursor: pointer;
+`;
+ 
+const Hashtags = ({ children }) => (
+    <ReactHashtag
+        renderHashtag={(hashtagValue) => (
+            <StyledHashtag>
+                <Link to={"/hashtag/"+hashtagValue.replace("#","")}>
+                    {hashtagValue}
+                </Link>
+            </StyledHashtag>
+        )}
+    >
+        {children}
+    </ReactHashtag>
+);

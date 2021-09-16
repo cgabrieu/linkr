@@ -2,32 +2,40 @@ import "../../../styles/tooltip.css";
 import styled from "styled-components";
 import CreatePost from "./CreatePost";
 import { Container, PostContainer } from "../../../styles/styles";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Post from "../../../components/Post";
 import LoadingTeste from "../../../components/LoadingTeste";
 import NotFound from "../../../components/NotFound";
 import UserContext from "../../../contexts/UserContext";
+import { getListPosts } from "../../../services/api"
 
 export default function Timeline() {
 
-    const [responseData, setResponseData] = useState(true);
+    const [listPosts, setListPosts] = useState(null);
 
-    const { user, setUser } = useContext(UserContext);
-
-
-/*     useEffect(() => {
-        
+    const { user } = useContext(UserContext);
 
 
-    }, []); */
-
+    useEffect(() => {
+        getListPosts(user.token)
+            .then(res => {
+                setListPosts(res.data.posts);
+                console.log(res.data);
+            })
+            .catch(err => setListPosts(err.status));
+    }, []);
+    
     const renderPostOrNot = () => {
-        if (responseData === null) return <LoadingTeste />
-        else if (responseData) return <Post />
-        else if (responseData.length === 0) {
+        if (listPosts === null) return <LoadingTeste />
+        else if (listPosts.length > 0) {
+            return (
+                listPosts.map((e) => <Post user={e.user} likes= {e.likes} content={e} />)
+            );
+        }
+        else if (listPosts.length === 0) {
             return <NotFound typeError={"Nenhum post encontrado."} />;
         }
-        return <NotFound typeError={"Houve uma falha ao obter os post, por favor atualize a página."} />;
+        return <NotFound typeError={listPosts + " - Houve uma falha ao obter os post, por favor atualize a página."} />;
     }
     
     return (

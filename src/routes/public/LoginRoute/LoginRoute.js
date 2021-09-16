@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Loading from "../../../components/Loading";
 import UserContext from "../../../contexts/UserContext";
-import { postLogIn } from "../../../services/api";
+import { LogIn } from "../../../services/api";
 import { PageContent, Aside, Main, Input, Button } from "../LoginAndSignUpStyles";
 
 function LoginRoute() {
@@ -43,7 +43,7 @@ function LoginRoute() {
 
     const body = inputFields
 
-    postLogIn(body)
+    LogIn(body)
       .then(res => {
         setBtnDisabled(false);
         const user = {
