@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import Loading from "../../../components/Loading";
+import Loader from "react-loader-spinner";
 import UserContext from "../../../contexts/UserContext";
 import { LogIn } from "../../../services/api";
 import { PageContent, Aside, Main, Input, Button } from "../LoginAndSignUpStyles";
@@ -10,7 +10,7 @@ function LoginRoute() {
   const history = useHistory()
   const { setUser } = useContext(UserContext);
 
-  const [btnDisabled, setBtnDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [inputFields, setInputFields] = useState({
     email: "",
     password: "",
@@ -34,10 +34,10 @@ function LoginRoute() {
 
   function loginUser(event) {
     event.preventDefault();
-    setBtnDisabled(true);
+    setIsLoading(true);
 
     if (!inputFields.email || !inputFields.password) {
-      setBtnDisabled(false);
+      setIsLoading(false);
       return alert("Por favor, preencha todos os campos para efetuar o login!");
     }
 
@@ -45,7 +45,7 @@ function LoginRoute() {
 
     LogIn(body)
       .then(res => {
-        setBtnDisabled(false);
+        setIsLoading(false);
         const user = {
           token: res.data.token,
           ...res.data.user
@@ -57,7 +57,7 @@ function LoginRoute() {
         }
       })
       .catch(err => {
-        setBtnDisabled(false);
+        setIsLoading(false);
         if (err.response.status === 403 || err.response.status === 400) return alert("email/senha incorretos, tente novamente!");
       });
   }
@@ -83,12 +83,13 @@ function LoginRoute() {
             value={inputFields.password}
             onChange={handleChange}
             placeholder="password" />
-          <Button disabled={btnDisabled}>
-            {!btnDisabled
-              ? "Log In"
-              : <Loading visible={true} />
-            }
-          </Button>
+
+          {isLoading ?
+            <Button disabled>
+              <Loader type="ThreeDots" color="#FFFFFF" height={15} width={70} />
+            </Button> :
+          <Button> Log In </Button>}
+
         </form>
         <Link to="/sign-up">
           <span>First time? Create an account!</span>

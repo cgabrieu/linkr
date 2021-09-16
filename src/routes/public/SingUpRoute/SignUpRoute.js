@@ -2,12 +2,11 @@ import { PageContent, Aside, Main, Input, Button } from "../LoginAndSignUpStyles
 import { Link, useHistory } from "react-router-dom"
 import { useState } from "react";
 import { SignUp } from "../../../services/api";
-import Loading from "../../../components/Loading";
+import Loader from "react-loader-spinner";
 
 function SignUpRoute() {
-
   const history = useHistory();
-  const [btnDisabled, setBtnDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [inputFields, setInputFields] = useState({
     email: "",
     password: "",
@@ -21,10 +20,10 @@ function SignUpRoute() {
 
   function Register(event) {
     event.preventDefault();
-    setBtnDisabled(true);
+    setIsLoading(true);
 
     if (!inputFields.email || !inputFields.password || !inputFields.username || !inputFields.pictureUrl) {
-      setBtnDisabled(false);
+      setIsLoading(false);
       return alert("Por favor, preencha todos os campos do cadastro.")
     }
 
@@ -32,14 +31,14 @@ function SignUpRoute() {
 
     SignUp(body)
       .then(response => {
-        setBtnDisabled(false);
+        setIsLoading(false);
         console.log(response)
         if (response.status === 200) {
           history.push("/");
         }
       })
       .catch(err => {
-        setBtnDisabled(false);
+        setIsLoading(false);
         console.log(err.response);
         if (err.response.status === 403) return alert("Endereço de email já cadastrado!")
       });
@@ -78,12 +77,11 @@ function SignUpRoute() {
             onChange={handleChange}
             value={inputFields.pictureUrl}
             placeholder="picture url" />
-          <Button disabled={btnDisabled}>
-            {!btnDisabled
-              ? "Sign Up"
-              : <Loading visible={true} />
-            }
-          </Button>
+          {isLoading ?
+            <Button disabled>
+              <Loader type="ThreeDots" color="#FFFFFF" height={15} width={70} />
+            </Button> :
+          <Button> Log In </Button>}
         </form>
         <Link to="/">
           <span>Switch back to log in</span>

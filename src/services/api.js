@@ -16,7 +16,7 @@ function SignUp(request) {
     password: request.password,
     username: request.username,
     pictureUrl: request.pictureUrl,
-  }
+  };
   const promise = axios.post(`${BASE_URL}/sign-up`, body);
   return promise;
 }
@@ -25,7 +25,7 @@ function LogIn(request) {
   const body = {
     email: request.email,
     password: request.password,
-  }
+  };
   const promise = axios.post(`${BASE_URL}/sign-in`, body);
   return promise;
 }
@@ -35,8 +35,13 @@ function getListPosts(token) {
   return promise;
 }
 
+function getTrendings(token) {
+  return axios.get(`${BASE_URL}/hashtags/trending`, getConfig(token));
+}
+
 export { 
-  SignUp,
+  SignUp, 
   LogIn,
-  getListPosts,
+  getTrendings,
+  getListPosts
 };

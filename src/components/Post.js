@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useHistory, Link } from "react-router-dom";
 import { UserContainer, UserPic } from "../styles/styles";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import ReactHashtag from "react-hashtag";
 import ContainerLinkPreview from "./ContainerLinkPreview";
 

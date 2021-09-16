@@ -8,7 +8,7 @@ export default function ContainerLinkPreview({ content }) {
                 <h4>{content.linkDescription}</h4>
                 <p>{content.link}</p>
             </ContentContainer>
-            <img src={content.linkImage} />
+            <img src={content.linkImage} alt={content.linkTitle}/>
         </ContainerLink>
     );
 }
