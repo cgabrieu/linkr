@@ -15,9 +15,10 @@ function App() {
       <UserContext.Provider value={{ user, setUser }}>
         <GlobalStyle />
         <Switch>
-          <Route exact path="/" component={LogInRoute} />
           <Route exact path="/sign-up" component={SignUpRoute} />
           <Route exact path='/timeline' component={Timeline} />
+          <Route exact path="/" component={LogInRoute} />
+          <Route exact path="*" component={LogInRoute} />
         </Switch>
       </UserContext.Provider>
     </Router>
