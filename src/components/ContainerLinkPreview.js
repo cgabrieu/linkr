@@ -22,6 +22,7 @@ const ContainerLink = styled.div`
     justify-content: space-between;
     color: #CECECE;
     font-size: 11px;
+    word-break: break-all;
     cursor: pointer;
     h3 {
         font-size: 16px;
