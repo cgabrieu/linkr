@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import UserContext from "./contexts/UserContext";
+=======
+>>>>>>> feat/header
 =======
 >>>>>>> feat/header
 import GlobalStyle from "./styles/global";
@@ -13,8 +16,12 @@ import ExpandableMenuContext from './contexts/ExpandableMenuContext';
 
 function App() {
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   const [user, setUser] = useState("");
+=======
+  const [isExpandableMenuOpen, setIsExpandableMenuOpen] = useState(false);
+>>>>>>> feat/header
 =======
   const [isExpandableMenuOpen, setIsExpandableMenuOpen] = useState(false);
 >>>>>>> feat/header
