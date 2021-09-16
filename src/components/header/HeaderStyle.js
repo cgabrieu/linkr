@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 export const HeaderBar = styled.header`
     position: fixed;
+    top: 0;
+    left: 0;
     background-color: #151515;
     height: 72px;
     width: 100%;
