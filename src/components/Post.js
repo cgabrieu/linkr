@@ -21,7 +21,7 @@ export default function Post({ user, likes, content }) {
                 <LikesInfo
                     data-tooltip="Ninguém comentou nada ainda no objeto, fazer depois :)"
                     data-flow="bottom">
-                    {likes.length + (likes.length === 1) ? " like" : " likes"}
+                    {likes.length + ((likes.length === 1) ? " like" : " likes")}
                 </LikesInfo>
             </UserContainer>
             <MainPostContainer>
