@@ -1,5 +1,5 @@
+import TrendingHashtags from "../../components/TrendingHastags/TrendingHashtags";
+
 export default function Timeline() {
-    return (
-        <h1>Timeline</h1>
-    );
+  return <TrendingHashtags />;
 }

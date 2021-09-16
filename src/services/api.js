@@ -1,5 +1,6 @@
 import axios from "axios";
 
+<<<<<<< HEAD
 const BASE_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr";
 
 function SignUp(request) {
@@ -23,3 +24,11 @@ function LogIn(request) {
 }
 
 export { SignUp, LogIn }
+=======
+const API_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/";
+
+const getTrendings = (config) =>
+  axios.get(API_URL + "hashtags/trendings", config);
+
+export { getTrendings };
+>>>>>>> d9c8dcb3886989facde540dde9ba9b75cba7c0fd
