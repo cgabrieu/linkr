@@ -13,6 +13,9 @@ const HashtagItem = styled.li`
   font-weight: 700;
   font-family: "Lato";
   color: #fff;
+  width: 270px;
   margin-bottom: 7px;
+  text-overflow: ellipsis;
+  overflow: hidden;
   cursor: pointer;
 `;
