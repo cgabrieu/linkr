@@ -13,6 +13,7 @@ function App() {
         <Route exact path="/" component={LogInRoute} />
         <Route exact path="/sign-up" component={SignUpRoute} />
         <Route exact path='/timeline' component={TimelineRoute} />
+        <Route exact path='/user/:id' component={TimelineRoute/* UserRoute */} />
       </Switch>
     </Router>
   );

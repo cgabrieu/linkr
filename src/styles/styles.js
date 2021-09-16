@@ -19,6 +19,7 @@ const UserPic = styled.img`
     height: 50px;
     object-fit:cover;
     border-radius: 50%;
+    cursor: pointer;
 `;
 
 const PostContainer = styled.div`

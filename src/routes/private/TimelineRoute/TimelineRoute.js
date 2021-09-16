@@ -9,7 +9,7 @@ import NotFound from "../../../components/NotFound";
 
 export default function Timeline() {
 
-    const [responseData, setResponseData] = useState(null);
+    const [responseData, setResponseData] = useState(true);
 
 /*     useEffect(() => {
         

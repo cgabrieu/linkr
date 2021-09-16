@@ -15,7 +15,7 @@ export default function Post() {
     return (
         <PostContainer>
             <UserContainer>
-                <UserPic src={testePic} alt="{user.name}" />
+                <UserPic onClick={() => history.push("/user/"/* +{user.id} */)} src={testePic} alt="{user.name}" />
                 {isLiked
                     ? <LikeButtonClicked onClick={() => setIsLiked(false)} />
                     : <LikeButton onClick={() => setIsLiked(true)} />}
