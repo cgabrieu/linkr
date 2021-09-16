@@ -60,8 +60,8 @@ const LikeButtonClicked = styled(AiFillHeart)`
     width: 20px;
     height: 18px;
     margin-top: 19px;
-    cursor: pointer;
     color:#AC0000;
+    cursor: pointer;
 `;
 
 const MainPostContainer = styled.div`
@@ -75,7 +75,7 @@ const MainPostContainer = styled.div`
 const PostDescription = styled.div`
     color: #B7B7B7;
     font-size: 17px;
-    margin: 7px 0;
+    margin: 7px 0 10px 0;
     word-wrap: break-word;
     max-width: 100%;
     @media(max-width: 610px) {

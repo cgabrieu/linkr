@@ -8,7 +8,7 @@ const PageContent = styled.div`
   @media(max-width: 600px) {
    flex-direction: column; 
   }
-`
+`;
 
 const Aside = styled.aside`
   background-color: #151515;
@@ -49,7 +49,7 @@ const Aside = styled.aside`
      padding-left: 15px;
    }
   }
-`
+`;
 
 const Main = styled.main`
   width: 35%;
@@ -87,7 +87,7 @@ const Main = styled.main`
       font-size: 17px;
     }
   }
-`
+`;
 
 const Input = styled.input`
   font-family: 'Oswald', sans-serif;
@@ -113,7 +113,7 @@ const Input = styled.input`
     width: 330px;
     height: 55px;
   }
-`
+`;
 
 const Button = styled.button`
   font-family: 'Oswald', sans-serif;
@@ -132,7 +132,7 @@ const Button = styled.button`
     height: 55px;
     font-size: 20px;
   }
-`
+`;
 
 export {
   PageContent,

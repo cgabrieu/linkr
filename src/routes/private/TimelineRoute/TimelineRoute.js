@@ -25,11 +25,11 @@ export default function Timeline() {
             .catch(err => setListPosts(err.status));
     }, []);
     
-    const renderPostOrNot = () => {
+    const renderPostsOrNot = () => {
         if (listPosts === null) return <LoadingTeste />
         else if (listPosts.length > 0) {
             return (
-                listPosts.map((e) => <Post user={e.user} likes= {e.likes} content={e} />)
+                listPosts.map((e) => <Post key={e.id} user={e.user} likes= {e.likes} content={e} />)
             );
         }
         else if (listPosts.length === 0) {
@@ -43,7 +43,7 @@ export default function Timeline() {
             <PostContainer>
                 <h1>timeline</h1>
                 <CreatePost />
-                {renderPostOrNot()}
+                {renderPostsOrNot()}
             </PostContainer>
             <TesteTrending />
         </Container>
