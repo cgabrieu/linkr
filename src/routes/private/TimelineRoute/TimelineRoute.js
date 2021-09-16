@@ -2,14 +2,18 @@ import "../../../styles/tooltip.css";
 import styled from "styled-components";
 import CreatePost from "./CreatePost";
 import { Container, PostContainer } from "../../../styles/styles";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Post from "../../../components/Post";
 import LoadingTeste from "../../../components/LoadingTeste";
 import NotFound from "../../../components/NotFound";
+import UserContext from "../../../contexts/UserContext";
 
 export default function Timeline() {
 
     const [responseData, setResponseData] = useState(true);
+
+    const { user, setUser } = useContext(UserContext);
+
 
 /*     useEffect(() => {
         

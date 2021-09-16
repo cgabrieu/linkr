@@ -1,8 +1,17 @@
 import axios from "axios";
+import UserContext from "../contexts/UserContext";
 
-const BASE_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr";
+const BASE_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr";
 
-function SignUp(request) {
+const { user } = useContext(UserContext);
+
+const config = {
+  headers: {
+      "Authorization": `Bearer ${user.token}`
+  }
+}
+
+function postSignUp(request) {
   const body = {
     email: request.email,
     password: request.password,
@@ -13,4 +22,27 @@ function SignUp(request) {
   return promise;
 }
 
-export { SignUp }
+function postLogIn(request) {
+  const body = {
+    email: request.email,
+    password: request.password,
+  }
+  const promise = axios.post(`${BASE_URL}/sign-in`, body);
+  return promise;
+}
+
+function postLogIn(request) {
+  const body = {
+    email: request.email,
+    password: request.password,
+  }
+  const promise = axios.post(`${BASE_URL}/sign-in`, body);
+  return promise;
+}
+
+
+export { 
+  postSignUp, 
+  postLogIn,
+
+};

@@ -1,13 +1,18 @@
 import styled from "styled-components";
 import { UserContainer, UserPic } from "../../../styles/styles";
+import React, { useContext } from "react";
+import UserContext from "../../../contexts/UserContext";
 
 const testePic = "https://img.r7.com/images/meme-sorriso-forcado-hide-the-pain-harold-maurice-andras-arato-08112019141226221";
 
 export default function CreatePost() {
+
+    const { user } = useContext(UserContext);
+
     return (
         <CreatePostContainer>
             <UserContainerCreatePost>
-                <UserPic src={testePic} alt="{user.name}" />
+                <UserPic src={user.avatar} alt={user.username} />
             </UserContainerCreatePost>
             <form>
                 <p>O que você tem para favoritar hoje?</p>

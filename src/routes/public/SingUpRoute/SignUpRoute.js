@@ -30,7 +30,7 @@ function SignUpRoute() {
 
     const body = inputFields;
 
-    SignUp(body)
+    postSignUp(body)
       .then(response => {
         setBtnDisabled(false);
         console.log(response)
@@ -54,13 +54,13 @@ function SignUpRoute() {
 
       <Main>
         <form onSubmit={Register}>
-          <Input
+          <Input required
             type="email"
             name="email"
             onChange={handleChange}
             value={inputFields.name}
             placeholder="e-mail" />
-          <Input
+          <Input required
             type="password"
             name="password"
             onChange={handleChange}

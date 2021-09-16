@@ -2,12 +2,10 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { UserContainer, UserPic } from "../styles/styles";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import ReactHashtag from "react-hashtag";
 
-const testePic = "https://img.r7.com/images/meme-sorriso-forcado-hide-the-pain-harold-maurice-andras-arato-08112019141226221";
-
-export default function Post() {
+export default function Post({ username, avatar, content }) {
 
     const history = useHistory();
     const [isLiked, setIsLiked] = useState(false);
@@ -15,7 +13,7 @@ export default function Post() {
     return (
         <PostContainer>
             <UserContainer>
-                <UserPic onClick={() => history.push("/user/"/* +{user.id} */)} src={testePic} alt="{user.name}" />
+                <UserPic onClick={() => history.push(`/user/${username}`)} src={avatar} alt="{user.name}" />
                 {isLiked
                     ? <LikeButtonClicked onClick={() => setIsLiked(false)} />
                     : <LikeButton onClick={() => setIsLiked(true)} />}
@@ -26,7 +24,7 @@ export default function Post() {
                 </LikesInfo>
             </UserContainer>
             <MainPostContainer>
-                <UserName>Juvenal Juvêncio</UserName>
+                <UserName>{username}</UserName>
                 <PostDescription>
                     Muito maneiro esse tutorial de Material UI com React, deem uma olhada!
                     <HashtagsDescription> #react #material</HashtagsDescription>
