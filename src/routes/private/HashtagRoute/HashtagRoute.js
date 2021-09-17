@@ -25,8 +25,6 @@ export default function HashtagRoute() {
       .catch(err => setPosts(err.status))
   }, [hashtag]);
 
-  console.log(hashtag, posts);
-
   const renderPostsOrNot = () => {
     if (posts === null) return <LoadingSection />
     else if (posts.length > 0) {
