@@ -1,23 +1,62 @@
 import styled from "styled-components";
 import { UserContainer, UserPic } from "../../../styles/styles";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import UserContext from "../../../contexts/UserContext";
 
 
 export default function CreatePost() {
     const { user } = useContext(UserContext);
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const [inputFields, setInputFields] = useState({
+        link: "",
+        description: "",
+    });
+        
+    const handleChange = (e) => {
+        setInputFields(
+            { ...inputFields, [e.target.name]: e.target.value }
+        );
+    }
+
+    const postPublish = (e) => {
+        e.preventDefault();
+        validateInputs();
+    }
+
+    const validateInputs = () => {
+        const linkField = inputFields.link;
+        if (linkField.length === 0) setErrorMessage("O campo de link não pode ficar em branco.");
+    }
+
     return (
         <CreatePostContainer>
             <UserContainerCreatePost>
                 <UserPic src={user.avatar} alt={user.username} />
             </UserContainerCreatePost>
-            <form>
+            <form onSubmit={postPublish} onInvalid={() => setErrorMessage("Digite um link válido.")}>
                 <p>O que você tem para favoritar hoje?</p>
-                <input type="url" placeholder="http://..." />
-                <textarea placeholder="Muito irado esse link falando de #javascript" />
+                <input 
+                    type="url"
+                    name="link"
+                    value={inputFields.link}
+                    onChange={handleChange}
+                    placeholder="http://..."
+                />
+                <textarea 
+                    placeholder="Muito irado esse link falando de #javascript"
+                    name="description"
+                    value={inputFields.description}
+                    onChange={handleChange}
+                />
                 <ContainerButton>
-                    <button>Publicar</button>
+                    <p>{errorMessage}</p>
+                    <button 
+                        disabled={isLoading}
+                        type="submit"
+                    >Publicar</button>
                 </ContainerButton>
             </form>
         </CreatePostContainer>
@@ -31,8 +70,18 @@ const UserContainerCreatePost = styled(UserContainer)`
 `;
 
 const ContainerButton = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    text-align: right;
+    p {
+        font-size: 17px !important;
+        margin: 0px 17px !important;
+        color: #d46363;
+        @media(max-width: 610px) {
+            font-size: 11px !important;
+        }
+    }
 `;
 
 const CreatePostContainer = styled.div`
@@ -44,12 +93,11 @@ const CreatePostContainer = styled.div`
     margin-bottom: 30px;
     form {
         width: 100%;
-        color: #707070;
         font-weight: 300;
         font-family: 'Lato', sans-serif;
+        color: #707070;
         p {
             font-size: 20px;
-            color: #707070;
             line-height: 24px;
             margin-top: 5px;
             margin-bottom: 10px;
@@ -59,11 +107,11 @@ const CreatePostContainer = styled.div`
             width: 100%;
             font-weight: inherit;
             font-size: 15px;
+            color: #707070;
             background-color: #EFEFEF;
             margin-bottom: 5px;
             padding-left: 13px;
             resize: none;
-            color: #949494;
             @media(max-width: 610px) {
                 font-size: 13px;
             }
