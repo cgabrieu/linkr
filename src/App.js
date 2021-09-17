@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import UserContext from "./contexts/UserContext";
-import ExpandableMenuContext from './contexts/ExpandableMenuContext';
+import ExpandableMenuContext from "./contexts/ExpandableMenuContext";
 import GlobalStyle from "./styles/global";
-import TimelineRoute from './routes/private/TimelineRoute/TimelineRoute';
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import Header from './components/Header/Header';
-import TrendingHashtags from './components/TrendingHastags/TrendingHashtags'
-import SignUpRoute from './routes/public/SingUpRoute/SignUpRoute';
-import LogInRoute from './routes/public/LoginRoute/LoginRoute';
-import PrivateRoute from './routes/PrivateRoute';
+import TimelineRoute from "./routes/private/TimelineRoute/TimelineRoute";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import Header from "./components/Header/Header";
+import TrendingHashtags from "./components/TrendingHastags/TrendingHashtags";
+import SignUpRoute from "./routes/public/SingUpRoute/SignUpRoute";
+import LogInRoute from "./routes/public/LoginRoute/LoginRoute";
+import PrivateRoute from "./routes/PrivateRoute";
+import MyPostsRoute from "./routes/private/MyPostsRoute/MyPostsRoute";
 
 function App() {
   const [user, setUser] = useState("");
@@ -21,12 +27,23 @@ function App() {
         <Switch>
           <Route exact path="/sign-up" component={SignUpRoute} />
           <Route exact path="/" component={LogInRoute} />
-          <ExpandableMenuContext.Provider value={{ isExpandableMenuOpen, setIsExpandableMenuOpen }}>
+          <ExpandableMenuContext.Provider
+            value={{ isExpandableMenuOpen, setIsExpandableMenuOpen }}
+          >
             <Header />
             <div onClick={() => setIsExpandableMenuOpen(false)}>
               <Switch>
-                <PrivateRoute exact path='/timeline' component={TimelineRoute} />
-                <PrivateRoute exact path='/user/:id' component={TimelineRoute/* UserRoute */} />
+                <PrivateRoute
+                  exact
+                  path="/timeline"
+                  component={TimelineRoute}
+                />
+                <PrivateRoute
+                  exact
+                  path="/user/:id"
+                  component={TimelineRoute /* UserRoute */}
+                />
+                <PrivateRoute exact path="/my-posts" component={MyPostsRoute} />
                 <Redirect to="/" />
               </Switch>
               <TrendingHashtags />
