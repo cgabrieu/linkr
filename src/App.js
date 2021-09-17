@@ -15,6 +15,7 @@ import SignUpRoute from "./routes/public/SingUpRoute/SignUpRoute";
 import LogInRoute from "./routes/public/LoginRoute/LoginRoute";
 import PrivateRoute from "./routes/PrivateRoute";
 import UserPosts from "./routes/private/UserPostsRoute/UserPosts";
+import MyPostsRoute from "./routes/private/MyPostsRoute/MyPostsRoute";
 
 function App() {
   const [user, setUser] = useState("");
@@ -38,11 +39,8 @@ function App() {
                   path="/timeline"
                   component={TimelineRoute}
                 />
-                <PrivateRoute
-                  exact
-                  path="/user/:idUser"
-                  component={UserPosts}
-                />
+                <PrivateRoute exact path="/user/:id" component={UserPosts} />
+                <PrivateRoute exact path="/my-posts" component={MyPostsRoute} />
                 <Redirect to="/" />
               </Switch>
               <TrendingHashtags />

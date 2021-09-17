@@ -2,12 +2,12 @@ import axios from "axios";
 
 const BASE_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr";
 
-function getConfig (token) {
-  return ({
+function getConfig(token) {
+  return {
     headers: {
-        "Authorization": `Bearer ${token}`
-    }
-  });
+      Authorization: `Bearer ${token}`,
+    },
+  };
 }
 
 function SignUp(request) {
@@ -39,9 +39,28 @@ function getTrendings(token) {
   return axios.get(`${BASE_URL}/hashtags/trending`, getConfig(token));
 }
 
-export { 
-  SignUp, 
+function postPublish(link, description, token) {
+  const body = {
+    text: description,
+    link: link,
+  };
+  return axios.post(`${BASE_URL}/posts`, body, getConfig(token));
+}
+
+function getUserInfo(token, userId) {
+  return axios.get(`${BASE_URL}/users/${userId}`, getConfig(token));
+}
+
+function getUserPosts(token, userId) {
+  return axios.get(`${BASE_URL}/users/${userId}/posts`, getConfig(token));
+}
+
+export {
+  SignUp,
   LogIn,
   getTrendings,
-  getListPosts
+  getListPosts,
+  postPublish,
+  getUserInfo,
+  getUserPosts,
 };
