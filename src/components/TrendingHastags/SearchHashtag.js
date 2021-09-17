@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 
 export default function SearchHashtag({ isSearching, setIsSearching }) {
+
+  const history = useHistory();
   const [hashtag, setHashtag] = useState("");
 
   function search(e) {
     e.preventDefault();
     if (!isSearching) return setIsSearching(true);
     setIsSearching(false);
+    history.push(`/hashtag/${hashtag}`);
   }
 
   return (

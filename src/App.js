@@ -9,6 +9,7 @@ import TrendingHashtags from './components/TrendingHastags/TrendingHashtags'
 import SignUpRoute from './routes/public/SingUpRoute/SignUpRoute';
 import LogInRoute from './routes/public/LoginRoute/LoginRoute';
 import PrivateRoute from './routes/PrivateRoute';
+import HashtagRoute from './routes/private/HashtagRoute/HashtagRoute';
 
 function App() {
   const [user, setUser] = useState("");
@@ -27,6 +28,7 @@ function App() {
               <Switch>
                 <PrivateRoute exact path='/timeline' component={TimelineRoute} />
                 <PrivateRoute exact path='/user/:id' component={TimelineRoute/* UserRoute */} />
+                <PrivateRoute exact path='/hashtag/:hashtag' component={HashtagRoute} />
                 <Redirect to="/" />
               </Switch>
               <TrendingHashtags />
