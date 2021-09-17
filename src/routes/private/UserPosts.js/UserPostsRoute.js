@@ -4,7 +4,7 @@ import UserContext from "../../../contexts/UserContext";
 import { getUserPosts } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
 
-export default function MyPostsRoute() {
+export default function UserPosts() {
   const [listPosts, setListPosts] = useState(null);
 
   const { user } = useContext(UserContext);

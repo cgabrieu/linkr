@@ -8,6 +8,7 @@ import { renderPostsOrNot } from "../../../services/utils";
 
 export default function Timeline() {
   const [listPosts, setListPosts] = useState(null);
+  const [renderTimeline, setRenderTimeline] = useState(false);
 
   const { user } = useContext(UserContext);
 
@@ -15,16 +16,16 @@ export default function Timeline() {
     getListPosts(user.token)
       .then((res) => {
         setListPosts(res.data.posts);
-        console.log(res.data);
       })
       .catch((err) => setListPosts(err.status));
-  }, [user]);
+    return () => setRenderTimeline(false);
+  }, []);
 
   return (
     <Container>
       <PostContainer>
         <h1>timeline</h1>
-        <CreatePost />
+        <CreatePost setRenderTimeline={setRenderTimeline} />
         {renderPostsOrNot(listPosts)}
       </PostContainer>
     </Container>
