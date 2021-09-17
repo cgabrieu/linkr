@@ -5,12 +5,11 @@ import UserContext from "../../../contexts/UserContext";
 import { postPublish } from "../../../services/api";
 
 
-export default function CreatePost() {
+export default function CreatePost({ setRenderTimeline }) {
     const { user } = useContext(UserContext);
 
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-
     const [inputFields, setInputFields] = useState({
         link: "",
         description: "",
@@ -27,9 +26,10 @@ export default function CreatePost() {
         if (!validateInputs()) return;
         setIsLoading(true);
         postPublish(inputFields.link, inputFields.description, user.token)
-            .then((res) => { 
-                console.log(res);
+            .then(() => { 
                 setIsLoading(false);
+                setInputFields({link: "", description: ""});
+                setRenderTimeline(true);
             })
             .catch(() => {
                 setErrorMessage("Houve um erro ao publicar seu link.");
