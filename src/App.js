@@ -3,13 +3,13 @@ import UserContext from "./contexts/UserContext";
 import ExpandableMenuContext from './contexts/ExpandableMenuContext';
 import GlobalStyle from "./styles/global";
 import TimelineRoute from './routes/private/TimelineRoute/TimelineRoute';
+import HashtagRoute from './routes/private/HashtagRoute/HashtagRoute';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Header from './components/Header/Header';
 import TrendingHashtags from './components/TrendingHastags/TrendingHashtags'
 import SignUpRoute from './routes/public/SingUpRoute/SignUpRoute';
 import LogInRoute from './routes/public/LoginRoute/LoginRoute';
 import PrivateRoute from './routes/PrivateRoute';
-import HashtagRoute from './routes/private/HashtagRoute/HashtagRoute';
 
 function App() {
   const [user, setUser] = useState("");
