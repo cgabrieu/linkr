@@ -21,7 +21,7 @@ export default function TrendingHashtags() {
   }, [user]);
 
   function sortHashtags(data) {
-    data.sort((h1, h2) => h1.numberOfMentions - h2.numberOfMentions);
+    data.sort((h1, h2) => h2.numberOfMentions - h1.numberOfMentions);
     setHashtags(data);
   }
 

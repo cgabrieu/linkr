@@ -3,11 +3,11 @@ import axios from "axios";
 const BASE_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr";
 
 function getConfig(token) {
-  return ({
+  return {
     headers: {
-        "Authorization": `Bearer ${token}`
-    }
-  });
+      Authorization: `Bearer ${token}`,
+    },
+  };
 }
 
 function SignUp(request) {
@@ -47,8 +47,15 @@ function postPublish(link, description, token) {
   return axios.post(`${BASE_URL}/posts`, body, getConfig(token));
 }
 
-function putEditUserPost(postId, token) {
+function putEditUserPost(postId, description, token) {
+  const body = {
+    text: description,
+  };
   return axios.put(`${BASE_URL}/posts/${postId}`, body, getConfig(token));
+}
+
+function getUserPosts(token, userId) {
+  return axios.get(`${BASE_URL}/users/${userId}/posts`, getConfig(token));
 }
 
 export { 
@@ -58,4 +65,5 @@ export {
   getListPosts,
   postPublish,
   putEditUserPost,
+  getUserPosts,
 };
