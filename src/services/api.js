@@ -2,10 +2,10 @@ import axios from "axios";
 
 const BASE_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr";
 
-function getConfig (token) {
+function getConfig(token) {
   return ({
     headers: {
-        "Authorization": `Bearer ${token}`
+      "Authorization": `Bearer ${token}`
     }
   });
 }
@@ -39,9 +39,15 @@ function getTrendings(token) {
   return axios.get(`${BASE_URL}/hashtags/trending`, getConfig(token));
 }
 
-export { 
-  SignUp, 
+function getHashtagPosts(token, hashtag) {
+  const promise = axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, getConfig(token));
+  return promise;
+}
+
+export {
+  SignUp,
   LogIn,
   getTrendings,
-  getListPosts
+  getListPosts,
+  getHashtagPosts
 };

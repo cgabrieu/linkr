@@ -3,6 +3,7 @@ import UserContext from "./contexts/UserContext";
 import ExpandableMenuContext from './contexts/ExpandableMenuContext';
 import GlobalStyle from "./styles/global";
 import TimelineRoute from './routes/private/TimelineRoute/TimelineRoute';
+import HashtagRoute from './routes/private/HashtagRoute/HashtagRoute';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Header from './components/Header/Header';
 import TrendingHashtags from './components/TrendingHastags/TrendingHashtags'
@@ -27,6 +28,7 @@ function App() {
               <Switch>
                 <PrivateRoute exact path='/timeline' component={TimelineRoute} />
                 <PrivateRoute exact path='/user/:id' component={TimelineRoute/* UserRoute */} />
+                <PrivateRoute exact path='/hashtag/:hashtag' component={HashtagRoute} />
                 <Redirect to="/" />
               </Switch>
               <TrendingHashtags />
