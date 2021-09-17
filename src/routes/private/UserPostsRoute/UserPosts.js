@@ -7,27 +7,28 @@ import { Container, PostContainer } from "../../../styles/styles";
 
 export default function UserPosts() {
   const [listPosts, setListPosts] = useState(null);
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
 
   const { user } = useContext(UserContext);
-  const { idUser } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
-    getUserInfo(user.token, idUser)
-      .then((res) => setName(res.data.user.username))
+    getUserInfo(user.token, id)
+      .then((res) => setUsername(res.data.user.username))
       .catch((err) => setListPosts(err.status));
-
-    getUserPosts(user.token, idUser)
+    getUserPosts(user.token, id)
       .then((res) => {
         setListPosts(res.data.posts);
       })
       .catch((err) => setListPosts(err.status));
-  }, [user, name, idUser]);
+  }, []);
 
-  <Container>
-    <PostContainer>
-      <h1>{name}'s posts</h1>
-      {renderPostsOrNot(listPosts)}
-    </PostContainer>
-  </Container>;
+  return (
+    <Container>
+      <PostContainer>
+        <h1>{username}'s posts</h1>
+        {renderPostsOrNot(listPosts)}
+      </PostContainer>
+    </Container>
+  );
 }
