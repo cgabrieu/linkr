@@ -9,11 +9,9 @@ import UserContext from "../../../contexts/UserContext";
 import { getListPosts } from "../../../services/api"
 
 export default function Timeline() {
-
     const [listPosts, setListPosts] = useState(null);
-
+    const [renderTimeline, setRenderTimeline] = useState(false);
     const { user } = useContext(UserContext);
-
 
     useEffect(() => {
         getListPosts(user.token)
@@ -22,7 +20,8 @@ export default function Timeline() {
                 console.log(res.data);
             })
             .catch(err => setListPosts(err.status));
-    }, []);
+        return () => setRenderTimeline(false);
+    }, [renderTimeline]);
     
     const renderPostsOrNot = () => {
         if (listPosts === null) return <LoadingSection />
@@ -41,7 +40,7 @@ export default function Timeline() {
         <Container>
             <PostContainer>
                 <h1>timeline</h1>
-                <CreatePost />
+                <CreatePost setRenderTimeline={setRenderTimeline} />
                 {renderPostsOrNot()}
             </PostContainer>
         </Container>

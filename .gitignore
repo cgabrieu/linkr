@@ -23,3 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 a.txt
+
+package-lock.json
+yarn.lock
