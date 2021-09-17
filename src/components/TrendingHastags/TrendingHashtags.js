@@ -12,9 +12,8 @@ export default function TrendingHashtags() {
 
   useEffect(() => {
     let active = true;
-    getTrendings({ headers: { Authorization: "Bearer " + user.token } })
+    getTrendings(user.token)
       .then((res) => {
-        console.log(res);
         return active ? sortHashtags(res.data.hashtags) : null;
       })
       .catch((err) => console.log(err.response));
@@ -47,7 +46,7 @@ export default function TrendingHashtags() {
 const FixedContainer = styled.div`
   position: fixed;
   top: 125px;
-  left: calc((100% + 300px) / 2);
+  left: calc((100% + 345px) / 2);
 
   width: 300px;
   border-radius: 16px;

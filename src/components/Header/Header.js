@@ -8,7 +8,7 @@ import UserContext from '../../contexts/UserContext';
 export default function Header() {
     const { isExpandableMenuOpen, setIsExpandableMenuOpen } = useContext(ExpandableMenuContext);
     const { user } = useContext(UserContext);
-    const avatar = user.user.avatar;
+    const avatar = user.avatar;
 
     function cleanUserInfo(e) {
         localStorage.clear();
