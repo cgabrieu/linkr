@@ -2,30 +2,53 @@ import styled from "styled-components";
 import { useHistory, Link } from "react-router-dom";
 import { UserContainer, UserPic } from "../styles/styles";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import React, { useState } from "react";
-import ReactHashtag from "react-hashtag";
+import React, { useState, useContext } from "react";
+import UserContext from "../contexts/UserContext";
+import ReactHashtag from 'react-hashtag';
 import ContainerLinkPreview from "./ContainerLinkPreview";
+import { postLike, postDislike } from "../services/api";
 
-export default function Post({ user, likes, content }) {
+export default function Post({ user: userPost, likes, content }) {
 
     const history = useHistory();
+    const {user} = useContext(UserContext);
     const [isLiked, setIsLiked] = useState(false);
+
+    function likePost(){
+        setIsLiked(true);
+        postLike(user.token, userPost.id).then(console.log(likes[0]));
+    }
+  
+    function dislikePost(){
+        setIsLiked(false);
+        postDislike(user.token, userPost.id).then(console.log(likes[0]));
+    }
+
+    function showWhoLiked(){
+        if(likes.length === 0){
+            return('Ninguém curtiu ainda :(');
+        }
+
+        if(isLiked === false && likes.length === 2){
+            return(`${likes} curtiu`)
+        }
+    }
 
     return (
         <PostContainer>
             <UserContainer>
-                <UserPic onClick={() => history.push(`/user/${user.username}`)} src={user.avatar} alt="{user.name}" />
+                <UserPic onClick={() => history.push(`/user/${userPost.username}`)} src={userPost.avatar} alt="{userPost.name}" />
                 {isLiked
-                    ? <LikeButtonClicked onClick={() => setIsLiked(false)} />
-                    : <LikeButton onClick={() => setIsLiked(true)} />}
+                    ? <LikeButtonClicked onClick={dislikePost} />
+                    : <LikeButton onClick={likePost} />}
                 <LikesInfo
-                    data-tooltip="Ninguém comentou nada ainda no objeto, fazer depois :)"
+                    data-tooltip={showWhoLiked()}
                     data-flow="bottom">
                     {likes.length + ((likes.length === 1) ? " like" : " likes")}
                 </LikesInfo>
             </UserContainer>
             <MainPostContainer>
-                <UserName>{user.username}</UserName>
+                <UserName>{userPost.username}</UserName>
                 <PostDescription>
                     <Hashtags>{content.text}</Hashtags>
                 </PostDescription>

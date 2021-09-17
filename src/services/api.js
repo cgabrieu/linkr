@@ -51,4 +51,12 @@ function getUserPosts(token, userId) {
   return axios.get(`${BASE_URL}/users/${userId}/posts`, getConfig(token));
 }
 
-export { SignUp, LogIn, getTrendings, getListPosts, postPublish, getUserPosts };
+function postLike(token, postId){
+  return axios.post(`${BASE_URL}/posts/${postId}/like`, '', getConfig(token))
+}
+
+function postDislike(token, postId){
+  return axios.post(`${BASE_URL}/posts/${postId}/dislike`, '', getConfig(token))
+}
+
+export { SignUp, LogIn, getTrendings, getListPosts, postPublish, getUserPosts, postLike, postDislike };
