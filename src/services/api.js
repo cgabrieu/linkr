@@ -55,25 +55,21 @@ function getUserPosts(token, userId) {
   return axios.get(`${BASE_URL}/users/${userId}/posts`, getConfig(token));
 }
 
-<<<<<<< HEAD
-=======
 function getHashtagPosts(token, hashtag) {
-  const promise = axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, getConfig(token));
+  const promise = axios.get(
+    `${BASE_URL}/hashtags/${hashtag}/posts`,
+    getConfig(token)
+  );
   return promise;
 }
 
->>>>>>> 38698a806f700a7bac1eb478d26bf48abf72c730
 export {
   SignUp,
   LogIn,
   getTrendings,
   getListPosts,
   postPublish,
-<<<<<<< HEAD
   getUserInfo,
   getUserPosts,
-=======
-  getUserPosts,
-  getHashtagPosts
->>>>>>> 38698a806f700a7bac1eb478d26bf48abf72c730
+  getHashtagPosts,
 };
