@@ -14,7 +14,7 @@ export default function CreatePost() {
         link: "",
         description: "",
     });
-        
+
     const handleChange = (e) => {
         setInputFields(
             { ...inputFields, [e.target.name]: e.target.value }
@@ -23,12 +23,13 @@ export default function CreatePost() {
 
     const postPublish = (e) => {
         e.preventDefault();
-        validateInputs();
+        if (validateInputs()) setIsLoading(true);
     }
 
     const validateInputs = () => {
         const linkField = inputFields.link;
         if (linkField.length === 0) setErrorMessage("O campo de link não pode ficar em branco.");
+        else return true;
     }
 
     return (
@@ -38,25 +39,29 @@ export default function CreatePost() {
             </UserContainerCreatePost>
             <form onSubmit={postPublish} onInvalid={() => setErrorMessage("Digite um link válido.")}>
                 <p>O que você tem para favoritar hoje?</p>
-                <input 
+                <input
                     type="url"
                     name="link"
                     value={inputFields.link}
                     onChange={handleChange}
                     placeholder="http://..."
+                    disabled={isLoading}
                 />
-                <textarea 
+                <textarea
                     placeholder="Muito irado esse link falando de #javascript"
                     name="description"
                     value={inputFields.description}
                     onChange={handleChange}
+                    disabled={isLoading}
                 />
                 <ContainerButton>
                     <p>{errorMessage}</p>
-                    <button 
+                    <button
                         disabled={isLoading}
                         type="submit"
-                    >Publicar</button>
+                    >
+                        {isLoading ? "Publicando..." : "Publicar" }
+                    </button>
                 </ContainerButton>
             </form>
         </CreatePostContainer>
@@ -112,6 +117,9 @@ const CreatePostContainer = styled.div`
             margin-bottom: 5px;
             padding-left: 13px;
             resize: none;
+            &:disabled {
+                opacity: 0.7;
+            }
             @media(max-width: 610px) {
                 font-size: 13px;
             }
