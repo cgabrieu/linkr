@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr";
 
-function getConfig (token) {
+function getConfig(token) {
   return ({
     headers: {
         "Authorization": `Bearer ${token}`
@@ -47,10 +47,15 @@ function postPublish(link, description, token) {
   return axios.post(`${BASE_URL}/posts`, body, getConfig(token));
 }
 
+function putEditUserPost(postId, token) {
+  return axios.put(`${BASE_URL}/posts/${postId}`, body, getConfig(token));
+}
+
 export { 
   SignUp, 
   LogIn,
   getTrendings,
   getListPosts,
   postPublish,
+  putEditUserPost,
 };
