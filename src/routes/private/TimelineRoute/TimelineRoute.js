@@ -18,7 +18,7 @@ export default function Timeline() {
         console.log(res.data);
       })
       .catch((err) => setListPosts(err.status));
-  }, []);
+  }, [user]);
 
   return (
     <Container>

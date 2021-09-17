@@ -39,8 +39,16 @@ function getTrendings(token) {
   return axios.get(`${BASE_URL}/hashtags/trending`, getConfig(token));
 }
 
+function postPublish(link, description, token) {
+  const body = {
+    text: description,
+    link: link,
+  };
+  return axios.post(`${BASE_URL}/posts`, body, getConfig(token));
+}
+
 function getUserPosts(token, userId) {
   return axios.get(`${BASE_URL}/users/${userId}/posts`, getConfig(token));
 }
 
-export { SignUp, LogIn, getTrendings, getListPosts, getUserPosts };
+export { SignUp, LogIn, getTrendings, getListPosts, postPublish, getUserPosts };

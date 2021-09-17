@@ -17,6 +17,7 @@ export default createGlobalStyle`
         border: none;
         outline: none;
         border-radius: 5px;
+        
     }
     button {
         background-color: #1877F2;
