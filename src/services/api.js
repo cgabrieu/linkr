@@ -62,5 +62,6 @@ export {
   getTrendings,
   getListPosts,
   postPublish,
+  getUserPosts,
   getHashtagPosts
 };
