@@ -19,7 +19,7 @@ export default function Timeline() {
       })
       .catch((err) => setListPosts(err.status));
     return () => setRenderTimeline(false);
-  }, []);
+  }, [renderTimeline]);
 
   return (
     <Container>

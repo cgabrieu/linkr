@@ -58,12 +58,18 @@ function getUserPosts(token, userId) {
   return axios.get(`${BASE_URL}/users/${userId}/posts`, getConfig(token));
 }
 
-export { 
-  SignUp, 
+function getHashtagPosts(token, hashtag) {
+  const promise = axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, getConfig(token));
+  return promise;
+}
+
+export {
+  SignUp,
   LogIn,
   getTrendings,
   getListPosts,
   postPublish,
   putEditUserPost,
   getUserPosts,
+  getHashtagPosts,
 };
