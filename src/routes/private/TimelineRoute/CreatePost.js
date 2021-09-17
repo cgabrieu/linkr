@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { UserContainer, UserPic } from "../../../styles/styles";
 import React, { useContext, useState } from "react";
 import UserContext from "../../../contexts/UserContext";
+import { postPublish } from "../../../services/api";
 
 
 export default function CreatePost() {
@@ -21,15 +22,28 @@ export default function CreatePost() {
         );
     }
 
-    const postPublish = (e) => {
+    const sendPublish = (e) => {
         e.preventDefault();
-        if (validateInputs()) setIsLoading(true);
+        if (!validateInputs()) return;
+        setIsLoading(true);
+        postPublish(inputFields.link, inputFields.description, user.token)
+            .then((res) => { 
+                console.log(res);
+                setIsLoading(false);
+            })
+            .catch(() => {
+                setErrorMessage("Houve um erro ao publicar seu link.");
+                setIsLoading(false);
+            });
     }
 
     const validateInputs = () => {
         const linkField = inputFields.link;
-        if (linkField.length === 0) setErrorMessage("O campo de link não pode ficar em branco.");
-        else return true;
+        if (linkField.length === 0) { 
+            setErrorMessage("O campo de link não pode ficar em branco.");
+            return;
+        }
+        return true;
     }
 
     return (
@@ -37,7 +51,7 @@ export default function CreatePost() {
             <UserContainerCreatePost>
                 <UserPic src={user.avatar} alt={user.username} />
             </UserContainerCreatePost>
-            <form onSubmit={postPublish} onInvalid={() => setErrorMessage("Digite um link válido.")}>
+            <form onSubmit={sendPublish} onInvalid={() => setErrorMessage("Digite um link válido.")}>
                 <p>O que você tem para favoritar hoje?</p>
                 <input
                     type="url"
