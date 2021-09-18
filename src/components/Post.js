@@ -8,7 +8,6 @@ import ReactHashtag from 'react-hashtag';
 import ContainerLinkPreview from "./ContainerLinkPreview";
 import { postLike, postDislike, getUserInfo } from "../services/api";
 import ReactTooltip from "react-tooltip";
-import { IoCarSportSharp } from "react-icons/io5";
 
 export default function Post({ idPost, userPost, likes, content }) {
 

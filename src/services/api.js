@@ -47,8 +47,8 @@ function postPublish(link, description, token) {
   return axios.post(`${BASE_URL}/posts`, body, getConfig(token));
 }
 
-function getUserPosts(token, userId) {
-  return axios.get(`${BASE_URL}/users/${userId}/posts`, getConfig(token));
+function getUserInfo(token, userId) {
+  return axios.get(`${BASE_URL}/users/${userId}`, getConfig(token));
 }
 
 function postLike(token, postId) {
@@ -59,13 +59,20 @@ function postDislike(token, postId) {
   return axios.post(`${BASE_URL}/posts/${postId}/dislike`, '', getConfig(token))
 }
 
-function getHashtagPosts(token, hashtag) {
-  const promise = axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, getConfig(token));
-  return promise;
-}
-
 function getUserInfo(token, userId) {
   return axios.get(`${BASE_URL}/users/${userId}`, getConfig(token));
+}
+
+function getUserPosts(token, userId) {
+  return axios.get(`${BASE_URL}/users/${userId}/posts`, getConfig(token));
+}
+
+function getHashtagPosts(token, hashtag) {
+  const promise = axios.get(
+    `${BASE_URL}/hashtags/${hashtag}/posts`,
+    getConfig(token)
+  );
+  return promise;
 }
 
 export {
@@ -80,3 +87,4 @@ export {
   postDislike,
   getUserInfo
 };
+
