@@ -39,6 +39,7 @@ export const Arrow = styled.img`
 export const Photo = styled.img`
     height: 53px;
     width: 53px;
+    object-fit: cover;
     border-radius: 50%;
     cursor: pointer;
 `
