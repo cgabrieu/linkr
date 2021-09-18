@@ -59,10 +59,6 @@ function postDislike(token, postId) {
   return axios.post(`${BASE_URL}/posts/${postId}/dislike`, '', getConfig(token))
 }
 
-function getUserInfo(token, userId) {
-  return axios.get(`${BASE_URL}/users/${userId}`, getConfig(token));
-}
-
 function getUserPosts(token, userId) {
   return axios.get(`${BASE_URL}/users/${userId}/posts`, getConfig(token));
 }
