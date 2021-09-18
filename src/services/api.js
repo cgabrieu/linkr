@@ -52,6 +52,7 @@ function putEditUserPost(postId, description, token) {
     text: description,
   };
   return axios.put(`${BASE_URL}/posts/${postId}`, body, getConfig(token));
+
 }
 
 function getUserPosts(token, userId) {
@@ -59,8 +60,15 @@ function getUserPosts(token, userId) {
 }
 
 function getHashtagPosts(token, hashtag) {
-  const promise = axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, getConfig(token));
+  const promise = axios.get(
+    `${BASE_URL}/hashtags/${hashtag}/posts`,
+    getConfig(token)
+  );
   return promise;
+}
+
+function getUserInfo(token, userId) {
+  return axios.get(`${BASE_URL}/users/${userId}`, getConfig(token));
 }
 
 export {
@@ -72,4 +80,5 @@ export {
   putEditUserPost,
   getUserPosts,
   getHashtagPosts,
+  getUserInfo,
 };
