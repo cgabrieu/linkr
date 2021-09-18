@@ -48,7 +48,7 @@ const Hashtags = ({ children }) => {
   if (children.indexOf("#") === -1) return children;
 
   const listWordsAndHashtags = children.match(/([#+A-z])\w+/g);
-  
+
   return (
     listWordsAndHashtags.map((e, index) => (
       e.startsWith('#')
@@ -59,7 +59,6 @@ const Hashtags = ({ children }) => {
     ))
   );
 };
-
 
 const HashtagLink = styled(Link)`
   font-weight: bold;
