@@ -25,7 +25,8 @@ export default function CreatePost({ setRenderTimeline }) {
         e.preventDefault();
         if (!validateInputs()) return;
         setIsLoading(true);
-        postPublish(inputFields.link, inputFields.description, user.token)
+        const { link, description } = inputFields;
+        postPublish(link, getHashtagsLowerCase(description), user.token)
             .then(() => { 
                 setIsLoading(false);
                 setInputFields({link: "", description: ""});
@@ -35,6 +36,14 @@ export default function CreatePost({ setRenderTimeline }) {
                 setErrorMessage("Houve um erro ao publicar seu link.");
                 setIsLoading(false);
             });
+    }
+
+    const getHashtagsLowerCase = (description) => {
+        const listHashtags = description.match(/\#\w\w+\s?/g);
+        listHashtags.forEach((e,index) => {
+            description = description.replace(e, listHashtags[index].toLowerCase());
+        });
+        return description;
     }
 
     const validateInputs = () => {

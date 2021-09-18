@@ -3,7 +3,6 @@ import { useHistory, Link } from "react-router-dom";
 import { UserContainer, UserPic } from "../styles/styles";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import React, { useState } from "react";
-import ReactHashtag from "react-hashtag";
 import ContainerLinkPreview from "./ContainerLinkPreview";
 
 export default function Post({ user, likes, content }) {
@@ -24,7 +23,7 @@ export default function Post({ user, likes, content }) {
           <LikeButton onClick={() => setIsLiked(true)} />
         )}
         <LikesInfo
-          data-tooltip="Ninguém comentou nada ainda no objeto, fazer depois :)"
+          data-tooltip={"Ninguém comentou nada ainda no objeto, fazer depois :)"}
           data-flow="bottom"
         >
           {likes.length + (likes.length === 1 ? " like" : " likes")}
@@ -33,7 +32,9 @@ export default function Post({ user, likes, content }) {
       <MainPostContainer>
         <UserName>{user.username}</UserName>
         <PostDescription>
-          <Hashtags>{content.text}</Hashtags>
+          <Hashtags>
+            {content.text}
+          </Hashtags>
         </PostDescription>
         <Link to={{ pathname: content.link }} target="_blank">
           <ContainerLinkPreview content={content} />
@@ -42,6 +43,28 @@ export default function Post({ user, likes, content }) {
     </PostContainer>
   );
 }
+
+const Hashtags = ({ children }) => {
+  if (children.indexOf("#") === -1) return children;
+
+  const listWordsAndHashtags = children.match(/([#+A-z])\w+/g);
+  
+  return (
+    listWordsAndHashtags.map((e, index) => (
+      e.startsWith('#')
+        ? <HashtagLink key={index} to={"/hashtag/" + e.replace("#", "")}>
+          {e + " "}
+        </HashtagLink>
+        : (e + " ")
+    ))
+  );
+};
+
+
+const HashtagLink = styled(Link)`
+  font-weight: bold;
+  color: #FFFFFF;
+`;
 
 const PostContainer = styled.div`
   width: 100h;
@@ -98,23 +121,3 @@ const LikesInfo = styled.span`
   font-size: 11px;
   margin: 4px;
 `;
-
-const StyledHashtag = styled.a`
-  color: #ffffff;
-  font-weight: bold;
-  cursor: pointer;
-`;
-
-const Hashtags = ({ children }) => (
-  <ReactHashtag
-    renderHashtag={(hashtagValue) => (
-      <StyledHashtag>
-        <Link to={"/hashtag/" + hashtagValue.replace("#", "")}>
-          {hashtagValue}
-        </Link>
-      </StyledHashtag>
-    )}
-  >
-    {children}
-  </ReactHashtag>
-);
