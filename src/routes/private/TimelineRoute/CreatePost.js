@@ -26,9 +26,9 @@ export default function CreatePost({ setRenderTimeline }) {
         if (!validateInputs()) return;
         setIsLoading(true);
         postPublish(inputFields.link, inputFields.description, user.token)
-            .then(() => { 
+            .then(() => {
                 setIsLoading(false);
-                setInputFields({link: "", description: ""});
+                setInputFields({ link: "", description: "" });
                 setRenderTimeline(true);
             })
             .catch(() => {
@@ -39,7 +39,7 @@ export default function CreatePost({ setRenderTimeline }) {
 
     const validateInputs = () => {
         const linkField = inputFields.link;
-        if (linkField.length === 0) { 
+        if (linkField.length === 0) {
             setErrorMessage("O campo de link não pode ficar em branco.");
             return;
         }
@@ -74,7 +74,7 @@ export default function CreatePost({ setRenderTimeline }) {
                         disabled={isLoading}
                         type="submit"
                     >
-                        {isLoading ? "Publicando..." : "Publicar" }
+                        {isLoading ? "Publicando..." : "Publicar"}
                     </button>
                 </ContainerButton>
             </form>

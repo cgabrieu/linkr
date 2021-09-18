@@ -51,12 +51,32 @@ function getUserPosts(token, userId) {
   return axios.get(`${BASE_URL}/users/${userId}/posts`, getConfig(token));
 }
 
-function postLike(token, postId){
+function postLike(token, postId) {
   return axios.post(`${BASE_URL}/posts/${postId}/like`, '', getConfig(token))
 }
 
-function postDislike(token, postId){
+function postDislike(token, postId) {
   return axios.post(`${BASE_URL}/posts/${postId}/dislike`, '', getConfig(token))
 }
 
-export { SignUp, LogIn, getTrendings, getListPosts, postPublish, getUserPosts, postLike, postDislike };
+function getHashtagPosts(token, hashtag) {
+  const promise = axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, getConfig(token));
+  return promise;
+}
+
+function getUserInfo(token, userId) {
+  return axios.get(`${BASE_URL}/users/${userId}`, getConfig(token));
+}
+
+export {
+  SignUp,
+  LogIn,
+  getTrendings,
+  getListPosts,
+  postPublish,
+  getUserPosts,
+  getHashtagPosts, 
+  postLike, 
+  postDislike,
+  getUserInfo
+};
