@@ -42,11 +42,6 @@ function App() {
                   component={TimelineRoute}
                 />
                 <PrivateRoute exact path="/user/:id" component={UserPosts} />
-                <PrivateRoute
-                  exact
-                  path="/hashtag/:hashtag"
-                  component={HashtagRoute}
-                />
                 <PrivateRoute exact path='/hashtag/:hashtag' component={HashtagRoute} />
                 <PrivateRoute exact path="/my-posts" component={MyPostsRoute} />
                 <Redirect to="/" />
