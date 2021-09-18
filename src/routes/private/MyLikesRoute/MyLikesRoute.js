@@ -1,11 +1,9 @@
 import "../../../styles/tooltip.css";
-import Post from "../../../components/Post";
 import { Container, PostContainer } from "../../../styles/styles";
-import LoadingSection from "../../../components/LoadingSection";
-import NotFound from "../../../components/NotFound";
 import UserContext from "../../../contexts/UserContext";
 import { useContext, useEffect, useState } from "react";
 import { getPostsUserLiked } from "../../../services/api";
+import { renderPostsOrNot } from "../../../services/utils";
 
 export default function MyLikesRoute() {
 
@@ -20,24 +18,11 @@ export default function MyLikesRoute() {
       .catch(err => setPosts(err.status));
   }, []);
 
-  const renderPostsOrNot = () => {
-    if (posts === null) return <LoadingSection />
-    else if (posts.length > 0) {
-      return (
-        posts.map((e) => <Post key={e.id} user={e.user} likes={e.likes} content={e} />)
-      );
-    }
-    else if (posts.length === 0) {
-      return <NotFound typeError={"Nenhum post encontrado."} />;
-    }
-    return <NotFound typeError={posts + " - Houve uma falha ao obter os post, por favor atualize a página."} />;
-  }
-
   return (
     <Container>
       <PostContainer>
         <h1>{user.username}</h1>
-        {renderPostsOrNot()}
+        {renderPostsOrNot(posts)}
       </PostContainer>
     </Container>
   );

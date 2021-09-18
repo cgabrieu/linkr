@@ -29,7 +29,7 @@ export default function HashtagRoute() {
     if (posts === null) return <LoadingSection />
     else if (posts.length > 0) {
       return (
-        posts.map((e) => <Post key={e.id} user={e.user} likes={e.likes} content={e} />)
+        posts.map((e) => <Post key={e.id} idPost={e.id} userPost={e.user} likes={e.likes} content={e} />)
       );
     }
     else if (posts.length === 0) {
