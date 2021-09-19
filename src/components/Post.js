@@ -32,7 +32,9 @@ export default function Post({ user, likes, content }) {
       <MainPostContainer>
         <UserName>{user.username}</UserName>
         <PostDescription>
-          {content.text}
+          <Hashtags>
+            {content.text}
+          </Hashtags>
         </PostDescription>
         <Link to={{ pathname: content.link }} target="_blank">
           <ContainerLinkPreview content={content} />
@@ -42,6 +44,25 @@ export default function Post({ user, likes, content }) {
   );
 }
 
+const Hashtags = ({ children }) => {
+  if (children.indexOf("#") === -1) return children;
+  const listWordsAndHashtags = children.match(/(?:^|[ #])([^ #]+)/g);
+
+  return (
+    listWordsAndHashtags.map((word, index) => (
+      word.startsWith('#')
+        ? <HashtagLink key={index} to={"/hashtag/" + word.replace("#", "")}>
+          {word + " "}
+        </HashtagLink>
+        : (word + " ")
+    ))
+  );
+};
+
+const HashtagLink = styled(Link)`
+  font-weight: bold;
+  color: #FFFFFF;
+`;
 
 const PostContainer = styled.div`
   width: 100h;
@@ -97,10 +118,4 @@ const UserName = styled.p`
 const LikesInfo = styled.span`
   font-size: 11px;
   margin: 4px;
-`;
-
-const StyledHashtag = styled.a`
-  color: #ffffff;
-  font-weight: bold;
-  cursor: pointer;
 `;
