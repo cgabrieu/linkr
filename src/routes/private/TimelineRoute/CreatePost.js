@@ -39,7 +39,7 @@ export default function CreatePost({ setRenderTimeline }) {
     }
 
     const getHashtagsLowerCase = (description) => {
-        const listHashtags = description.match(/\#\w\w+\s?/g);
+        const listHashtags = description.match(/(#[+A-z\u00C0-\u017FA0-9]*)/g);
         listHashtags.forEach((e,index) => {
             description = description.replace(e, listHashtags[index].toLowerCase());
         });
