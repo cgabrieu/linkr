@@ -47,7 +47,7 @@ export default function Post({ user, likes, content }) {
 const Hashtags = ({ children }) => {
   if (children.indexOf("#") === -1) return children;
 
-  const listWordsAndHashtags = children.match(/([#+A-z\u00C0-\u017FA0-9]*)/g);
+  const listWordsAndHashtags = children.match(/([#+A-z\u00C0-\u017FA0-9ṔṕḰḱ]*)/g);
   
   return (
     listWordsAndHashtags.map((e, index) => (

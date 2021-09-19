@@ -31,6 +31,7 @@ export default function CreatePost({ setRenderTimeline }) {
                 setIsLoading(false);
                 setInputFields({link: "", description: ""});
                 setRenderTimeline(true);
+                setErrorMessage("");
             })
             .catch(() => {
                 setErrorMessage("Houve um erro ao publicar seu link.");
@@ -39,7 +40,7 @@ export default function CreatePost({ setRenderTimeline }) {
     }
 
     const getHashtagsLowerCase = (description) => {
-        const listHashtags = description.match(/(#[+A-z\u00C0-\u017FA0-9]*)/g);
+        const listHashtags = description.match(/([#|＃][^\s]+)/g);
         listHashtags.forEach((e,index) => {
             description = description.replace(e, listHashtags[index].toLowerCase());
         });
