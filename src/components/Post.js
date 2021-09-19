@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import { useHistory, Link } from "react-router-dom";
 import { UserContainer, UserPic } from "../styles/styles";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart, GrEdit } from "react-icons/ai";
 import React, { useState } from "react";
 import ContainerLinkPreview from "./ContainerLinkPreview";
 
 export default function Post({ user, likes, content }) {
   const history = useHistory();
   const [isLiked, setIsLiked] = useState(false);
+  const [isEditText, setIsEditText] = useState("");
 
   return (
     <PostContainer>
@@ -30,12 +31,19 @@ export default function Post({ user, likes, content }) {
         </LikesInfo>
       </UserContainer>
       <MainPostContainer>
-        <UserName>{user.username}</UserName>
-        <PostDescription>
-          <Hashtags>
-            {content.text}
-          </Hashtags>
-        </PostDescription>
+        <div>
+          <UserName>{user.username}</UserName>
+          <div>
+            <GrEdit />
+          </div>
+        </div>
+        {isEditText === "" ?
+          <PostDescription>
+            <Hashtags>
+              {content.text}
+            </Hashtags>
+          </PostDescription>
+          : <InputPostDescription value={content.text} />}
         <Link to={{ pathname: content.link }} target="_blank">
           <ContainerLinkPreview content={content} />
         </Link>
@@ -100,6 +108,18 @@ const MainPostContainer = styled.div`
 `;
 
 const PostDescription = styled.div`
+  color: #b7b7b7;
+  font-size: 17px;
+  margin: 7px 0 10px 0;
+  word-wrap: break-word;
+  max-width: 100%;
+  @media (max-width: 610px) {
+    font-size: 15px;
+    width: 288px;
+  }
+`;
+
+const InputPostDescription = styled.input`
   color: #b7b7b7;
   font-size: 17px;
   margin: 7px 0 10px 0;
