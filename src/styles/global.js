@@ -18,12 +18,12 @@ export default createGlobalStyle`
         outline: none;
         border-radius: 5px;
         font-family: 'Lato', sans-serif;
+        &:disabled {
+            opacity: 0.7;
+        }
     }
     button {
         background-color: #1877F2;
         cursor: pointer;
-        &:disabled {
-            opacity: 0.7;
-        }
     }
 `;

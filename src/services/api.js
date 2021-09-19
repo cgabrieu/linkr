@@ -47,14 +47,6 @@ function postPublish(link, description, token) {
   return axios.post(`${BASE_URL}/posts`, body, getConfig(token));
 }
 
-function putEditUserPost(postId, description, token) {
-  const body = {
-    text: description,
-  };
-  return axios.put(`${BASE_URL}/posts/${postId}`, body, getConfig(token));
-
-}
-
 function postLike(token, postId) {
   return axios.post(`${BASE_URL}/posts/${postId}/like`, '', getConfig(token))
 }
@@ -79,6 +71,13 @@ function getUserInfo(token, userId) {
   return axios.get(`${BASE_URL}/users/${userId}`, getConfig(token));
 }
 
+function putEditUserPost(postId, description, token) {
+  const body = {
+    text: description,
+  };
+  return axios.put(`${BASE_URL}/posts/${postId}`, body, getConfig(token));
+}
+
 export {
   SignUp,
   LogIn,
@@ -89,6 +88,7 @@ export {
   getHashtagPosts, 
   postLike, 
   postDislike,
-  getUserInfo
+  getUserInfo,
+  putEditUserPost
 };
 

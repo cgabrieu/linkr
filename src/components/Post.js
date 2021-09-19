@@ -7,7 +7,7 @@ import {ReactComponent as DeleteIcon} from "../assets/trash.svg";
 import React, { useState, useContext, useEffect, useRef } from "react";
 import UserContext from "../contexts/UserContext";
 import ContainerLinkPreview from "./ContainerLinkPreview";
-import { postLike, postDislike, getUserInfo } from "../services/api";
+import { postLike, postDislike, getUserInfo, putEditUserPost } from "../services/api";
 import ReactTooltip from "react-tooltip";
 import { Hashtags } from "../services/utils";
 
@@ -17,6 +17,7 @@ export default function Post({ idPost, userPost, likes, content }) {
   
   const [isEditing, setIsEditing] = useState(false);
   const [textareaDescription, setTextareaDescription] = useState(content.text);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { username, avatar } = userPost;
   const { user } = useContext(UserContext);
@@ -160,8 +161,26 @@ export default function Post({ idPost, userPost, likes, content }) {
           </PostDescription>
           : <TextAreaPostDescription 
               value={textareaDescription}
-              onChange={(e) => setTextareaDescription(e.value)}
-              onKeyDown={(e) => (e.key === 'Escape') && setIsEditing(false)}
+              disabled={isLoading}
+              onChange={(e) => {
+                setTextareaDescription(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') setIsEditing(false);
+                else if (e.key === 'Enter') {
+                  setIsLoading(true);
+                  putEditUserPost(idPost, textareaDescription, user.token)
+                    .then(res => {
+                      console.log(res.data);
+                      setIsEditing(false);
+                      setIsLoading(false);
+                    })
+                    .catch(() => {
+                      setIsLoading(true);
+                      alert("Ocorreu um erro ao editar seu post.")
+                    });
+                }
+              }}
               ref={editFieldRef}
             />}
         <Link to={{ pathname: content.link }} target="_blank">
