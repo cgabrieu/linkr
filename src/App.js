@@ -16,7 +16,8 @@ import LogInRoute from "./routes/public/LoginRoute/LoginRoute";
 import PrivateRoute from "./routes/PrivateRoute";
 import UserPosts from "./routes/private/UserPostsRoute/UserPosts";
 import MyPostsRoute from "./routes/private/MyPostsRoute/MyPostsRoute";
-import HashtagRoute from "./routes/private/HashtagRoute/HashtagRoute";
+import HashtagRoute from './routes/private/HashtagRoute/HashtagRoute';
+
 
 function App() {
   const [user, setUser] = useState("");
