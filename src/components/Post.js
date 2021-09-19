@@ -109,7 +109,7 @@ export default function Post({ idPost, userPost, likes, content }) {
   return (
     <PostContainer>
       <UserContainer>
-        <UserPic onClick={() => history.push(`/ user / ${username} `)} src={avatar} alt="{username}" />
+        <UserPic onClick={() => history.push(`/user/${userPost.id}`)} src={avatar} alt={username} />
         {isLiked
           ? <LikeButtonClicked onClick={dislikePost} />
           : <LikeButton onClick={likePost} />}

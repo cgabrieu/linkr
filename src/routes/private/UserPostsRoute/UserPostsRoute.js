@@ -5,7 +5,7 @@ import { getUserInfo, getUserPosts } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
 import { Container, PostContainer } from "../../../styles/styles";
 
-export default function UserPosts() {
+export default function UserPostsRoute() {
   const [listPosts, setListPosts] = useState(null);
   const [username, setUsername] = useState("");
 
