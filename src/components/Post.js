@@ -2,12 +2,14 @@ import styled from "styled-components";
 import { useHistory, Link } from "react-router-dom";
 import { UserContainer, UserPic } from "../styles/styles";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { Hashtags } from "../services/utils";
 import React, { useState } from "react";
 import ContainerLinkPreview from "./ContainerLinkPreview";
 
 export default function Post({ user, likes, content }) {
   const history = useHistory();
   const [isLiked, setIsLiked] = useState(false);
+  const [isEditText, setIsEditText] = useState("");
 
   return (
     <PostContainer>
@@ -31,11 +33,13 @@ export default function Post({ user, likes, content }) {
       </UserContainer>
       <MainPostContainer>
         <UserName>{user.username}</UserName>
-        <PostDescription>
-          <Hashtags>
-            {content.text}
-          </Hashtags>
-        </PostDescription>
+        {isEditText === "" ?
+          <PostDescription>
+            <Hashtags>
+              {content.text}
+            </Hashtags>
+          </PostDescription>
+          : <InputPostDescription value={content.text} />}
         <Link to={{ pathname: content.link }} target="_blank">
           <ContainerLinkPreview content={content} />
         </Link>
@@ -44,29 +48,8 @@ export default function Post({ user, likes, content }) {
   );
 }
 
-const Hashtags = ({ children }) => {
-  if (children.indexOf("#") === -1) return children;
-  const listWordsAndHashtags = children.match(/(?:^|[ #])([^ #]+)/g);
-
-  return (
-    listWordsAndHashtags.map((word, index) => (
-      word.startsWith('#')
-        ? <HashtagLink key={index} to={"/hashtag/" + word.replace("#", "")}>
-          {word + " "}
-        </HashtagLink>
-        : (word + " ")
-    ))
-  );
-};
-
-
-const HashtagLink = styled(Link)`
-  font-weight: bold;
-  color: #FFFFFF;
-`;
-
 const PostContainer = styled.div`
-  width: 100h;
+  width: 100%;
   background-color: #171717;
   border-radius: 16px;
   padding: 18px 20px 20px 18px;
@@ -101,6 +84,18 @@ const MainPostContainer = styled.div`
 `;
 
 const PostDescription = styled.div`
+  color: #b7b7b7;
+  font-size: 17px;
+  margin: 7px 0 10px 0;
+  word-wrap: break-word;
+  max-width: 100%;
+  @media (max-width: 610px) {
+    font-size: 15px;
+    width: 288px;
+  }
+`;
+
+const InputPostDescription = styled.input`
   color: #b7b7b7;
   font-size: 17px;
   margin: 7px 0 10px 0;

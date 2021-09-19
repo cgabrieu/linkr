@@ -1,6 +1,7 @@
 import LoadingSection from "../components/LoadingSection";
 import NotFound from "../components/NotFound";
 import Post from "../components/Post";
+import { HashtagLink } from "../styles/styles"
 
 const renderPostsOrNot = (listPosts) => {
   if (listPosts === null) return <LoadingSection />;
@@ -21,4 +22,21 @@ const renderPostsOrNot = (listPosts) => {
   );
 };
 
-export { renderPostsOrNot };
+const Hashtags = ({ children }) => {
+  if (children.indexOf("#") === -1) return children;
+  const listWordsAndHashtags = children.match(/(?:^|[ #])([^ #]+)/g);
+
+  return (
+    listWordsAndHashtags.map((word, index) => (
+      word.startsWith('#')
+        ? <HashtagLink key={index} to={"/hashtag/" + word.replace("#", "")}>
+          {word + " "}
+        </HashtagLink>
+        : (word + " ")
+    ))
+  );
+};
+
+
+
+export { renderPostsOrNot, Hashtags };

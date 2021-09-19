@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
     margin: 125px auto 25px auto;
@@ -39,9 +40,15 @@ const PostContainer = styled.div`
     }
 `;
 
+const HashtagLink = styled(Link)`
+  font-weight: bold;
+  color: #FFFFFF;
+`;
+
 export {
     Container,
     UserContainer,
     UserPic,
     PostContainer,
+    HashtagLink
 };
