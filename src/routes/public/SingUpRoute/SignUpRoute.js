@@ -32,14 +32,12 @@ function SignUpRoute() {
     SignUp(body)
       .then(response => {
         setIsLoading(false);
-        console.log(response)
         if (response.status === 200) {
           history.push("/");
         }
       })
       .catch(err => {
         setIsLoading(false);
-        console.log(err.response);
         if (err.response.status === 403) return alert("Endereço de email já cadastrado!")
       });
   }
