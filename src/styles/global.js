@@ -17,7 +17,7 @@ export default createGlobalStyle`
         border: none;
         outline: none;
         border-radius: 5px;
-        
+        font-family: 'Lato', sans-serif;
     }
     button {
         background-color: #1877F2;

@@ -2,7 +2,9 @@ import styled from "styled-components";
 import { useHistory, Link } from "react-router-dom";
 import { UserContainer, UserPic } from "../styles/styles";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import React, { useState, useContext, useEffect } from "react";
+import {ReactComponent as EditIcon} from "../assets/pencil.svg";
+import {ReactComponent as DeleteIcon} from "../assets/trash.svg";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import UserContext from "../contexts/UserContext";
 import ContainerLinkPreview from "./ContainerLinkPreview";
 import { postLike, postDislike, getUserInfo } from "../services/api";
@@ -13,7 +15,8 @@ export default function Post({ idPost, userPost, likes, content }) {
 
   const history = useHistory();
   
-  const [isEditText, setIsEditText] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [textareaDescription, setTextareaDescription] = useState(content.text);
 
   const { username, avatar } = userPost;
   const { user } = useContext(UserContext);
@@ -107,7 +110,17 @@ export default function Post({ idPost, userPost, likes, content }) {
     }
   }
 
-  useEffect(() => whoLiked(), [])
+  const editFieldRef = useRef();
+
+  useEffect(() => whoLiked(), []);
+
+  useEffect(() =>  {
+    if (isEditing) {
+      editFieldRef.current.focus();
+      editFieldRef.current.selectionStart = editFieldRef.current.value.length;
+      editFieldRef.current.selectionEnd = editFieldRef.current.value.length;
+    }
+  }, [isEditing]);
 
   return (
     <PostContainer>
@@ -127,17 +140,27 @@ export default function Post({ idPost, userPost, likes, content }) {
         </ReactTooltip>
       </UserContainer>
       <MainPostContainer>
-        <div>
-          <UserName>{user.username}</UserName>
-          
-        </div>
-        {isEditText === "" ?
+        <TopContainer>
+          <UserName>{userPost.username}</UserName>
+          {(userPost.id === user.id) &&
+          <IconsContainer>
+            <EditIcon onClick={() => { 
+              setIsEditing(!isEditing);
+            }} />
+            <DeleteIcon />
+          </IconsContainer>}
+        </TopContainer>
+        {!isEditing ?
           <PostDescription>
             <Hashtags>
               {content.text}
             </Hashtags>
           </PostDescription>
-          : <InputPostDescription value={content.text} />}
+          : <TextAreaPostDescription 
+              value={textareaDescription}
+              onChange={(e) => setTextareaDescription(e.value)}
+              ref={editFieldRef}
+            />}
         <Link to={{ pathname: content.link }} target="_blank">
           <ContainerLinkPreview content={content} />
         </Link>
@@ -156,6 +179,18 @@ const PostContainer = styled.div`
   @media(max-width: 610px) {
     border-radius: 0;
   }
+`;
+
+const TopContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const IconsContainer = styled.div`
+  svg {
+    margin-left: 13px;
+  }
+  cursor: pointer;
 `;
 
 const LikeButton = styled(AiOutlineHeart)`
@@ -193,15 +228,15 @@ const PostDescription = styled.div`
   }
 `;
 
-const InputPostDescription = styled.input`
-  color: #b7b7b7;
-  font-size: 17px;
-  margin: 7px 0 10px 0;
-  word-wrap: break-word;
-  max-width: 100%;
+const TextAreaPostDescription = styled.textarea`
+  color: #4C4C4C;
+  width: 100%;
+  padding: 7px;
+  margin: 5px 0;
+  font-size: 16px;
+  resize: none;
   @media (max-width: 610px) {
-    font-size: 15px;
-    width: 288px;
+    font-size: 13px;
   }
 `;
 
