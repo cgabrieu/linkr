@@ -46,16 +46,15 @@ export default function Post({ user, likes, content }) {
 
 const Hashtags = ({ children }) => {
   if (children.indexOf("#") === -1) return children;
+  const listWordsAndHashtags = children.match(/(?:^|[ #])([^ #]+)/g);
 
-  const listWordsAndHashtags = children.match(/([#+A-z\u00C0-\u017FA0-9ṔṕḰḱ]*)/g);
-  
   return (
-    listWordsAndHashtags.map((e, index) => (
-      e.startsWith('#')
-        ? <HashtagLink key={index} to={"/hashtag/" + e.replace("#", "")}>
-          {e + " "}
+    listWordsAndHashtags.map((word, index) => (
+      word.startsWith('#')
+        ? <HashtagLink key={index} to={"/hashtag/" + word.replace("#", "")}>
+          {word + " "}
         </HashtagLink>
-        : (e + " ")
+        : (word + " ")
     ))
   );
 };
