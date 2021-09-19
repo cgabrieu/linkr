@@ -1,13 +1,18 @@
 import styled from "styled-components";
 import { useHistory, Link } from "react-router-dom";
 import { UserContainer, UserPic } from "../styles/styles";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart, AiFillWindows } from "react-icons/ai";
 import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../contexts/UserContext";
 import ReactHashtag from 'react-hashtag';
 import ContainerLinkPreview from "./ContainerLinkPreview";
-import { postLike, postDislike, getUserInfo } from "../services/api";
+import { postLike, postDislike, getUserInfo, deletePost } from "../services/api";
 import ReactTooltip from "react-tooltip";
+import Edit from '../assets/Edit.svg';
+import TrashCan from '../assets/TrashCan.svg';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 export default function Post({ idPost, userPost, likes, content }) {
 
@@ -20,6 +25,9 @@ export default function Post({ idPost, userPost, likes, content }) {
     const [listWhoLiked, setListWhoLiked] = useState(listAux);
     let messageAux = 'Ninguém curtiu ainda :(';
     const [likedMessage, setLikedMessage] = useState(messageAux);
+    const [isMyPost, setIsMyPost] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     function likePost() {
         isLikedAux = true;
@@ -104,7 +112,33 @@ export default function Post({ idPost, userPost, likes, content }) {
         }
     }
 
-    useEffect(() => whoLiked(), [])
+    function whosPostIsThis() {
+        if (user.id === userPost.id) {
+            setIsMyPost(true);
+        }
+    }
+
+    function callModal() {
+        toggleModal();
+    }
+
+    function toggleModal() {
+        setIsModalOpen(!isModalOpen)
+    }
+
+    function deleteThisPost() {
+        setIsLoading(true);
+        deletePost(user.token, idPost).then(() => {
+            setIsLoading(false);
+            toggleModal();
+            window.location.reload();
+        }).catch(alert('Não foi possível excluir o post'));
+    }
+
+    useEffect(() => {
+        whoLiked()
+        whosPostIsThis()
+    }, [])
 
     return (
         <PostContainer>
@@ -124,10 +158,31 @@ export default function Post({ idPost, userPost, likes, content }) {
                 </ReactTooltip>
             </UserContainer>
             <MainPostContainer>
-                <UserName>{username}</UserName>
-                <PostDescription>
-                    <Hashtags>{content.text}</Hashtags>
-                </PostDescription>
+                <TopPost>
+                    <div>
+                        <UserName>{username}</UserName>
+                        <PostDescription>
+                            <Hashtags>{content.text}</Hashtags>
+                        </PostDescription>
+                    </div>
+                    <MyPostIcons isMyPost={isMyPost}>
+                        <img onClick={callModal} src={TrashCan} alt='Delete icon' />
+                        <img src={Edit} alt='Edit icon' />
+                    </MyPostIcons>
+                    <Modal
+                        isOpen={isModalOpen}
+                        onRequestClose={toggleModal}
+                        style={modalStyles}
+                    >
+                        <ModalContent>
+                            <ModalQuestion>Tem certeza que quer excluir esta publicação?</ModalQuestion>
+                            <ContainerButtonsModal>
+                                <ButtonCancel disabled={isLoading} onClick={toggleModal}><p>Não, voltar</p></ButtonCancel>
+                                <ButtonDelete disabled={isLoading} onClick={deleteThisPost}><p>Sim, apagar</p></ButtonDelete>
+                            </ContainerButtonsModal>
+                        </ModalContent>
+                    </Modal>
+                </TopPost>
                 <Link to={{ pathname: content.link }} target="_blank">
                     <ContainerLinkPreview content={content} />
                 </Link>
@@ -199,6 +254,22 @@ const StyledHashtag = styled.a`
         cursor: pointer;
         `;
 
+const MyPostIcons = styled.div`
+    display: ${(props) => props.isMyPost ? 'flex' : 'none'};
+    align-items: center;
+
+    img {
+        font-size: 14px;
+        margin-left: 10px;
+    }
+`
+
+const TopPost = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
+
 const Hashtags = ({ children }) => (
     <ReactHashtag
         renderHashtag={(hashtagValue) => (
@@ -212,3 +283,71 @@ const Hashtags = ({ children }) => (
         {children}
     </ReactHashtag>
 );
+
+const modalStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        backgroundColor: '#333333',
+        borderRadius: '50px',
+    }
+}
+
+const ModalContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 15vh;
+    width: 75vw;
+`
+
+const ModalQuestion = styled.p`
+    font-size: 34px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color: rgb(255, 255, 255);
+    text-align: center;
+`
+
+const ContainerButtonsModal = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 50%;
+    height: 20%;
+`
+
+const ButtonCancel = styled.button`
+    height: 100%;
+    width: 45%;
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+
+    p {
+        color: rgb(24, 119, 242);
+        font-size: 18px;
+        font-family: 'Lato', sans-serif;
+        font-weight: 700;
+    }
+`
+
+const ButtonDelete = styled.button`
+    height: 100%;
+    width: 45%;
+    background-color: rgb(24, 119, 242);
+    border: none;
+    border-radius: 5px;
+
+    p{
+        color: white;
+        font-size: 18px;
+        font-family: 'Lato', sans-serif;
+        font-weight: 700;
+    }
+`
