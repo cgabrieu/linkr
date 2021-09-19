@@ -4,7 +4,6 @@ import { UserContainer, UserPic } from "../styles/styles";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../contexts/UserContext";
-import ReactHashtag from 'react-hashtag';
 import ContainerLinkPreview from "./ContainerLinkPreview";
 import { postLike, postDislike, getUserInfo } from "../services/api";
 import ReactTooltip from "react-tooltip";
