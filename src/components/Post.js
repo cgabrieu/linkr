@@ -117,8 +117,9 @@ export default function Post({ idPost, userPost, likes, content }) {
   useEffect(() =>  {
     if (isEditing) {
       editFieldRef.current.focus();
-      editFieldRef.current.selectionStart = editFieldRef.current.value.length;
-      editFieldRef.current.selectionEnd = editFieldRef.current.value.length;
+      const currFieldRef = editFieldRef.current;
+      currFieldRef.selectionStart = currFieldRef.value.length;
+      currFieldRef.selectionEnd = currFieldRef.value.length;
     }
   }, [isEditing]);
 
@@ -146,6 +147,7 @@ export default function Post({ idPost, userPost, likes, content }) {
           <IconsContainer>
             <EditIcon onClick={() => { 
               setIsEditing(!isEditing);
+              setTextareaDescription(content.text);
             }} />
             <DeleteIcon />
           </IconsContainer>}
@@ -159,6 +161,7 @@ export default function Post({ idPost, userPost, likes, content }) {
           : <TextAreaPostDescription 
               value={textareaDescription}
               onChange={(e) => setTextareaDescription(e.value)}
+              onKeyDown={(e) => (e.key === 'Escape') && setIsEditing(false)}
               ref={editFieldRef}
             />}
         <Link to={{ pathname: content.link }} target="_blank">
