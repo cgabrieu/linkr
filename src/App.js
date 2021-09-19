@@ -30,22 +30,13 @@ function App() {
           <Route exact path="/sign-up" component={SignUpRoute} />
           <Route exact path="/" component={LogInRoute} />
           <ExpandableMenuContext.Provider
-            value={{ isExpandableMenuOpen, setIsExpandableMenuOpen }}
-          >
-            <Header />
+            value={{ isExpandableMenuOpen, setIsExpandableMenuOpen }}>
             <div onClick={() => setIsExpandableMenuOpen(false)}>
+            <Header />
               <Switch>
-                <PrivateRoute
-                  exact
-                  path="/timeline"
-                  component={TimelineRoute}
-                />
+                <PrivateRoute exact path="/timeline" component={TimelineRoute} />
                 <PrivateRoute exact path="/user/:id" component={UserPosts} />
-                <PrivateRoute
-                  exact
-                  path="/hashtag/:hashtag"
-                  component={HashtagRoute}
-                />
+                <PrivateRoute exact path="/hashtag/:hashtag" component={HashtagRoute} />
                 <PrivateRoute exact path="/my-posts" component={MyPostsRoute} />
                 <Redirect to="/" />
               </Switch>
