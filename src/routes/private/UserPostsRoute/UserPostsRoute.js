@@ -26,7 +26,7 @@ export default function UserPostsRoute() {
   return (
     <Container>
       <PostContainer>
-        <h1>{username}'s posts</h1>
+        <h1>{username}</h1>
         {renderPostsOrNot(listPosts)}
       </PostContainer>
     </Container>

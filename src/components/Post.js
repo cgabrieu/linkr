@@ -1,116 +1,30 @@
 import styled from "styled-components";
-import { useHistory, Link } from "react-router-dom";
-import { UserContainer, UserPic } from "../styles/styles";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { UserContainer } from "../styles/styles";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import UserContext from "../contexts/UserContext";
 import ContainerLinkPreview from "./ContainerLinkPreview";
-import { postLike, postDislike, getUserInfo, deletePost, getListPosts } from "../services/api";
-import ReactTooltip from "react-tooltip";
+import { deletePost, getListPosts, putEditUserPost } from "../services/api";
 import Edit from '../assets/Edit.svg';
 import TrashCan from '../assets/TrashCan.svg';
 import Modal from 'react-modal';
-import { renderPostsOrNot } from '../services/utils'
+import { Hashtags, getHashtagsLowerCase } from "../services/utils";
+import RenderPostsContext from '../contexts/RenderPostsContext';
+import UserLikeContainer from './UserLikeContainer'
 
 Modal.setAppElement('#root');
 
 export default function Post({ idPost, userPost, likes, content }) {
 
-    const history = useHistory();
-    const { username, avatar } = userPost;
-    const { user, listPosts, setListPosts } = useContext(UserContext);
-    let isLikedAux = false;
-    const [isLiked, setIsLiked] = useState(isLikedAux);
-    const listAux = [];
-    const [listWhoLiked, setListWhoLiked] = useState(listAux);
-    let messageAux = 'Ninguém curtiu ainda :(';
-    const [likedMessage, setLikedMessage] = useState(messageAux);
+    const { username } = userPost;
+    const { user } = useContext(UserContext);
     const [isMyPost, setIsMyPost] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
-    function likePost() {
-        isLikedAux = true;
-        setIsLiked(isLikedAux);
-        postLike(user.token, idPost);
-        listWhoLiked.push(user.username);
-        createLikedMessage();
-    }
-
-    function dislikePost() {
-        isLikedAux = false;
-        setIsLiked(isLikedAux);
-        postDislike(user.token, idPost);
-        const i = listWhoLiked.indexOf(user.username);
-        listWhoLiked.splice(i, 1);
-        createLikedMessage();
-    }
-
-    function whoLiked() {
-        likes.map((like) => findUsernamesWhoLiked(like));
-    }
-
-    function findUsernamesWhoLiked(like) {
-        const promisse = getUserInfo(user.token, like.userId);
-        promisse.then(handleSucces).catch();
-    }
-
-    function handleSucces(resp) {
-        listAux.push(resp.data.user.username);
-        setListWhoLiked(listAux);
-        isLikedAux = listAux.includes(user.username);
-        setIsLiked(isLikedAux);
-        createLikedMessage();
-    }
-
-    function createLikedMessage() {
-        if (isLikedAux === true) {
-            if (listWhoLiked.length === 1) {
-                messageAux = (`Você curtiu`);
-                setLikedMessage(messageAux);
-            } else {
-                if (listWhoLiked.length === 2) {
-                    if (listWhoLiked[0] === user.username) {
-                        messageAux = (`Você e ${listWhoLiked[1]} curtiram`);
-                        setLikedMessage(messageAux);
-                    } else {
-                        messageAux = (`Você e ${listWhoLiked[0]} curtiram`);
-                        setLikedMessage(messageAux);
-                    }
-                } else {
-                    if (listWhoLiked[0] === user.username) {
-                        messageAux = (`Você, ${listWhoLiked[1]} e mais ${listWhoLiked.length - 2} curtiram`);
-                        setLikedMessage(messageAux);
-                    } else {
-                        messageAux = (`Você, ${listWhoLiked[0]} e mais ${listWhoLiked.length - 2} curtiram`);
-                        setLikedMessage(messageAux);
-                    }
-                }
-            }
-        }
-
-        if (isLikedAux === false) {
-            if (listWhoLiked.length === 0) {
-                messageAux = ('Ninguém curtiu ainda.');
-                setLikedMessage(messageAux);
-            }
-
-            if (listWhoLiked.length === 1) {
-                messageAux = (`${listWhoLiked[0]} curtiu`);
-                setLikedMessage(messageAux);
-            }
-
-            if (listWhoLiked.length === 2) {
-                messageAux = (`${listWhoLiked[0]} e ${listWhoLiked[1]} curtiram`);
-                setLikedMessage(messageAux);
-            }
-
-            if (listWhoLiked.length > 2) {
-                messageAux = (`${listWhoLiked[0]}, ${listWhoLiked[1]} e mais ${listWhoLiked.length - 2} curtiram`);
-                setLikedMessage(messageAux);
-            }
-        }
-    }
+    const { setRenderPosts } = useContext(RenderPostsContext);
+    const editFieldRef = useRef();
+    const [isEditing, setIsEditing] = useState(false);
+    const [textareaDescription, setTextareaDescription] = useState(content.text);
 
     function whosPostIsThis() {
         if (user.id === userPost.id) {
@@ -132,46 +46,61 @@ export default function Post({ idPost, userPost, likes, content }) {
             setIsLoading(false);
             toggleModal();
             getListPosts(user.token).then((res) => {
-                setListPosts(res.data.posts);
-                renderPostsOrNot(listPosts);
-            }).catch((err) => setListPosts(err.status));
+                setRenderPosts(true);
+            }).catch(() => alert('Não foi possível excluir o post'));
         }).catch(() => alert('Não foi possível excluir o post'));
     }
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Escape') setIsEditing(false);
+        else if (e.key === 'Enter') {
+            setIsLoading(true);
+            putEditUserPost(idPost, getHashtagsLowerCase(textareaDescription), user.token)
+                .then(() => {
+                    console.log("Entrou")
+                    setIsEditing(false);
+                    setIsLoading(false);
+                    setRenderPosts(true);
+                })
+                .catch(() => {
+                    setIsLoading(false);
+                    alert("Não foi possível salvar as alterações. Tente novamente.");
+                });
+        }
+    };
+
     useEffect(() => {
-        whoLiked();
         whosPostIsThis();
     }, [])
+
+    useEffect(() => {
+        if (isEditing) {
+            editFieldRef.current.focus();
+            const currFieldRef = editFieldRef.current;
+            currFieldRef.selectionStart = currFieldRef.value.length;
+            currFieldRef.selectionEnd = currFieldRef.value.length;
+        }
+    }, [isEditing]);
 
     return (
         <PostContainer>
             <UserContainer>
-                <UserPic onClick={() => history.push(`/ user / ${username} `)} src={avatar} alt="{username}" />
-                {isLiked
-                    ? <LikeButtonClicked onClick={dislikePost} />
-                    : <LikeButton onClick={likePost} />}
-                <LikesInfo data-tip data-for={idPost.toString()}>
-                    {listWhoLiked.length + ((listWhoLiked.length === 1) ? " like" : " likes")}
-                </LikesInfo>
-                <ReactTooltip
-                    place='bottom'
-                    type='light'
-                    id={idPost.toString()}>
-                    <span>{likedMessage}</span>
-                </ReactTooltip>
+                <UserLikeContainer userPost={userPost} idPost={idPost} likes={likes} />
             </UserContainer>
             <MainPostContainer>
-                <TopPost>
-                    <div>
+                <TopContainer>
+                    <MyTopContainer>
                         <UserName>{username}</UserName>
-                        <PostDescription>
-                            <Hashtags>{content.text}</Hashtags>
-                        </PostDescription>
-                    </div>
-                    <MyPostIcons isMyPost={isMyPost}>
-                        <img onClick={callModal} src={TrashCan} alt='Delete icon' />
-                        <img src={Edit} alt='Edit icon' />
-                    </MyPostIcons>
+                        <MyPostIcons isMyPost={isMyPost}>
+                            <img onClick={callModal} src={TrashCan} alt='Delete icon' />
+                            <img onClick={() => {
+                                setIsEditing(!isEditing);
+                                setTextareaDescription(content.text);
+                            }}
+                                src={Edit} alt='Edit icon' />
+                        </MyPostIcons>
+                    </MyTopContainer>
+
                     <Modal
                         isOpen={isModalOpen}
                         onRequestClose={toggleModal}
@@ -185,7 +114,20 @@ export default function Post({ idPost, userPost, likes, content }) {
                             </ContainerButtonsModal>
                         </ModalContent>
                     </Modal>
-                </TopPost>
+                </TopContainer>
+                {!isEditing ?
+                    <PostDescription>
+                        <Hashtags>
+                            {content.text}
+                        </Hashtags>
+                    </PostDescription>
+                    : <TextAreaPostDescription
+                        value={textareaDescription}
+                        disabled={isLoading}
+                        onChange={(e) => setTextareaDescription(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        ref={editFieldRef}
+                    />}
                 <Link to={{ pathname: content.link }} target="_blank">
                     <ContainerLinkPreview content={content} />
                 </Link>
@@ -195,78 +137,63 @@ export default function Post({ idPost, userPost, likes, content }) {
 };
 
 const PostContainer = styled.div`
-  width: 100%;
-  background-color: #171717;
-  border-radius: 16px;
-  padding: 18px 20px 20px 18px;
-  display: flex;
-  margin-bottom: 16px;
-  @media(max-width: 610px) {
-    border-radius: 0;
-  }
+    width: 100%;
+    background-color: #171717;
+    border-radius: 16px;
+    padding: 18px 20px 20px 18px;
+    display: flex;
+    margin-bottom: 16px;
+    @media(max-width: 610px) {
+        border-radius: 0;
+    }
 `;
 
-const LikeButton = styled(AiOutlineHeart)`
-  width: 20px;
-  height: 18px;
-  margin-top: 19px;
-  cursor: pointer;
-  `;
+const MyTopContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+`
 
-const LikeButtonClicked = styled(AiFillHeart)`
-  width: 20px;
-  height: 18px;
-  margin-top: 19px;
-  color:#AC0000;
-  cursor: pointer;
-  `;
+const TopContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+const TextAreaPostDescription = styled.textarea`
+    color: #4C4C4C;
+    width: 100%;
+    padding: 7px;
+    margin: 5px 0;
+    font-size: 14px;
+    resize: none;
+    @media (max-width: 610px) {
+        font-size: 13px;
+    }
+`;
 
 const MainPostContainer = styled.div`
-  max-width: 505px;
-  position: relative;
-  @media(max-width: 610px) {
-      max-width: 510px;
-  }
-  `;
-
-const PostDescription = styled.div`
-  color: #B7B7B7;
-  font-size: 17px;
-  margin: 7px 0 10px 0;
-  word-wrap: break-word;
-  max-width: 100%;
-  @media(max-width: 610px) {
-      font-size: 15px;
-      width: 288px;
-  }
+    max-width: 505px;
+    position: relative;
+    @media(max-width: 610px) {
+        max-width: 510px;
+    }
 `;
 
-const InputPostDescription = styled.input`
-  color: #b7b7b7;
-  font-size: 17px;
-  margin: 7px 0 10px 0;
-  word-wrap: break-word;
-  max-width: 100%;
-  @media (max-width: 610px) {
-    font-size: 15px;
-    width: 288px;
-  }
+const PostDescription = styled.div`
+    color: #B7B7B7;
+    font-size: 17px;
+    margin: 7px 0 10px 0;
+    word-wrap: break-word;
+    max-width: 100%;
+    @media(max-width: 610px) {
+        font-size: 15px;
+        width: 288px;
+    }
 `;
 
 const UserName = styled.p`
-  font-size: 19px;
+    font-size: 19px;
 `;
-
-const LikesInfo = styled.span`
-  font-size: 11px;
-  margin: 4px;
-`;
-
-const StyledHashtag = styled.a`
-        color: #FFFFFF;
-        font-weight: bold;
-        cursor: pointer;
-        `;
 
 const MyPostIcons = styled.div`
     display: ${(props) => props.isMyPost ? 'flex' : 'none'};
@@ -277,26 +204,6 @@ const MyPostIcons = styled.div`
         margin-left: 10px;
     }
 `
-
-const TopPost = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`
-
-const Hashtags = ({ children }) => (
-    <ReactHashtag
-        renderHashtag={(hashtagValue) => (
-            <StyledHashtag>
-                <Link to={"/hashtag/" + hashtagValue.replace("#", "")}>
-                    {hashtagValue}
-                </Link>
-            </StyledHashtag>
-        )}
-    >
-        {children}
-    </ReactHashtag>
-);
 
 const modalStyles = {
     content: {

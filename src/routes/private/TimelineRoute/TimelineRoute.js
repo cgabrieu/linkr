@@ -5,11 +5,12 @@ import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { getListPosts } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
+import RenderPostsContext from "../../../contexts/RenderPostsContext";
 
 export default function Timeline() {
-  const [renderTimeline, setRenderTimeline] = useState(false);
-
-  const { user, listPosts, setListPosts } = useContext(UserContext);
+  const [listPosts, setListPosts] = useState(null);
+  const { user } = useContext(UserContext);
+  const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
   useEffect(() => {
     getListPosts(user.token)
@@ -17,14 +18,14 @@ export default function Timeline() {
         setListPosts(res.data.posts);
       })
       .catch((err) => setListPosts(err.status));
-    return () => setRenderTimeline(false);
-  }, [renderTimeline]);
+    return () => setRenderPosts(false);
+  }, [renderPosts]);
 
   return (
     <Container>
       <PostContainer>
         <h1>timeline</h1>
-        <CreatePost setRenderTimeline={setRenderTimeline} />
+        <CreatePost />
         {renderPostsOrNot(listPosts)}
       </PostContainer>
     </Container>

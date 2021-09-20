@@ -4,11 +4,13 @@ import UserContext from "../../../contexts/UserContext";
 import { useContext, useEffect, useState } from "react";
 import { getPostsUserLiked } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
+import RenderPostsContext from "../../../contexts/RenderPostsContext";
 
 export default function MyLikesRoute() {
 
   const [posts, setPosts] = useState(null);
   const { user } = useContext(UserContext);
+  const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
   useEffect(() => {
     getPostsUserLiked(user.token)
@@ -16,7 +18,8 @@ export default function MyLikesRoute() {
         setPosts(res.data.posts);
       })
       .catch(err => setPosts(err.status));
-  }, []);
+    return () => setRenderPosts(false);
+  }, [renderPosts]);
 
   return (
     <Container>
