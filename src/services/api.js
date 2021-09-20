@@ -31,7 +31,7 @@ function LogIn(request) {
 }
 
 function getListPosts(token) {
-  const promise = axios.get(`${BASE_URL}/posts`, getConfig(token));
+  const promise = axios.get(`${BASE_URL}/following/posts`, getConfig(token));
   return promise;
 }
 
@@ -88,6 +88,11 @@ function putEditUserPost(postId, description, token) {
   return axios.put(`${BASE_URL}/posts/${postId}`, body, getConfig(token));
 }
 
+function getFollowedUsers(token) {
+  const promise = axios.get(`${BASE_URL}/users/follows`, getConfig(token));
+  return promise
+}
+
 
 export {
   SignUp,
@@ -103,5 +108,6 @@ export {
   deletePost,
   getPostsUserLiked,
   putEditUserPost,
+  getFollowedUsers
 };
 
