@@ -3,6 +3,7 @@ import { UserContainer, UserPic } from "../../../styles/styles";
 import React, { useContext, useState } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { postPublish } from "../../../services/api";
+import { getHashtagsLowerCase } from "../../../services/utils";
 
 
 export default function CreatePost({ setRenderTimeline }) {
@@ -37,14 +38,6 @@ export default function CreatePost({ setRenderTimeline }) {
                 setErrorMessage("Houve um erro ao publicar seu link.");
                 setIsLoading(false);
             });
-    }
-
-    const getHashtagsLowerCase = (description) => {
-        const listHashtags = description.match(/#[A-Za-z0-9\u00C0-\u017F]*/g);
-        listHashtags.forEach((e,index) => {
-            description = description.replace(e, listHashtags[index].toLowerCase());
-        });
-        return description;
     }
 
     const validateInputs = () => {
@@ -141,9 +134,6 @@ const CreatePostContainer = styled.div`
             margin-bottom: 5px;
             padding-left: 13px;
             resize: none;
-            &:disabled {
-                opacity: 0.7;
-            }
             @media(max-width: 610px) {
                 font-size: 13px;
             }

@@ -1,16 +1,15 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { UserContainer } from "../styles/styles";
-import {ReactComponent as EditIcon} from "../assets/pencil.svg";
-import {ReactComponent as DeleteIcon} from "../assets/trash.svg";
 import React, { useState, useContext, useEffect, useRef } from "react";
+import { ReactComponent as DeleteIcon } from "../assets/trash.svg";
+import { ReactComponent as EditIcon } from "../assets/pencil.svg";
+import { putEditUserPost } from "../services/api";
+import { Hashtags, getHashtagsLowerCase } from "../services/utils";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import ContainerLinkPreview from "./ContainerLinkPreview";
-import { putEditUserPost } from "../services/api";
-import { Hashtags } from "../services/utils";
 import UserLikeContainer from "./UserLikeContainer";
 
-export default function Post({ idPost, userPost, likes, content }) {  
+export default function Post({ idPost, userPost, likes, content }) {
   const [isEditing, setIsEditing] = useState(false);
   const [textareaDescription, setTextareaDescription] = useState(content.text);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +18,7 @@ export default function Post({ idPost, userPost, likes, content }) {
 
   const editFieldRef = useRef();
 
-  useEffect(() =>  {
+  useEffect(() => {
     if (isEditing) {
       editFieldRef.current.focus();
       const currFieldRef = editFieldRef.current;
@@ -28,6 +27,22 @@ export default function Post({ idPost, userPost, likes, content }) {
     }
   }, [isEditing]);
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') setIsEditing(false);
+    else if (e.key === 'Enter') {
+      setIsLoading(true);
+      putEditUserPost(idPost, getHashtagsLowerCase(textareaDescription), user.token)
+        .then(() => {
+          setIsEditing(false);
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setIsLoading(false);
+          alert("Não foi possível salvar as alterações. Tente novamente.")
+        });
+    }
+  };
+
   return (
     <PostContainer>
       <UserLikeContainer userPost={userPost} idPost={idPost} likes={likes} />
@@ -35,13 +50,13 @@ export default function Post({ idPost, userPost, likes, content }) {
         <TopContainer>
           <UserName>{userPost.username}</UserName>
           {(userPost.id === user.id) &&
-          <IconsContainer>
-            <EditIcon onClick={() => { 
-              setIsEditing(!isEditing);
-              setTextareaDescription(content.text);
-            }} />
-            <DeleteIcon />
-          </IconsContainer>}
+            <IconsContainer>
+              <EditIcon onClick={() => {
+                setIsEditing(!isEditing);
+                setTextareaDescription(content.text);
+              }} />
+              <DeleteIcon />
+            </IconsContainer>}
         </TopContainer>
         {!isEditing ?
           <PostDescription>
@@ -49,29 +64,13 @@ export default function Post({ idPost, userPost, likes, content }) {
               {content.text}
             </Hashtags>
           </PostDescription>
-          : <TextAreaPostDescription 
-              value={textareaDescription}
-              disabled={isLoading}
-              onChange={(e) => {
-                setTextareaDescription(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Escape') setIsEditing(false);
-                else if (e.key === 'Enter') {
-                  setIsLoading(true);
-                  putEditUserPost(idPost, textareaDescription, user.token)
-                    .then(() => {
-                      setIsEditing(false);
-                      setIsLoading(false);
-                    })
-                    .catch(() => {
-                      setIsLoading(false);
-                      alert("Não foi possível salvar as alterações. Tente novamente.")
-                    });
-                }
-              }}
-              ref={editFieldRef}
-            />}
+          : <TextAreaPostDescription
+            value={textareaDescription}
+            disabled={isLoading}
+            onChange={(e) => setTextareaDescription(e.target.value)}
+            onKeyDown={handleKeyDown}
+            ref={editFieldRef}
+          />}
         <Link to={{ pathname: content.link }} target="_blank">
           <ContainerLinkPreview content={content} />
         </Link>

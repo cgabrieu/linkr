@@ -37,6 +37,13 @@ const Hashtags = ({ children }) => {
   );
 };
 
+const getHashtagsLowerCase = (description) => {
+  const listHashtags = description.match(/#[A-Za-z0-9\u00C0-\u017F]*/g);
+  listHashtags.forEach((e,index) => {
+      description = description.replace(e, listHashtags[index].toLowerCase());
+  });
+  return description;
+}
 
 
-export { renderPostsOrNot, Hashtags };
+export { renderPostsOrNot, Hashtags, getHashtagsLowerCase };
