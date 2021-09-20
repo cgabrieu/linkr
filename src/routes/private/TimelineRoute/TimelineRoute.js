@@ -26,7 +26,7 @@ export default function Timeline() {
       <PostContainer>
         <h1>timeline</h1>
         <CreatePost setRenderTimeline={setRenderTimeline} />
-        {renderPostsOrNot(listPosts)}
+        {renderPostsOrNot(listPosts, setRenderTimeline)}
       </PostContainer>
     </Container>
   );

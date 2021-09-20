@@ -3,11 +3,11 @@ import NotFound from "../components/NotFound";
 import Post from "../components/Post";
 import { HashtagLink } from "../styles/styles"
 
-const renderPostsOrNot = (listPosts) => {
+const renderPostsOrNot = (listPosts, setRenderTimeline) => {
   if (listPosts === null) return <LoadingSection />;
   else if (listPosts.length > 0) {
     return listPosts.map((postInfo) => (
-      <Post key={postInfo.id} idPost={postInfo.id} userPost={postInfo.user} likes={postInfo.likes} content={postInfo} />
+      <Post key={postInfo.id} idPost={postInfo.id} userPost={postInfo.user} likes={postInfo.likes} content={postInfo} setRenderTimeline={setRenderTimeline} />
     ));
   } else if (listPosts.length === 0) {
     return <NotFound typeError={"Nenhum post encontrado."} />;

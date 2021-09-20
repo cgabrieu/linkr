@@ -9,7 +9,7 @@ import UserContext from "../contexts/UserContext";
 import ContainerLinkPreview from "./ContainerLinkPreview";
 import UserLikeContainer from "./UserLikeContainer";
 
-export default function Post({ idPost, userPost, likes, content }) {
+export default function Post({ idPost, userPost, likes, content, setRenderTimeline }) {
   const [isEditing, setIsEditing] = useState(false);
   const [textareaDescription, setTextareaDescription] = useState(content.text);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,6 +35,7 @@ export default function Post({ idPost, userPost, likes, content }) {
         .then(() => {
           setIsEditing(false);
           setIsLoading(false);
+          setRenderTimeline(true);
         })
         .catch(() => {
           setIsLoading(false);
