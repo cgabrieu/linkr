@@ -22,7 +22,7 @@ export default function Header() {
 
     return (
         <HeaderBar>
-            <Tittle>linkr</Tittle>
+            <Tittle to="/timeline" >linkr</Tittle>
             <ArrowAndPhoto>
                 <Arrow onClick={(event) => toggleOpen(event)} isExpandableMenuOpen={isExpandableMenuOpen} src={arrow} alt='Arrow to show expandable menu' />
                 <Photo onClick={(event) => toggleOpen(event)} src={avatar} alt='User photo' />
@@ -34,4 +34,4 @@ export default function Header() {
             </ExpandableMenu>
         </HeaderBar>
     )
-}
+};

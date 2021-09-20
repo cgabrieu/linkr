@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom'
 
 export const HeaderBar = styled.header`
     position: fixed;
@@ -14,7 +15,7 @@ export const HeaderBar = styled.header`
     z-index: 1;
 `
 
-export const Tittle = styled.p`
+export const Tittle = styled(Link)`
     font-family: 'Passion One', cursive;
     font-size: 49px;
     font-weight: 700;
@@ -39,6 +40,7 @@ export const Arrow = styled.img`
 export const Photo = styled.img`
     height: 53px;
     width: 53px;
+    object-fit: cover;
     border-radius: 50%;
     cursor: pointer;
 `

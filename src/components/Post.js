@@ -4,7 +4,6 @@ import { UserContainer, UserPic } from "../styles/styles";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../contexts/UserContext";
-import ReactHashtag from 'react-hashtag';
 import ContainerLinkPreview from "./ContainerLinkPreview";
 import { postLike, postDislike, getUserInfo, deletePost, getListPosts } from "../services/api";
 import ReactTooltip from "react-tooltip";
@@ -196,60 +195,71 @@ export default function Post({ idPost, userPost, likes, content }) {
 };
 
 const PostContainer = styled.div`
-        width: 100h;
-        background-color: #171717;
-        border-radius: 16px;
-        padding: 18px 20px 20px 18px;
-        display: flex;
-        margin-bottom: 16px;
-        @media(max-width: 610px) {
-            border-radius: 0;
-        }
-        `;
+  width: 100%;
+  background-color: #171717;
+  border-radius: 16px;
+  padding: 18px 20px 20px 18px;
+  display: flex;
+  margin-bottom: 16px;
+  @media(max-width: 610px) {
+    border-radius: 0;
+  }
+`;
 
 const LikeButton = styled(AiOutlineHeart)`
-        width: 20px;
-        height: 18px;
-        margin-top: 19px;
-        cursor: pointer;
-        `;
+  width: 20px;
+  height: 18px;
+  margin-top: 19px;
+  cursor: pointer;
+  `;
 
 const LikeButtonClicked = styled(AiFillHeart)`
-        width: 20px;
-        height: 18px;
-        margin-top: 19px;
-        color:#AC0000;
-        cursor: pointer;
-        `;
+  width: 20px;
+  height: 18px;
+  margin-top: 19px;
+  color:#AC0000;
+  cursor: pointer;
+  `;
 
 const MainPostContainer = styled.div`
-        max-width: 505px;
-        position: relative;
-        @media(max-width: 610px) {
-            max-width: 510px;
-        }
-        `;
+  max-width: 505px;
+  position: relative;
+  @media(max-width: 610px) {
+      max-width: 510px;
+  }
+  `;
 
 const PostDescription = styled.div`
-        color: #B7B7B7;
-        font-size: 17px;
-        margin: 7px 0 10px 0;
-        word-wrap: break-word;
-        max-width: 100%;
-        @media(max-width: 610px) {
-            font-size: 15px;
-            width: 288px;
-        }
-        `;
+  color: #B7B7B7;
+  font-size: 17px;
+  margin: 7px 0 10px 0;
+  word-wrap: break-word;
+  max-width: 100%;
+  @media(max-width: 610px) {
+      font-size: 15px;
+      width: 288px;
+  }
+`;
+
+const InputPostDescription = styled.input`
+  color: #b7b7b7;
+  font-size: 17px;
+  margin: 7px 0 10px 0;
+  word-wrap: break-word;
+  max-width: 100%;
+  @media (max-width: 610px) {
+    font-size: 15px;
+    width: 288px;
+  }
+`;
 
 const UserName = styled.p`
-        font-size: 19px;
-        `;
+  font-size: 19px;
+`;
 
 const LikesInfo = styled.span`
-    font-size: 11px;
-    margin: 4px;
-    
+  font-size: 11px;
+  margin: 4px;
 `;
 
 const StyledHashtag = styled.a`

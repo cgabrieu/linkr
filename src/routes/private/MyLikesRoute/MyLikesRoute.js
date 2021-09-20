@@ -1,40 +1,29 @@
 import "../../../styles/tooltip.css";
 import { Container, PostContainer } from "../../../styles/styles";
 import UserContext from "../../../contexts/UserContext";
-import { useParams } from "react-router";
 import { useContext, useEffect, useState } from "react";
-import { getHashtagPosts } from "../../../services/api";
+import { getPostsUserLiked } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
-import styled from "styled-components";
 
-
-export default function HashtagRoute() {
+export default function MyLikesRoute() {
 
   const [posts, setPosts] = useState(null);
-  const { hashtag } = useParams();
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    setPosts(null);
-    getHashtagPosts(user.token, hashtag)
+    getPostsUserLiked(user.token)
       .then(res => {
         setPosts(res.data.posts);
       })
-      .catch(err => setPosts(err.status))
-  }, [hashtag]);
-
+      .catch(err => setPosts(err.status));
+  }, []);
 
   return (
     <Container>
       <PostContainer>
-        <Title>{`# ${hashtag}`}</Title>
+        <h1>{user.username}</h1>
         {renderPostsOrNot(posts)}
       </PostContainer>
     </Container>
   );
 }
-
-const Title = styled.h1`
-  text-overflow: ellipsis;
-  word-wrap: break-word;
-`
