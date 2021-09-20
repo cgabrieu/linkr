@@ -1,16 +1,17 @@
 import styled from "styled-components";
 import { useHistory, Link } from "react-router-dom";
 import { UserContainer, UserPic } from "../styles/styles";
-import { AiOutlineHeart, AiFillHeart, AiFillWindows } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../contexts/UserContext";
 import ReactHashtag from 'react-hashtag';
 import ContainerLinkPreview from "./ContainerLinkPreview";
-import { postLike, postDislike, getUserInfo, deletePost } from "../services/api";
+import { postLike, postDislike, getUserInfo, deletePost, getListPosts } from "../services/api";
 import ReactTooltip from "react-tooltip";
 import Edit from '../assets/Edit.svg';
 import TrashCan from '../assets/TrashCan.svg';
 import Modal from 'react-modal';
+import { renderPostsOrNot } from '../services/utils'
 
 Modal.setAppElement('#root');
 
@@ -18,7 +19,7 @@ export default function Post({ idPost, userPost, likes, content }) {
 
     const history = useHistory();
     const { username, avatar } = userPost;
-    const { user } = useContext(UserContext);
+    const { user, listPosts, setListPosts } = useContext(UserContext);
     let isLikedAux = false;
     const [isLiked, setIsLiked] = useState(isLikedAux);
     const listAux = [];
@@ -131,13 +132,16 @@ export default function Post({ idPost, userPost, likes, content }) {
         deletePost(user.token, idPost).then(() => {
             setIsLoading(false);
             toggleModal();
-            window.location.reload();
-        }).catch(alert('Não foi possível excluir o post'));
+            getListPosts(user.token).then((res) => {
+                setListPosts(res.data.posts);
+                renderPostsOrNot(listPosts);
+            }).catch((err) => setListPosts(err.status));
+        }).catch(() => alert('Não foi possível excluir o post'));
     }
 
     useEffect(() => {
-        whoLiked()
-        whosPostIsThis()
+        whoLiked();
+        whosPostIsThis();
     }, [])
 
     return (

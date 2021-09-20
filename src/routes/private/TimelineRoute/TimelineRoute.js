@@ -7,10 +7,9 @@ import { getListPosts } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
 
 export default function Timeline() {
-  const [listPosts, setListPosts] = useState(null);
   const [renderTimeline, setRenderTimeline] = useState(false);
 
-  const { user } = useContext(UserContext);
+  const { user, listPosts, setListPosts } = useContext(UserContext);
 
   useEffect(() => {
     getListPosts(user.token)

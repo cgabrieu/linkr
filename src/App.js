@@ -22,11 +22,12 @@ import HashtagRoute from './routes/private/HashtagRoute/HashtagRoute';
 function App() {
   const [user, setUser] = useState("");
   const [isExpandableMenuOpen, setIsExpandableMenuOpen] = useState(false);
+  const [listPosts, setListPosts] = useState(null);
 
   return (
     <Router>
       <GlobalStyle />
-      <UserContext.Provider value={{ user, setUser }}>
+      <UserContext.Provider value={{ user, setUser, listPosts, setListPosts }}>
         <Switch>
           <Route exact path="/sign-up" component={SignUpRoute} />
           <Route exact path="/" component={LogInRoute} />
