@@ -30,7 +30,7 @@ export default function CreatePost() {
         setIsLoading(true);
         const { link, description } = inputFields;
         postPublish(link, getHashtagsLowerCase(description), user.token)
-            .then(() => { 
+            .then(() => {
                 setIsLoading(false);
                 setInputFields({ link: "", description: "" });
                 setRenderPosts(true);

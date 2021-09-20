@@ -1,16 +1,15 @@
 import styled from "styled-components";
 import React, { useState, useContext, useEffect } from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { useHistory } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
 import ReactTooltip from "react-tooltip";
 import { UserContainer, UserPic } from "../styles/styles";
 import { postLike, postDislike, getUserInfo } from "../services/api";
+import { useHistory } from "react-router-dom";
 
 export default function UserLikeContainer({ userPost, idPost, likes }) {
 
-  const history = useHistory();
-
+  let history = useHistory();
   const { username, avatar } = userPost;
   const { user } = useContext(UserContext);
   let isLikedAux = false;

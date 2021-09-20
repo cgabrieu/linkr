@@ -67,6 +67,11 @@ function getHashtagPosts(token, hashtag) {
   return promise;
 }
 
+function deletePost(token, postId) {
+  const promise = axios.delete(`${BASE_URL}/posts/${postId}`, getConfig(token));
+  return (promise);
+}
+
 function getUserInfo(token, userId) {
   return axios.get(`${BASE_URL}/users/${userId}`, getConfig(token));
 }
@@ -95,6 +100,7 @@ export {
   postLike,
   postDislike,
   getUserInfo,
+  deletePost,
   getPostsUserLiked,
   putEditUserPost,
 };
