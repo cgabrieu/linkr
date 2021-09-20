@@ -4,10 +4,12 @@ import React, { useContext, useState } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { postPublish } from "../../../services/api";
 import { getHashtagsLowerCase } from "../../../services/utils";
+import RenderPostsContext from "../../../contexts/RenderPostsContext";
 
 
-export default function CreatePost({ setRenderTimeline }) {
+export default function CreatePost() {
     const { user } = useContext(UserContext);
+    const { setRenderPosts } = useContext(RenderPostsContext);
 
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
@@ -31,7 +33,7 @@ export default function CreatePost({ setRenderTimeline }) {
             .then(() => { 
                 setIsLoading(false);
                 setInputFields({ link: "", description: "" });
-                setRenderTimeline(true);
+                setRenderPosts(true);
                 setErrorMessage("");
             })
             .catch(() => {

@@ -8,13 +8,15 @@ import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import ContainerLinkPreview from "./ContainerLinkPreview";
 import UserLikeContainer from "./UserLikeContainer";
+import RenderPostsContext from "../contexts/RenderPostsContext";
 
-export default function Post({ idPost, userPost, likes, content, setRenderTimeline }) {
+export default function Post({ idPost, userPost, likes, content }) {
   const [isEditing, setIsEditing] = useState(false);
   const [textareaDescription, setTextareaDescription] = useState(content.text);
   const [isLoading, setIsLoading] = useState(false);
 
   const { user } = useContext(UserContext);
+  const { setRenderPosts } = useContext(RenderPostsContext);
 
   const editFieldRef = useRef();
 
@@ -33,13 +35,14 @@ export default function Post({ idPost, userPost, likes, content, setRenderTimeli
       setIsLoading(true);
       putEditUserPost(idPost, getHashtagsLowerCase(textareaDescription), user.token)
         .then(() => {
+          console.log("Entrou")
           setIsEditing(false);
           setIsLoading(false);
-          setRenderTimeline(true);
+          setRenderPosts(true);
         })
         .catch(() => {
           setIsLoading(false);
-          alert("Não foi possível salvar as alterações. Tente novamente.")
+          alert("Não foi possível salvar as alterações. Tente novamente.");
         });
     }
   };
