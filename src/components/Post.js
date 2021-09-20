@@ -40,7 +40,7 @@ export default function Post({ idPost, userPost, likes, content }) {
 		}).catch(() => alert('Não foi possível excluir o post'));
 	}
 
-	const handleEditPost = (e) => {
+	function editThisPost(e) {
 		if (e.key === 'Escape') setIsEditing(false);
 		else if (e.key === 'Enter') {
 			setIsLoading(true);
@@ -109,7 +109,7 @@ export default function Post({ idPost, userPost, likes, content }) {
 						value={textareaDescription}
 						disabled={isLoading}
 						onChange={(e) => setTextareaDescription(e.target.value)}
-						onKeyDown={handleEditPost}
+						onKeyDown={editThisPost}
 						ref={editFieldRef}
 					/>}
 				<Link to={{ pathname: content.link }} target="_blank">
@@ -169,7 +169,10 @@ const PostDescription = styled.div`
 `;
 
 const UserName = styled.p`
+	width: 80%;
     font-size: 19px;
+	overflow: hidden;
+  	text-overflow: ellipsis;
 `;
 
 const MyPostIcons = styled.div`
