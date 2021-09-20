@@ -8,7 +8,7 @@ export default function ContainerLinkPreview({ content }) {
                 <h4>{content.linkDescription}</h4>
                 <p>{content.link}</p>
             </ContentContainer>
-            <img src={content.linkImage} alt={content.linkTitle}/>
+            <img src={content.linkImage} alt={content.linkTitle} />
         </ContainerLink>
     );
 }
@@ -24,8 +24,14 @@ const ContainerLink = styled.div`
     font-size: 11px;
     word-break: break-all;
     cursor: pointer;
+
     h3 {
         font-size: 16px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        @media(max-width: 610px) {
+            font-size: 11px;
+        }
     }
     h4 {
         color: #9B9595;
@@ -54,5 +60,12 @@ const ContentContainer = styled.div`
     justify-content: space-between;
     @media(max-width: 610px) {
         padding: 7px;
+    }
+`;
+
+const ImageContainer = styled.div`
+
+    @media(max-width: 610px) {
+        
     }
 `;
