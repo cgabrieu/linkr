@@ -23,12 +23,12 @@ const ContainerLink = styled.div`
     color: #CECECE;
     font-size: 11px;
     word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
     cursor: pointer;
 
     h3 {
         font-size: 16px;
-        text-overflow: ellipsis;
-        overflow: hidden;
         @media(max-width: 610px) {
             font-size: 11px;
         }
