@@ -16,8 +16,8 @@ import LogInRoute from "./routes/public/LoginRoute/LoginRoute";
 import PrivateRoute from "./routes/PrivateRoute";
 import UserPostsRoute from "./routes/private/UserPostsRoute/UserPostsRoute";
 import MyPostsRoute from "./routes/private/MyPostsRoute/MyPostsRoute";
-import HashtagRoute from './routes/private/HashtagRoute/HashtagRoute';
-
+import HashtagRoute from "./routes/private/HashtagRoute/HashtagRoute";
+import MyLikesRoute from "./routes/private/MyLikesRoute/MyLikesRoute";
 
 function App() {
   const [user, setUser] = useState("");
@@ -39,6 +39,7 @@ function App() {
                 <PrivateRoute exact path="/user/:id" component={UserPostsRoute} />
                 <PrivateRoute exact path="/hashtag/:hashtag" component={HashtagRoute} />
                 <PrivateRoute exact path="/my-posts" component={MyPostsRoute} />
+                <PrivateRoute exact path="/my-likes" component={MyLikesRoute} />
                 <Redirect to="/" />
               </Switch>
               <TrendingHashtags />

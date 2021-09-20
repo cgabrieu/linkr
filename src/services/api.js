@@ -71,12 +71,18 @@ function getUserInfo(token, userId) {
   return axios.get(`${BASE_URL}/users/${userId}`, getConfig(token));
 }
 
+function getPostsUserLiked(token) {
+  const promise = axios.get(`${BASE_URL}/posts/liked`, getConfig(token));
+  return promise;
+}
+
 function putEditUserPost(postId, description, token) {
   const body = {
     text: description,
   };
   return axios.put(`${BASE_URL}/posts/${postId}`, body, getConfig(token));
 }
+
 
 export {
   SignUp,
@@ -85,10 +91,11 @@ export {
   getListPosts,
   postPublish,
   getUserPosts,
-  getHashtagPosts, 
-  postLike, 
+  getHashtagPosts,
+  postLike,
   postDislike,
   getUserInfo,
-  putEditUserPost
+  getPostsUserLiked,
+  putEditUserPost,
 };
 
