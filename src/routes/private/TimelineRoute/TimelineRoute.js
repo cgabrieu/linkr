@@ -6,6 +6,7 @@ import UserContext from "../../../contexts/UserContext";
 import { getListPosts } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
 import RenderPostsContext from "../../../contexts/RenderPostsContext";
+import useInterval from 'react-useinterval';
 
 export default function Timeline() {
   const [listPosts, setListPosts] = useState(null);
@@ -13,13 +14,15 @@ export default function Timeline() {
   const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
   useEffect(() => {
+    console.log("entrou");
     getListPosts(user.token)
       .then((res) => {
         setListPosts(res.data.posts);
       })
       .catch((err) => setListPosts(err.status));
-    return () => setRenderPosts(false);
   }, [renderPosts]);
+
+  useInterval(() => setRenderPosts(!renderPosts), 15000);
 
   return (
     <Container>
