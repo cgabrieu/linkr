@@ -71,6 +71,11 @@ function getHashtagPosts(token, hashtag) {
   return promise;
 }
 
+function getPostsUserLiked(token) {
+  const promise = axios.get(`${BASE_URL}/posts/liked`, getConfig(token));
+  return promise;
+}
+
 export {
   SignUp,
   LogIn,
@@ -78,9 +83,10 @@ export {
   getListPosts,
   postPublish,
   getUserPosts,
-  getHashtagPosts, 
-  postLike, 
+  getHashtagPosts,
+  postLike,
   postDislike,
-  getUserInfo
+  getUserInfo,
+  getPostsUserLiked,
 };
 
