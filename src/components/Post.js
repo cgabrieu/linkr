@@ -57,7 +57,6 @@ export default function Post({ idPost, userPost, likes, content }) {
             setIsLoading(true);
             putEditUserPost(idPost, getHashtagsLowerCase(textareaDescription), user.token)
                 .then(() => {
-                    console.log("Entrou")
                     setIsEditing(false);
                     setIsLoading(false);
                     setRenderPosts(true);
@@ -125,7 +124,7 @@ export default function Post({ idPost, userPost, likes, content }) {
                         value={textareaDescription}
                         disabled={isLoading}
                         onChange={(e) => setTextareaDescription(e.target.value)}
-                        onKeyDown={handleKeyDown}
+                        onKeyDown={(e) => handleKeyDown(e)}
                         ref={editFieldRef}
                     />}
                 <Link to={{ pathname: content.link }} target="_blank">
