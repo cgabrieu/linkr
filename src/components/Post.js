@@ -182,7 +182,7 @@ const MyPostIcons = styled.div`
         margin-left: 10px;
 		cursor: pointer;
     }
-`
+`;
 
 const modalStyles = {
 	content: {
@@ -195,59 +195,56 @@ const modalStyles = {
 		backgroundColor: '#333333',
 		borderRadius: '50px',
 	}
-}
+};
 
 const ModalContent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    height: 15vh;
-    width: 75vw;
-`
+    width: 600px;
+    height: 260px;
+	font-size: 34px;
+	padding: 40px 50px;
+	@media(max-width: 610px) {
+		font-size: 22px;
+        padding: 10px 20px;
+		width: 300px;
+    	height: 160px;
+    }
+`;
 
 const ModalQuestion = styled.p`
-    font-size: 34px;
     font-family: 'Lato', sans-serif;
     font-weight: 700;
     color: rgb(255, 255, 255);
-    text-align: center;
-`
+	text-align: center;
+	
+`;
 
 const ContainerButtonsModal = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 50%;
-    height: 20%;
-`
-
-const ButtonCancel = styled.button`
-    height: 100%;
-    width: 45%;
-    background-color: white;
-    border: none;
-    border-radius: 5px;
-
-    p {
-        color: rgb(24, 119, 242);
-        font-size: 18px;
-        font-family: 'Lato', sans-serif;
-        font-weight: 700;
+	margin-top: 40px;
+	@media(max-width: 610px) {
+		margin-top: 10px;	
     }
-`
+`;
 
-const ButtonDelete = styled.button`
-    height: 100%;
-    width: 45%;
-    background-color: rgb(24, 119, 242);
-    border: none;
-    border-radius: 5px;
-
-    p{
-        color: white;
-        font-size: 18px;
-        font-family: 'Lato', sans-serif;
-        font-weight: 700;
+const Button = styled.button`
+	margin: 0 13px;
+	padding: 8px 23px;
+	font-size: 18px;
+	font-weight: bold;
+	@media(max-width: 610px) {
+		font-size: 14px;
+        padding: 6px 15px;
     }
-`
+`;
+
+const ButtonCancel = styled(Button)`
+	color: #1877F2;
+	background-color: #FFFFFF;
+`;
+
+const ButtonDelete = styled(Button)`
+	color: #FFFFFF;
+`;
