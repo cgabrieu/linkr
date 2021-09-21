@@ -15,7 +15,6 @@ export default function Timeline() {
   const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
   useEffect(() => {
-    console.log("Entrou");
     getUsersIFollow(user.token)
       .then(res => {
         const followedUsers = res.data.users
