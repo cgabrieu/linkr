@@ -88,9 +88,8 @@ function putEditUserPost(postId, description, token) {
   return axios.put(`${BASE_URL}/posts/${postId}`, body, getConfig(token));
 }
 
-function getFollowedUsers(token) {
-  const promise = axios.get(`${BASE_URL}/users/follows`, getConfig(token));
-  return promise
+function getUsersIFollow(token) {
+  return axios.get(`${BASE_URL}/users/follows`, getConfig(token));
 }
 
 
@@ -108,6 +107,6 @@ export {
   deletePost,
   getPostsUserLiked,
   putEditUserPost,
-  getFollowedUsers
+  getUsersIFollow
 };
 
