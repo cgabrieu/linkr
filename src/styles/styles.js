@@ -2,9 +2,11 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const Container = styled.div`
+    width: 100%;
     margin: 125px auto 25px auto;
     max-width: 935px;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
 `;
 
@@ -18,13 +20,14 @@ const UserContainer = styled.div`
 const UserPic = styled.img`
     width: 50px;
     height: 50px;
-    object-fit:cover;
+    object-fit: cover;
     border-radius: 50%;
     cursor: pointer;
 `;
 
 const PostContainer = styled.div`
     width: 610px;
+    
     h1 {
         margin-bottom: 45px;
         font-size: 43px;

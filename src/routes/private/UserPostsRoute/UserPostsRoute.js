@@ -56,14 +56,14 @@ export default function UserPostsRoute() {
 
   return (
     <Container>
+      <TopUserPage>
+        <NameAndPhoto>
+          <img src={avatar} />
+          <h1>{username}</h1>
+        </NameAndPhoto>
+        <FollowButton onClick={toggleIsFollowing} isFollowing={isFollowing}>{isFollowing ? 'Unfollow' : 'Follow'}</FollowButton>
+      </TopUserPage>
       <PostContainer>
-        <TopUserPage>
-          <NameAndPhoto>
-            <img src={avatar} />
-            <h1>{username}</h1>
-          </NameAndPhoto>
-          <FollowButton onClick={toggleIsFollowing} isFollowing={isFollowing}>{isFollowing ? 'Unfollow' : 'Follow'}</FollowButton>
-        </TopUserPage>
         {renderPostsOrNot(listPosts)}
       </PostContainer>
     </Container>
@@ -82,9 +82,10 @@ const NameAndPhoto = styled.div`
     margin-right: 25px;
   }
   
-  h1{
-    margin-bottom: 0;
-  }
+  h1 {
+        font-size: 43px;
+        font-weight: bold;
+    }
 `
 
 const TopUserPage = styled.div`
@@ -92,7 +93,7 @@ const TopUserPage = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 50px;
-  width: 85vw;
+  width: 100%;
 `
 
 const FollowButton = styled.button`
