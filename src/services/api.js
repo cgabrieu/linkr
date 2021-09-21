@@ -88,10 +88,13 @@ function putEditUserPost(postId, description, token) {
   return axios.put(`${BASE_URL}/posts/${postId}`, body, getConfig(token));
 }
 
+function toggleFollowAPI(token, userID, whatToDo) {
+  return axios.post(`${BASE_URL}/users/${userID}/${whatToDo}`, '', getConfig(token));
+}
+
 function getUsersIFollow(token) {
   return axios.get(`${BASE_URL}/users/follows`, getConfig(token));
 }
-
 
 export {
   SignUp,
@@ -107,6 +110,7 @@ export {
   deletePost,
   getPostsUserLiked,
   putEditUserPost,
+  toggleFollowAPI,
   getUsersIFollow
 };
 
