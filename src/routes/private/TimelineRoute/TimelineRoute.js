@@ -14,7 +14,6 @@ export default function Timeline() {
   const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
   useEffect(() => {
-    console.log("entrou");
     getListPosts(user.token)
       .then((res) => {
         setListPosts(res.data.posts);
