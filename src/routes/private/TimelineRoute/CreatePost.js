@@ -5,12 +5,14 @@ import UserContext from "../../../contexts/UserContext";
 import { postPublish } from "../../../services/api";
 import { getHashtagsLowerCase } from "../../../services/utils";
 import RenderPostsContext from "../../../contexts/RenderPostsContext";
+import { ReactComponent as LocationIcon } from "../../../assets/Location.svg"
 
 
 export default function CreatePost() {
     const { user } = useContext(UserContext);
-    const { setRenderPosts } = useContext(RenderPostsContext);
+    const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
+    const [hasLocation, setHasLocation] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [inputFields, setInputFields] = useState({
@@ -33,7 +35,7 @@ export default function CreatePost() {
             .then(() => {
                 setIsLoading(false);
                 setInputFields({ link: "", description: "" });
-                setRenderPosts(true);
+                setRenderPosts(!renderPosts);
                 setErrorMessage("");
             })
             .catch(() => {
@@ -73,19 +75,42 @@ export default function CreatePost() {
                     onChange={handleChange}
                     disabled={isLoading}
                 />
-                <ContainerButton>
-                    <p>{errorMessage}</p>
+                <ContainerBottom>
+                    <LocationStatusContainer
+                        enabled={hasLocation}
+                        onClick={() => setHasLocation(!hasLocation)}
+                    >
+                        <LocationIcon />
+                        {hasLocation ?
+                            "Localização ativada" :
+                            "Localização desativada"}
+                    </LocationStatusContainer>
+                    <ErrorMessageContainer>{errorMessage}</ErrorMessageContainer>
                     <button
                         disabled={isLoading}
                         type="submit"
                     >
                         {isLoading ? "Publicando..." : "Publicar"}
                     </button>
-                </ContainerButton>
+                </ContainerBottom>
             </form>
         </CreatePostContainer>
     );
 }
+
+const LocationStatusContainer = styled.span`
+    color: ${({ enabled }) => enabled ? "#238700" : "#949494"};
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    svg {
+        margin-right: 5px;
+    }
+    path {
+        fill: ${({ enabled }) => enabled ? "#238700" : "#949494"};
+    }
+`;
 
 const UserContainerCreatePost = styled(UserContainer)`
     @media(max-width: 610px) {
@@ -93,18 +118,21 @@ const UserContainerCreatePost = styled(UserContainer)`
     }
 `;
 
-const ContainerButton = styled.div`
+const ContainerBottom = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    p {
-        font-size: 17px !important;
-        margin: 0px 17px !important;
-        color: #d46363;
-        @media(max-width: 610px) {
-            font-size: 11px !important;
-        }
+`;
+
+const ErrorMessageContainer = styled.h4`
+    font-size: 14px;
+    font-weight: bold;
+    color: #d46363;
+    margin-right: 5px;
+    @media(max-width: 610px) {
+        font-size: 12px;
+        text-align: center;
     }
 `;
 

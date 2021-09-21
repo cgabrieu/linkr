@@ -8,12 +8,13 @@ import { renderPostsOrNot } from "../../../services/utils";
 import RenderPostsContext from "../../../contexts/RenderPostsContext";
 import useInterval from 'react-useinterval';
 
-export default function Timeline() {
+export default function TimelineRoute() {
   const [listPosts, setListPosts] = useState(null);
   const { user } = useContext(UserContext);
   const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
   useEffect(() => {
+    console.log("Entrou");
     getListPosts(user.token)
       .then((res) => {
         setListPosts(res.data.posts);

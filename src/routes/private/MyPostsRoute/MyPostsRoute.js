@@ -15,7 +15,6 @@ export default function MyPostsRoute() {
     getUserPosts(user.token, user.id)
       .then((res) => setListPosts(res.data.posts))
       .catch((err) => setListPosts(err.status));
-    return () => setRenderPosts(false);
   }, [renderPosts]);
 
   return (
