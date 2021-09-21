@@ -31,7 +31,7 @@ function LogIn(request) {
 }
 
 function getListPosts(token) {
-  const promise = axios.get(`${BASE_URL}/posts`, getConfig(token));
+  const promise = axios.get(`${BASE_URL}/following/posts`, getConfig(token));
   return promise;
 }
 
@@ -88,11 +88,11 @@ function putEditUserPost(postId, description, token) {
   return axios.put(`${BASE_URL}/posts/${postId}`, body, getConfig(token));
 }
 
-function toggleFollowAPI(token, userID, whatToDo){
+function toggleFollowAPI(token, userID, whatToDo) {
   return axios.post(`${BASE_URL}/users/${userID}/${whatToDo}`, '', getConfig(token));
 }
 
-function getUsersIFollow(token){
+function getUsersIFollow(token) {
   return axios.get(`${BASE_URL}/users/follows`, getConfig(token));
 }
 
