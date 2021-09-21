@@ -9,7 +9,7 @@ const Container = styled.div`
 `;
 
 const UserContainer = styled.div`
-    margin-right: 12px;
+    margin-right: 18px;
     display: flex;
     flex-direction: column;
     align-items: center; 
