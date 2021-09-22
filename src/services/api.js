@@ -30,8 +30,8 @@ function LogIn(request) {
   return promise;
 }
 
-function getListPosts(token) {
-  const promise = axios.get(`${BASE_URL}/following/posts`, getConfig(token));
+function getListPosts(token, lastPostID) {
+  const promise = axios.get(`${BASE_URL}/following/posts/?olderThan=${lastPostID}`, getConfig(token));
   return promise;
 }
 
