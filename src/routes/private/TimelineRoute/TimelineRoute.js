@@ -16,7 +16,7 @@ export default function Timeline() {
   const [hasMore, setHasMore] = useState(true);
   const [items, setItems] = useState(10);
   const [listPosts, setListPosts] = useState(null);
-  const [isFollowingSomeone, setIsFollowingSomeone] = useState(true);
+  const [isFollowingSomeone, setIsFollowingSomeone] = useState(false);
   const { user } = useContext(UserContext);
   const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
@@ -24,9 +24,10 @@ export default function Timeline() {
     getUsersIFollow(user.token)
       .then(res => {
         const followedUsers = res.data.users
-        if (followedUsers.length === 0) setIsFollowingSomeone(false)
+        if (followedUsers.length > 0) setIsFollowingSomeone(true)
       })
       .catch(err => setListPosts(err.status))
+
     getData();
     return () => setRenderPosts(false);
   }, [renderPosts]);
@@ -41,23 +42,26 @@ export default function Timeline() {
 
   function filterPosts(allPosts) {
     if (allPosts.length === 0) {
+      if (!isFollowingSomeone) {
+        setListPosts([])
+        return
+      }
       setHasMore(false);
-      return;
+      return
     }
     const postsFromFollowedUsers = allPosts.filter(post => post.user.id !== user.id);
-    const lastID = postsFromFollowedUsers[postsFromFollowedUsers.length - 1].id;
-    setLastPostID(lastID)
-    setItems(items + 10)
     if (listPosts === null) {
-      setListPosts(postsFromFollowedUsers);
+      setListPosts(postsFromFollowedUsers)
     } else {
       setListPosts(listPosts => [...listPosts, ...postsFromFollowedUsers]);
     }
+    const lastID = postsFromFollowedUsers[postsFromFollowedUsers.length - 1].id;
+    setLastPostID(lastID)
+    setItems(items + 10)
   }
 
   return (
     <Div>
-
       <Container>
         <PostContainer>
           <h1>timeline</h1>
@@ -67,7 +71,7 @@ export default function Timeline() {
             scrollThreshold={1}
             next={getData}
             hasMore={hasMore}
-            loader={listPosts === null ? "" : <LoadingSection isScrolling={true} />}
+            loader={listPosts !== null ? "" : <LoadingSection isScrolling={true} />}
             endMessage={
               <ScrollToTop
                 style={{
@@ -83,7 +87,6 @@ export default function Timeline() {
         </PostContainer>
       </Container >
     </Div >
-
   );
 }
 
