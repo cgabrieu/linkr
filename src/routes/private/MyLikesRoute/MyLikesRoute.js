@@ -25,25 +25,21 @@ export default function MyLikesRoute() {
   function getData() {
     getPostsUserLiked(user.token, lastPostID)
       .then(res => {
-        sortPostsDescendingId(res.data.posts)
+        const allPosts = res.data.posts;
+        if (allPosts.length === 0) {
+          setHasMore(false)
+          return
+        }
+        if (posts === null) {
+          setPosts(allPosts)
+        } else {
+          setPosts(posts => [...posts, ...allPosts]);
+        }
+        const lastID = allPosts[allPosts.length - 1].id
+        setLastPostID(lastID)
+        setItems(items + 10)
       })
       .catch(err => setPosts(err.status));
-  }
-
-  function sortPostsDescendingId(allPosts) {
-    if (allPosts.length === 0) {
-      setHasMore(false)
-      return
-    }
-    const orderedPosts = allPosts.sort((postA, postB) => postA.id < postB.id ? 1 : postA.id > postB.id ? -1 : 0);
-    if (posts === null) {
-      setPosts(orderedPosts)
-    } else {
-      setPosts(posts => [...posts, ...orderedPosts]);
-    }
-    const lastID = orderedPosts[orderedPosts.length - 1].id
-    setLastPostID(lastID)
-    setItems(items + 10)
   }
 
   return (
