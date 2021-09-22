@@ -75,7 +75,7 @@ export default function Timeline() {
             scrollThreshold={1}
             next={getData}
             hasMore={hasMore}
-            loader={listPosts === null ? "" : <LoadingSection isScrolling={true} />}
+            loader={lastPostID === 10000 ? "" : <LoadingSection isScrolling={true} />}
             endMessage={
               <ScrollToTop
                 style={{

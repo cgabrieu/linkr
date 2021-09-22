@@ -91,6 +91,11 @@ video {
   vertical-align: baseline;
 }
 
+div {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 
 article,
 aside,

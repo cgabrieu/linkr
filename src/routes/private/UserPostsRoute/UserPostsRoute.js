@@ -14,6 +14,7 @@ export default function UserPostsRoute() {
   const [hasMore, setHasMore] = useState(true);
   const [items, setItems] = useState(10);
   const [listPosts, setListPosts] = useState(null);
+  const [isFollowingSomeone, setIsFollowingSomeone] = useState(false)
   let userAux = '';
   const [username, setUsername] = useState("");
   const [avatar, setAvatar] = useState('');
@@ -31,7 +32,9 @@ export default function UserPostsRoute() {
         setAvatar(res.data.user.avatar)
         setUserId(res.data.user.id)
         getUsersIFollow(user.token).then((res) => {
-          amIFollowing(res.data.users);
+          const followedUsers = res.data.users;
+          if (followedUsers.length > 0) setIsFollowingSomeone(true);
+          amIFollowing(followedUsers);
         })
       })
       .catch((err) => setListPosts(err.status));
