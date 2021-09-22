@@ -91,9 +91,6 @@ video {
   vertical-align: baseline;
 }
 
-::-webkit-scrollbar {
-  width: 0px;
-}
 
 article,
 aside,

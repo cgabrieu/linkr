@@ -48,10 +48,17 @@ const HashtagLink = styled(Link)`
   color: #FFFFFF;
 `;
 
+const Div = styled.div`
+  & ::-webkit-scrollbar {
+    width: 0px;
+}
+`
+
 export {
     Container,
     UserContainer,
     UserPic,
     PostContainer,
-    HashtagLink
+    HashtagLink,
+    Div
 };

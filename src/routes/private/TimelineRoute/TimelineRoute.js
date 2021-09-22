@@ -1,12 +1,15 @@
 import "../../../styles/tooltip.css";
 import CreatePost from "./CreatePost";
-import { Container, PostContainer } from "../../../styles/styles";
+import { Container, Div, PostContainer } from "../../../styles/styles";
 import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { getUsersIFollow, getListPosts } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
 import RenderPostsContext from "../../../contexts/RenderPostsContext";
 import InfiniteScroll from 'react-infinite-scroll-component';
+import styled from "styled-components";
+import LoadingSection from "../../../components/LoadingSection";
+import ScrollToTop from "react-scroll-up";
 
 export default function Timeline() {
   const [lastPostID, setLastPostID] = useState(10000)
@@ -53,23 +56,35 @@ export default function Timeline() {
   }
 
   return (
-    <InfiniteScroll
-      dataLength={items}
-      scrollThreshold={1}
-      next={getData}
-      hasMore={hasMore}
-      loader={<h4 style={{ textAlign: 'center' }}>Carregando...</h4>}
-      endMessage={
-        <h1 style={{ textAlign: 'center' }}>Todos os posts foram exibidos</h1>
-      }>
+    <Div>
+
       <Container>
         <PostContainer>
           <h1>timeline</h1>
           <CreatePost />
-          {renderPostsOrNot(listPosts, isFollowingSomeone)}
-
+          <InfiniteScroll
+            dataLength={items}
+            scrollThreshold={1}
+            next={getData}
+            hasMore={hasMore}
+            loader={listPosts === null ? "" : <LoadingSection isScrolling={true} />}
+            endMessage={
+              <ScrollToTop
+                style={{
+                  position: 'initial',
+                  textAlign: 'center',
+                }}
+                showUnder={0}>
+                You have seen it all :) click here to scroll top
+              </ScrollToTop>
+            }>
+            {renderPostsOrNot(listPosts, isFollowingSomeone)}
+          </InfiniteScroll>
         </PostContainer>
-      </Container>
-    </InfiniteScroll>
+      </Container >
+    </Div >
+
   );
 }
+
+
