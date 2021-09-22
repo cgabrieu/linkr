@@ -13,7 +13,6 @@ export default function MyLikesRoute() {
   const [lastPostID, setLastPostID] = useState(10000)
   const [hasMore, setHasMore] = useState(true);
   const [items, setItems] = useState(10);
-
   const [posts, setPosts] = useState(null);
   const { user } = useContext(UserContext);
   const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
@@ -43,9 +42,7 @@ export default function MyLikesRoute() {
       setPosts(posts => [...posts, ...orderedPosts]);
     }
     const lastID = orderedPosts[orderedPosts.length - 1].id
-    console.log(lastID);
     setLastPostID(lastID)
-    setPosts(orderedPosts)
     setItems(items + 10)
   }
 

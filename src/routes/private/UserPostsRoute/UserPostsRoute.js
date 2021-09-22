@@ -4,9 +4,15 @@ import styled from "styled-components";
 import UserContext from "../../../contexts/UserContext";
 import { getUserInfo, getUserPosts, toggleFollowAPI, getUsersIFollow } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
-import { Container, PostContainer } from "../../../styles/styles";
+import { Container, Div, PostContainer } from "../../../styles/styles";
+import InfiniteScroll from "react-infinite-scroll-component";
+import LoadingSection from "../../../components/LoadingSection";
+import ScrollToTop from "react-scroll-up";
 
 export default function UserPostsRoute() {
+  const [lastPostID, setLastPostID] = useState(10000)
+  const [hasMore, setHasMore] = useState(true);
+  const [items, setItems] = useState(10);
   const [listPosts, setListPosts] = useState(null);
   let userAux = '';
   const [username, setUsername] = useState("");
@@ -29,12 +35,29 @@ export default function UserPostsRoute() {
         })
       })
       .catch((err) => setListPosts(err.status));
-    getUserPosts(user.token, id)
+
+    getData();
+  }, []);
+
+  function getData() {
+    getUserPosts(user.token, id, lastPostID)
       .then((res) => {
-        setListPosts(res.data.posts);
+        const allPosts = res.data.posts;
+        if (allPosts.length === 0) {
+          setHasMore(false)
+          return
+        }
+        if (listPosts === null) {
+          setListPosts(allPosts);
+        } else {
+          setListPosts(listPosts => [...listPosts, ...allPosts]);
+        }
+        const lastID = allPosts[allPosts.length - 1].id
+        setLastPostID(lastID)
+        setItems(items + 10)
       })
       .catch((err) => setListPosts(err.status));
-  }, []);
+  }
 
   function toggleIsFollowing() {
     setIsFollowing(!isFollowing);
@@ -55,18 +78,38 @@ export default function UserPostsRoute() {
   }
 
   return (
-    <Container>
-      <TopUserPage>
-        <NameAndPhoto>
-          <img src={avatar} />
-          <h1>{username}</h1>
-        </NameAndPhoto>
-        <FollowButton onClick={toggleIsFollowing} isFollowing={isFollowing}>{isFollowing ? 'Unfollow' : 'Follow'}</FollowButton>
-      </TopUserPage>
-      <PostContainer>
-        {renderPostsOrNot(listPosts)}
-      </PostContainer>
-    </Container>
+    <Div>
+      <Container>
+        <TopUserPage>
+          <NameAndPhoto>
+            <img src={avatar} />
+            <h1>{username}</h1>
+          </NameAndPhoto>
+          <FollowButton onClick={toggleIsFollowing} isFollowing={isFollowing}>{isFollowing ? 'Unfollow' : 'Follow'}</FollowButton>
+        </TopUserPage>
+        <PostContainer>
+          <InfiniteScroll
+            dataLength={items}
+            scrollThreshold={1}
+            next={getData}
+            hasMore={hasMore}
+            loader={listPosts === null ? "" : <LoadingSection isScrolling={true} />}
+            endMessage={
+              <ScrollToTop
+                style={{
+                  position: 'initial',
+                  textAlign: 'center',
+                }}
+                showUnder={0}>
+                You have seen it all :) click here to scroll top
+              </ScrollToTop>
+            }
+          >
+            {renderPostsOrNot(listPosts)}
+          </InfiniteScroll>
+        </PostContainer>
+      </Container>
+    </Div>
   );
 }
 
