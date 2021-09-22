@@ -5,12 +5,15 @@ import UserContext from "../../contexts/UserContext";
 import { getSearchedUser } from "../../services/api";
 import SearchedUser from "./SearchedUser";
 import { DebounceInput } from "react-debounce-input";
+import { useHistory } from "react-router-dom";
 
 export default function SearchBar() {
   const [searchContent, setSearchContent] = useState("");
   const [searchResult, setSearchResult] = useState([]);
 
   const { user } = useContext(UserContext);
+
+  const hst = useHistory();
 
   useEffect(() => {
     let isActive = true;
@@ -22,6 +25,10 @@ export default function SearchBar() {
 
   function submitSearch(e) {
     e.preventDefault();
+    const searchedUser = searchResult.find(
+      (usr) => usr.username === searchContent
+    );
+    if (searchedUser) hst.push(`/user/${searchedUser.id}`);
   }
 
   return (
@@ -44,7 +51,6 @@ export default function SearchBar() {
             key={key}
             user={user}
             setSearchContent={setSearchContent}
-            setSearchResult={setSearchResult}
           />
         ))}
       </List>

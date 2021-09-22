@@ -1,12 +1,11 @@
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-export default function SearchedUser({ user, setSearchContent, setSearchResult }) {
+export default function SearchedUser({ user, setSearchContent }) {
   const hst = useHistory();
 
   const goToUser = () => {
     setSearchContent("");
-    setSearchResult([]);
     hst.push(`/user/${user.id}`);
   };
 
@@ -14,6 +13,7 @@ export default function SearchedUser({ user, setSearchContent, setSearchResult }
     <Flex onClick={goToUser}>
       <img src={user.avatar} alt={`Foto de perfil de ${user.username}`} />
       <strong>{user.username}</strong>
+      {user.isFollowingLoggedUser ? <Following>• following</Following> : null}
     </Flex>
   );
 }
@@ -37,4 +37,11 @@ const Flex = styled.li`
     font-weight: 400;
     color: #515151;
   }
+`;
+
+const Following = styled.span`
+  font-size: 19px;
+  line-height: 23px;
+  font-weight: 400;
+  color: #c5c5c5;
 `;
