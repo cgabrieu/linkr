@@ -76,8 +76,8 @@ function getUserInfo(token, userId) {
   return axios.get(`${BASE_URL}/users/${userId}`, getConfig(token));
 }
 
-function getPostsUserLiked(token) {
-  const promise = axios.get(`${BASE_URL}/posts/liked`, getConfig(token));
+function getPostsUserLiked(token, lastPostID) {
+  const promise = axios.get(`${BASE_URL}/posts/liked/?olderThan=${lastPostID}`, getConfig(token));
   return promise;
 }
 

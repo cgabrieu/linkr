@@ -7,7 +7,6 @@ import { getUsersIFollow, getListPosts } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
 import RenderPostsContext from "../../../contexts/RenderPostsContext";
 import InfiniteScroll from 'react-infinite-scroll-component';
-import styled from "styled-components";
 import LoadingSection from "../../../components/LoadingSection";
 import ScrollToTop from "react-scroll-up";
 
@@ -71,7 +70,7 @@ export default function Timeline() {
             scrollThreshold={1}
             next={getData}
             hasMore={hasMore}
-            loader={listPosts !== null ? "" : <LoadingSection isScrolling={true} />}
+            loader={listPosts === null ? "" : <LoadingSection isScrolling={true} />}
             endMessage={
               <ScrollToTop
                 style={{
