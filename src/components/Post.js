@@ -10,7 +10,8 @@ import TrashCan from '../assets/TrashCan.svg';
 import Modal from 'react-modal';
 import { Hashtags, getHashtagsLowerCase } from "../services/utils";
 import RenderPostsContext from '../contexts/RenderPostsContext';
-import UserLikeContainer from './UserLikeContainer'
+import UserLikeContainer from './UserLikeContainer';
+import ReactPlayer from 'react-player/youtube'
 
 Modal.setAppElement('#root');
 
@@ -56,6 +57,11 @@ export default function Post({ idPost, userPost, likes, content }) {
 				});
 		}
 	};
+
+	function isYoutube(urlVideo) {
+		const rule = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/
+		return rule.test(urlVideo);
+	}
 
 	useEffect(() => {
 		if (isEditing) {
@@ -112,9 +118,20 @@ export default function Post({ idPost, userPost, likes, content }) {
 						onKeyDown={editThisPost}
 						ref={editFieldRef}
 					/>}
-				<Link to={{ pathname: content.link }} target="_blank">
-					<ContainerLinkPreview content={content} />
-				</Link>
+				{isYoutube(content.link) ?
+					<>
+						<ReactPlayer
+							url={content.link}
+							width='100%'
+							controls='true'
+						/>
+						<LinkYoutube href={content.link} target='_blank'>{content.link}</LinkYoutube>
+					</>
+					:
+					<Link to={{ pathname: content.link }} target="_blank">
+						<ContainerLinkPreview content={content} />
+					</Link>
+				}
 			</MainPostContainer>
 		</PostContainer>
 	);
@@ -150,8 +167,10 @@ const TextAreaPostDescription = styled.textarea`
 `;
 
 const MainPostContainer = styled.div`
+	width: 100%;
     max-width: 505px;
     @media(max-width: 610px) {
+		width: 100%;
         max-width: 510px;
     }
 `;
@@ -248,3 +267,10 @@ const ButtonCancel = styled(Button)`
 const ButtonDelete = styled(Button)`
 	color: #FFFFFF;
 `;
+
+const LinkYoutube = styled.a`
+	font-size: 17px;
+	color: rgb(183, 183, 183);
+	display: flex;
+	padding-top: 20px;
+`

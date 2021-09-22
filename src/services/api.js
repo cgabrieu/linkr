@@ -96,6 +96,8 @@ function getUsersIFollow(token) {
   return axios.get(`${BASE_URL}/users/follows`, getConfig(token));
 }
 
+let getYoutubeId = require('get-youtube-id');
+
 export {
   SignUp,
   LogIn,
@@ -111,6 +113,7 @@ export {
   getPostsUserLiked,
   putEditUserPost,
   toggleFollowAPI,
-  getUsersIFollow
+  getUsersIFollow,
+  getYoutubeId
 };
 
