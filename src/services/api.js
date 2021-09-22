@@ -104,8 +104,8 @@ function getUsersIFollow(token) {
   return axios.get(`${BASE_URL}/users/follows`, getConfig(token));
 }
 
-function getSearchedUser(token) {
-  return axios.get(`${BASE_URL}/users/search`, getConfig(token));
+function getSearchedUser(token, username) {
+  return axios.get(`${BASE_URL}/users/search?username=${username}`, getConfig(token));
 }
 
 export {
