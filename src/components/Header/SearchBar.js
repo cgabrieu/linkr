@@ -4,6 +4,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import UserContext from "../../contexts/UserContext";
 import { getSearchedUser } from "../../services/api";
 import SearchedUser from "./SearchedUser";
+import { DebounceInput } from "react-debounce-input";
 
 export default function SearchBar() {
   const [searchContent, setSearchContent] = useState("");
@@ -26,8 +27,9 @@ export default function SearchBar() {
   return (
     <SearchContainer>
       <Form onSubmit={submitSearch}>
-        <input
-          type="text"
+        <DebounceInput
+          minLength={3}
+          debounceTimeout={300}
           value={searchContent}
           onChange={(e) => setSearchContent(e.target.value)}
           placeholder="Search for people and friends"
@@ -36,9 +38,14 @@ export default function SearchBar() {
           <IoSearchOutline fontSize="22px" color="#c6c6c6" />
         </button>
       </Form>
-      <List display={(searchContent ? "block" : "none")}>
+      <List display={searchContent ? "block" : "none"}>
         {searchResult.map((user, key) => (
-          <SearchedUser key={key} user={user} setSearchContent={setSearchContent} />
+          <SearchedUser
+            key={key}
+            user={user}
+            setSearchContent={setSearchContent}
+            setSearchResult={setSearchResult}
+          />
         ))}
       </List>
     </SearchContainer>
@@ -85,7 +92,7 @@ const Form = styled.form`
 `;
 
 const List = styled.ul`
-  display: ${props => props.display};
+  display: ${(props) => props.display};
   width: 100%;
   max-height: 230px;
   background-color: #e7e7e7;

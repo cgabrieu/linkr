@@ -1,13 +1,14 @@
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-export default function SearchedUser({ user, setSearchContent }) {
+export default function SearchedUser({ user, setSearchContent, setSearchResult }) {
   const hst = useHistory();
 
-  function goToUser() {
+  const goToUser = () => {
     setSearchContent("");
+    setSearchResult([]);
     hst.push(`/user/${user.id}`);
-  }
+  };
 
   return (
     <Flex onClick={goToUser}>
@@ -22,6 +23,7 @@ const Flex = styled.li`
   align-items: center;
   gap: 15px;
   margin: 15px 15px 0;
+  cursor: pointer;
 
   img {
     width: 39px;
