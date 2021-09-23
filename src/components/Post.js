@@ -11,6 +11,7 @@ import Modal from 'react-modal';
 import { Hashtags, getHashtagsLowerCase } from "../services/utils";
 import RenderPostsContext from '../contexts/RenderPostsContext';
 import UserLikeContainer from './UserLikeContainer'
+import { FaRetweet } from 'react-icons/fa';
 
 Modal.setAppElement('#root');
 
@@ -67,56 +68,64 @@ export default function Post({ idPost, userPost, likes, content }) {
 	}, [isEditing]);
 
 	return (
-		<PostContainer>
-			<UserContainer>
-				<UserLikeContainer userPost={userPost} idPost={idPost} likes={likes} />
-			</UserContainer>
-			<MainPostContainer>
-				<TopContainer>
-					<UserName>{username}</UserName>
-					{(userPost.id === user.id) &&
-						<MyPostIcons>
-							<img onClick={toggleModal} src={TrashCan} alt='Delete post' />
-							<img
-								onClick={() => {
-									setIsEditing(!isEditing);
-									setTextareaDescription(content.text);
-								}}
-								src={Edit} alt='Edit post'
-							/>
-						</MyPostIcons>}
-					<Modal
-						isOpen={isModalOpen}
-						onRequestClose={toggleModal}
-						style={modalStyles}
-					>
-						<ModalContent>
-							<ModalQuestion>Tem certeza que quer excluir esta publicação?</ModalQuestion>
-							<ContainerButtonsModal>
-								<ButtonCancel disabled={isLoading} onClick={toggleModal}><p>Não, voltar</p></ButtonCancel>
-								<ButtonDelete disabled={isLoading} onClick={deleteThisPost}><p>Sim, apagar</p></ButtonDelete>
-							</ContainerButtonsModal>
-						</ModalContent>
-					</Modal>
-				</TopContainer>
-				{!isEditing ?
-					<PostDescription>
-						<Hashtags>
-							{content.text}
-						</Hashtags>
-					</PostDescription> :
-					<TextAreaPostDescription
-						value={textareaDescription}
-						disabled={isLoading}
-						onChange={(e) => setTextareaDescription(e.target.value)}
-						onKeyDown={editThisPost}
-						ref={editFieldRef}
-					/>}
-				<Link to={{ pathname: content.link }} target="_blank">
-					<ContainerLinkPreview content={content} />
-				</Link>
-			</MainPostContainer>
-		</PostContainer>
+		<>
+			<PostContainer>
+				<RepostContainer>
+					<div>
+						<RepostButton />
+						<p>Re-posted by <strong>you</strong></p>
+					</div>
+				</RepostContainer>
+				<UserContainer>
+					<UserLikeContainer userPost={userPost} idPost={idPost} likes={likes} />
+				</UserContainer>
+				<MainPostContainer>
+					<TopContainer>
+						<UserName>{username}</UserName>
+						{(userPost.id === user.id) &&
+							<MyPostIcons>
+								<img onClick={toggleModal} src={TrashCan} alt='Delete post' />
+								<img
+									onClick={() => {
+										setIsEditing(!isEditing);
+										setTextareaDescription(content.text);
+									}}
+									src={Edit} alt='Edit post'
+								/>
+							</MyPostIcons>}
+						<Modal
+							isOpen={isModalOpen}
+							onRequestClose={toggleModal}
+							style={modalStyles}
+						>
+							<ModalContent>
+								<ModalQuestion>Tem certeza que quer excluir esta publicação?</ModalQuestion>
+								<ContainerButtonsModal>
+									<ButtonCancel disabled={isLoading} onClick={toggleModal}><p>Não, voltar</p></ButtonCancel>
+									<ButtonDelete disabled={isLoading} onClick={deleteThisPost}><p>Sim, apagar</p></ButtonDelete>
+								</ContainerButtonsModal>
+							</ModalContent>
+						</Modal>
+					</TopContainer>
+					{!isEditing ?
+						<PostDescription>
+							<Hashtags>
+								{content.text}
+							</Hashtags>
+						</PostDescription> :
+						<TextAreaPostDescription
+							value={textareaDescription}
+							disabled={isLoading}
+							onChange={(e) => setTextareaDescription(e.target.value)}
+							onKeyDown={editThisPost}
+							ref={editFieldRef}
+						/>}
+					<Link to={{ pathname: content.link }} target="_blank">
+						<ContainerLinkPreview content={content} />
+					</Link>
+				</MainPostContainer>
+			</PostContainer>
+		</>
 	);
 };
 
@@ -126,11 +135,46 @@ const PostContainer = styled.div`
     border-radius: 16px;
     padding: 18px 20px 20px 18px;
     display: flex;
-    margin-bottom: 16px;
+    margin-bottom: 35px;
+		margin-top: 50px;
+		position: relative;
     @media(max-width: 610px) {
         border-radius: 0;
     }
 `;
+
+const RepostButton = styled(FaRetweet)`
+	width: 20px;
+  height: 18px;
+  cursor: pointer;
+`
+
+const RepostContainer = styled.div`
+	position: absolute;
+	background-color: #1E1E1E;
+	height: 100px;
+	width: 100%;
+	bottom: 175px;
+	left: 0;
+	border-radius: 16px;
+	z-index: -1;
+
+	div {
+		margin-top: 7px;
+		margin-left: 12px;
+		display: flex;
+		align-items: center;
+		gap: 5px;
+
+		p {
+			font-size: 13px;
+			
+			strong {
+				font-weight: 700;
+			}
+		}
+	}
+`
 
 const TopContainer = styled.div`
     display: flex;
