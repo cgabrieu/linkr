@@ -12,7 +12,7 @@ export default function CreatePost() {
     const { user } = useContext(UserContext);
     const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
-    const [location, setLocation] = useState(false);
+    const [location, setLocation] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [inputFields, setInputFields] = useState({
@@ -31,7 +31,7 @@ export default function CreatePost() {
         if (!validateInputs()) return;
         setIsLoading(true);
         const { link, description } = inputFields;
-        postPublish(link, getHashtagsLowerCase(description), user.token)
+        postPublish(link, getHashtagsLowerCase(description), location, user.token)
             .then(() => {
                 setIsLoading(false);
                 setInputFields({ link: "", description: "" });
@@ -53,17 +53,16 @@ export default function CreatePost() {
         return true;
     }
 
-    const getLocation = () => {
+    const handleLocation = () => {
         if ('geolocation' in navigator) {
             navigator.geolocation.getCurrentPosition((pos) => {
-                console.log(pos);
-                const { latitude, longitude } = pos.coords;
-                setLocation(!location);
+                console.log(pos.coords);
+                if (location !== null) setLocation(null);
+                else setLocation(pos.coords);
                 setErrorMessage("");
-                return [latitude, longitude];
             }, () => {
                 setErrorMessage("Não foi possível obter a localização.");
-                setLocation(false);
+                setLocation(null);
             });
         } else alert("Seu navegador não tem suporte a este recurso.");
     }
@@ -92,11 +91,11 @@ export default function CreatePost() {
                 />
                 <ContainerBottom>
                     <LocationStatusContainer
-                        enabled={location}
-                        onClick={getLocation}
+                        enabled={location !== null}
+                        onClick={handleLocation}
                     >
                         <LocationIcon />
-                        {location ?
+                        {(location !== null) ?
                             "Localização ativada" :
                             "Localização desativada"}
                     </LocationStatusContainer>
