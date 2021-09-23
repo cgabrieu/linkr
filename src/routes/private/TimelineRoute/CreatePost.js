@@ -62,6 +62,7 @@ export default function CreatePost() {
                 setErrorMessage("");
                 return [latitude, longitude];
             }, () => {
+                setErrorMessage("Não foi possível obter a localização.");
                 setLocation(false);
             });
         } else alert("Seu navegador não tem suporte a este recurso.");
