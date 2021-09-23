@@ -11,10 +11,14 @@ import Modal from 'react-modal';
 import { Hashtags, getHashtagsLowerCase } from "../services/utils";
 import RenderPostsContext from '../contexts/RenderPostsContext';
 import UserLikeContainer from './UserLikeContainer'
+import { ReactComponent as PinPointIcon } from "../assets/PinPoint.svg"
+
 
 Modal.setAppElement('#root');
 
-export default function Post({ idPost, userPost, likes, content }) {
+export default function Post({ content }) {
+
+	const { id, user: userPost, likes, geolocation } = content;
 
 	const { username } = userPost;
 	const { user } = useContext(UserContext);
@@ -31,7 +35,7 @@ export default function Post({ idPost, userPost, likes, content }) {
 
 	function deleteThisPost() {
 		setIsLoading(true);
-		deletePost(user.token, idPost).then(() => {
+		deletePost(user.token, id).then(() => {
 			setIsLoading(false);
 			toggleModal();
 			getListPosts(user.token).then(() => {
@@ -44,7 +48,7 @@ export default function Post({ idPost, userPost, likes, content }) {
 		if (e.key === 'Escape') setIsEditing(false);
 		else if (e.key === 'Enter') {
 			setIsLoading(true);
-			putEditUserPost(idPost, getHashtagsLowerCase(textareaDescription), user.token)
+			putEditUserPost(id, getHashtagsLowerCase(textareaDescription), user.token)
 				.then(() => {
 					setIsEditing(false);
 					setIsLoading(false);
@@ -69,11 +73,17 @@ export default function Post({ idPost, userPost, likes, content }) {
 	return (
 		<PostContainer>
 			<UserContainer>
-				<UserLikeContainer userPost={userPost} idPost={idPost} likes={likes} />
+				<UserLikeContainer userPost={userPost} idPost={id} likes={likes} />
 			</UserContainer>
 			<MainPostContainer>
 				<TopContainer>
-					<UserName>{username}</UserName>
+					<UserName>
+						<p>{username}</p>
+						{geolocation && 
+						<PinPointIcon 
+							onClick={() => console.log(geolocation)}
+						/>}
+					</UserName>
 					{(userPost.id === user.id) &&
 						<MyPostIcons>
 							<img onClick={toggleModal} src={TrashCan} alt='Delete post' />
@@ -168,11 +178,20 @@ const PostDescription = styled.div`
     }
 `;
 
-const UserName = styled.p`
-	width: 80%;
-    font-size: 19px;
-	overflow: hidden;
-  	text-overflow: ellipsis;
+const UserName = styled.div`
+	display: flex;
+	align-items: center;
+	width: 100%;
+	p {
+		max-width: 50%;
+		font-size: 19px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	svg {
+		margin-left: 10px;
+		cursor: pointer;
+	}
 `;
 
 const MyPostIcons = styled.div`
