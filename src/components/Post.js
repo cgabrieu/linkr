@@ -144,6 +144,8 @@ const PostContainer = styled.div`
     padding: 18px 20px 20px 18px;
     display: flex;
     margin-bottom: 16px;
+	overflow-wrap: break-word;
+
     @media(max-width: 610px) {
         border-radius: 0;
     }
