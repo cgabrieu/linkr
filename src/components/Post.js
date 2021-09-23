@@ -18,7 +18,7 @@ Modal.setAppElement('#root');
 
 export default function Post({ content }) {
 
-	const { id, user: userPost, likes, geolocation } = content;
+	const { id, user: userPost, likes, geolocation, link, text } = content;
 
 	const { username } = userPost;
 	const { user } = useContext(UserContext);
@@ -26,7 +26,7 @@ export default function Post({ content }) {
 	const [isLoading, setIsLoading] = useState(false);
 	const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 	const [isEditing, setIsEditing] = useState(false);
-	const [textareaDescription, setTextareaDescription] = useState(content.text);
+	const [textareaDescription, setTextareaDescription] = useState(text);
 	const editFieldRef = useRef();
 
 	function toggleModal() {
@@ -90,7 +90,7 @@ export default function Post({ content }) {
 							<img
 								onClick={() => {
 									setIsEditing(!isEditing);
-									setTextareaDescription(content.text);
+									setTextareaDescription(text);
 								}}
 								src={Edit} alt='Edit post'
 							/>
@@ -112,7 +112,7 @@ export default function Post({ content }) {
 				{!isEditing ?
 					<PostDescription>
 						<Hashtags>
-							{content.text}
+							{text}
 						</Hashtags>
 					</PostDescription> :
 					<TextAreaPostDescription
@@ -122,7 +122,7 @@ export default function Post({ content }) {
 						onKeyDown={editThisPost}
 						ref={editFieldRef}
 					/>}
-				<Link to={{ pathname: content.link }} target="_blank">
+				<Link to={{ pathname: link }} target="_blank">
 					<ContainerLinkPreview content={content} />
 				</Link>
 			</MainPostContainer>

@@ -42,7 +42,14 @@ function getTrendings(token) {
 function postPublish(link, description, location, token) {
   const body = () => (
     (location !== null) 
-    ? { text: description, link: link, geolocation: location }
+    ? { 
+        text: description,
+        link: link, 
+        geolocation: { 
+          latitude: location.latitude,
+          longitude: location.longitude 
+        } 
+      }
     : { text: description, link: link }
   );
   return axios.post(`${BASE_URL}/posts`, body(), getConfig(token));
