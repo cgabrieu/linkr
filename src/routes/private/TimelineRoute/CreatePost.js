@@ -12,7 +12,7 @@ export default function CreatePost() {
     const { user } = useContext(UserContext);
     const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
-    const [hasLocation, setHasLocation] = useState(true);
+    const [location, setLocation] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [inputFields, setInputFields] = useState({
@@ -53,6 +53,20 @@ export default function CreatePost() {
         return true;
     }
 
+    const getLocation = () => {
+        if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition((pos) => {
+                console.log(pos);
+                const { latitude, longitude } = pos.coords;
+                setLocation(!location);
+                setErrorMessage("");
+                return [latitude, longitude];
+            }, () => {
+                setLocation(false);
+            });
+        } else alert("Seu navegador não tem suporte a este recurso.");
+    }
+
     return (
         <CreatePostContainer>
             <UserContainerCreatePost>
@@ -77,11 +91,11 @@ export default function CreatePost() {
                 />
                 <ContainerBottom>
                     <LocationStatusContainer
-                        enabled={hasLocation}
-                        onClick={() => setHasLocation(!hasLocation)}
+                        enabled={location}
+                        onClick={getLocation}
                     >
                         <LocationIcon />
-                        {hasLocation ?
+                        {location ?
                             "Localização ativada" :
                             "Localização desativada"}
                     </LocationStatusContainer>
