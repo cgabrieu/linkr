@@ -7,14 +7,11 @@ import ContainerLinkPreview from "./ContainerLinkPreview";
 import { deletePost, getListPosts, putEditUserPost } from "../services/api";
 import Edit from '../assets/Edit.svg';
 import TrashCan from '../assets/TrashCan.svg';
-import Modal from 'react-modal';
 import { Hashtags, getHashtagsLowerCase } from "../services/utils";
 import RenderPostsContext from '../contexts/RenderPostsContext';
 import UserLikeContainer from './UserLikeContainer'
 import { ReactComponent as PinPointIcon } from "../assets/PinPoint.svg"
-
-
-Modal.setAppElement('#root');
+import ContainerModal from "./ContainerModal" 
 
 export default function Post({ content }) {
 
@@ -22,22 +19,19 @@ export default function Post({ content }) {
 
 	const { username } = userPost;
 	const { user } = useContext(UserContext);
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+	const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 	const [isEditing, setIsEditing] = useState(false);
 	const [textareaDescription, setTextareaDescription] = useState(text);
 	const editFieldRef = useRef();
 
-	function toggleModal() {
-		setIsModalOpen(!isModalOpen);
-	}
-
 	function deleteThisPost() {
 		setIsLoading(true);
 		deletePost(user.token, id).then(() => {
 			setIsLoading(false);
-			toggleModal();
+			setIsDeleteModalOpen(false);
 			getListPosts(user.token).then(() => {
 				setRenderPosts(!renderPosts);
 			}).catch(() => alert('Não foi possível excluir o post'));
@@ -79,14 +73,14 @@ export default function Post({ content }) {
 				<TopContainer>
 					<UserName>
 						<p>{username}</p>
-						{geolocation && 
-						<PinPointIcon 
-							onClick={() => console.log(geolocation)}
-						/>}
+						{geolocation &&
+							<PinPointIcon
+								onClick={() => setIsLocationModalOpen(true)}
+							/>}
 					</UserName>
 					{(userPost.id === user.id) &&
 						<MyPostIcons>
-							<img onClick={toggleModal} src={TrashCan} alt='Delete post' />
+							<img onClick={() => setIsDeleteModalOpen(true)} src={TrashCan} alt='Delete post' />
 							<img
 								onClick={() => {
 									setIsEditing(!isEditing);
@@ -95,19 +89,6 @@ export default function Post({ content }) {
 								src={Edit} alt='Edit post'
 							/>
 						</MyPostIcons>}
-					<Modal
-						isOpen={isModalOpen}
-						onRequestClose={toggleModal}
-						style={modalStyles}
-					>
-						<ModalContent>
-							<ModalQuestion>Tem certeza que quer excluir esta publicação?</ModalQuestion>
-							<ContainerButtonsModal>
-								<ButtonCancel disabled={isLoading} onClick={toggleModal}><p>Não, voltar</p></ButtonCancel>
-								<ButtonDelete disabled={isLoading} onClick={deleteThisPost}><p>Sim, apagar</p></ButtonDelete>
-							</ContainerButtonsModal>
-						</ModalContent>
-					</Modal>
 				</TopContainer>
 				{!isEditing ?
 					<PostDescription>
@@ -126,6 +107,16 @@ export default function Post({ content }) {
 					<ContainerLinkPreview content={content} />
 				</Link>
 			</MainPostContainer>
+			<ContainerModal 
+				username={username}
+				isLoading={isLoading}
+				isDeleteModalOpen={isDeleteModalOpen}
+				setIsDeleteModalOpen={setIsDeleteModalOpen}
+				isLocationModalOpen={isLocationModalOpen}
+				setIsLocationModalOpen={setIsLocationModalOpen}
+				deleteThisPost={deleteThisPost}
+				geolocation={geolocation}
+			/>
 		</PostContainer>
 	);
 };
@@ -201,69 +192,4 @@ const MyPostIcons = styled.div`
         margin-left: 10px;
 		cursor: pointer;
     }
-`;
-
-const modalStyles = {
-	content: {
-		top: '50%',
-		left: '50%',
-		right: 'auto',
-		bottom: 'auto',
-		marginRight: '-50%',
-		transform: 'translate(-50%, -50%)',
-		backgroundColor: '#333333',
-		borderRadius: '50px',
-	}
-};
-
-const ModalContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    width: 600px;
-    height: 260px;
-	font-size: 34px;
-	padding: 40px 50px;
-	@media(max-width: 610px) {
-		font-size: 22px;
-        padding: 10px 20px;
-		width: 300px;
-    	height: 160px;
-    }
-`;
-
-const ModalQuestion = styled.p`
-    font-family: 'Lato', sans-serif;
-    font-weight: 700;
-    color: rgb(255, 255, 255);
-	text-align: center;
-	
-`;
-
-const ContainerButtonsModal = styled.div`
-	margin-top: 40px;
-	@media(max-width: 610px) {
-		margin-top: 10px;	
-    }
-`;
-
-const Button = styled.button`
-	margin: 0 13px;
-	padding: 8px 23px;
-	font-size: 18px;
-	font-weight: bold;
-	@media(max-width: 610px) {
-		font-size: 14px;
-        padding: 6px 15px;
-    }
-`;
-
-const ButtonCancel = styled(Button)`
-	color: #1877F2;
-	background-color: #FFFFFF;
-`;
-
-const ButtonDelete = styled(Button)`
-	color: #FFFFFF;
 `;

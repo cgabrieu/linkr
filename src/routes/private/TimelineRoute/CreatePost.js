@@ -56,7 +56,6 @@ export default function CreatePost() {
     const handleLocation = () => {
         if ('geolocation' in navigator) {
             navigator.geolocation.getCurrentPosition((pos) => {
-                console.log(pos.coords);
                 if (location !== null) setLocation(null);
                 else setLocation(pos.coords);
                 setErrorMessage("");
