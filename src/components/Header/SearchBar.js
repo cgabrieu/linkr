@@ -17,9 +17,11 @@ export default function SearchBar() {
 
   useEffect(() => {
     let isActive = true;
-    getSearchedUser(user.token, searchContent)
-      .then((res) => (isActive ? setSearchResult([...res.data.users]) : null))
-      .catch((err) => console.log(err.response));
+    if (searchContent.length > 2) {
+      getSearchedUser(user.token, searchContent)
+        .then((res) => (isActive ? setSearchResult([...res.data.users]) : null))
+        .catch((err) => console.log(err.response));
+    }
     return () => (isActive = false);
   }, [user, searchContent]);
 

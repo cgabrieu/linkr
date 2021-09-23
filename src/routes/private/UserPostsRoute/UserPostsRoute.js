@@ -34,7 +34,7 @@ export default function UserPostsRoute() {
         setListPosts(res.data.posts);
       })
       .catch((err) => setListPosts(err.status));
-  }, []);
+  }, [id]);
 
   function toggleIsFollowing() {
     setIsFollowing(!isFollowing);
@@ -58,7 +58,7 @@ export default function UserPostsRoute() {
     <Container>
       <TopUserPage>
         <NameAndPhoto>
-          <img src={avatar} />
+          <img src={avatar} alt="Foto de perfil"/>
           <h1>{username}</h1>
         </NameAndPhoto>
         <FollowButton onClick={toggleIsFollowing} isFollowing={isFollowing}>{isFollowing ? 'Unfollow' : 'Follow'}</FollowButton>
