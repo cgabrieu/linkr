@@ -30,9 +30,12 @@ function LogIn(request) {
   return promise;
 }
 
-function getListPosts(token, lastPostID) {
-  const promise = axios.get(`${BASE_URL}/following/posts/?olderThan=${lastPostID}`, getConfig(token));
-  return promise;
+function getListPosts(token, lastPostID = null) {
+  if (!lastPostID) {
+    return axios.get(`${BASE_URL}/following/posts/`, getConfig(token));
+  } else {
+    return axios.get(`${BASE_URL}/following/posts/?olderThan=${lastPostID}`, getConfig(token));
+  }
 }
 
 function getTrendings(token) {
@@ -55,8 +58,12 @@ function postDislike(token, postId) {
   return axios.post(`${BASE_URL}/posts/${postId}/dislike`, '', getConfig(token))
 }
 
-function getUserPosts(token, userId, lastPostID) {
-  return axios.get(`${BASE_URL}/users/${userId}/posts/?olderThan=${lastPostID}`, getConfig(token));
+function getUserPosts(token, userId, lastPostID = null) {
+  if (!lastPostID) {
+    return axios.get(`${BASE_URL}/users/${userId}/posts/`, getConfig(token))
+  } else {
+    return axios.get(`${BASE_URL}/users/${userId}/posts/?olderThan=${lastPostID}`, getConfig(token))
+  }
 }
 
 function getHashtagPosts(token, hashtag) {
@@ -76,9 +83,12 @@ function getUserInfo(token, userId) {
   return axios.get(`${BASE_URL}/users/${userId}`, getConfig(token));
 }
 
-function getPostsUserLiked(token, lastPostID) {
-  const promise = axios.get(`${BASE_URL}/posts/liked/?olderThan=${lastPostID}`, getConfig(token));
-  return promise;
+function getPostsUserLiked(token, lastPostID = null) {
+  if (!lastPostID) {
+    return axios.get(`${BASE_URL}/posts/liked`, getConfig(token))
+  } else {
+    return axios.get(`${BASE_URL}/posts/liked/?olderThan=${lastPostID}`, getConfig(token))
+  }
 }
 
 function putEditUserPost(postId, description, token) {

@@ -11,7 +11,7 @@ import LoadingSection from "../../../components/LoadingSection";
 import ScrollToTop from "react-scroll-up";
 
 export default function Timeline() {
-  const [lastPostID, setLastPostID] = useState(10000)
+  const [lastPostID, setLastPostID] = useState(null)
   const [hasMore, setHasMore] = useState(true);
   const [items, setItems] = useState(10);
   const [listPosts, setListPosts] = useState(null);

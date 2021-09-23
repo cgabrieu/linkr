@@ -9,12 +9,11 @@ import ScrollToTop from "react-scroll-up";
 import LoadingSection from "../../../components/LoadingSection";
 
 export default function MyPostsRoute() {
-  const [lastPostID, setLastPostID] = useState(10000)
+  const [lastPostID, setLastPostID] = useState(null)
   const [hasMore, setHasMore] = useState(true);
   const [items, setItems] = useState(10)
   const [listPosts, setListPosts] = useState(null);
   const [isFollowingSomeone, setIsFollowingSomeone] = useState(false);
-
   const { user } = useContext(UserContext);
   const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
