@@ -8,7 +8,7 @@ import { UserContainer, UserPic } from "../styles/styles";
 import { postLike, postDislike, getUserInfo } from "../services/api";
 import { useHistory } from "react-router-dom";
 
-export default function UserLikeContainer({ userPost, idPost, likes, qtyReposts }) {
+export default function UserLikeContainer({ userPost, idPost, likes, repostCount }) {
 
   let history = useHistory();
   const { username, avatar } = userPost;
@@ -120,7 +120,7 @@ export default function UserLikeContainer({ userPost, idPost, likes, qtyReposts 
       </LikesInfo>
       <RepostButton onClick={() => console.log("compartilhou")} />
       <LikesInfo data-tip data-for={1}>
-        {"10 re-posts"}
+        {repostCount === 1 ? `${repostCount} re-post` : `${repostCount} re-posts`}
       </LikesInfo>
       <ReactTooltip
         place='bottom'

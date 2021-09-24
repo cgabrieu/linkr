@@ -77,7 +77,7 @@ export default function Post({ idPost, userPost, likes, content }) {
 					</div>
 				</RepostContainer>
 				<UserContainer>
-					<UserLikeContainer userPost={userPost} idPost={idPost} likes={likes} />
+					<UserLikeContainer userPost={userPost} idPost={idPost} likes={likes} repostCount={repostCount} />
 				</UserContainer>
 				<MainPostContainer>
 					<TopContainer>
