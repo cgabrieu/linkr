@@ -13,18 +13,10 @@ export default function MyPostsRoute() {
   const [hasMore, setHasMore] = useState(true);
   const [items, setItems] = useState(10)
   const [listPosts, setListPosts] = useState(null);
-  const [isFollowingSomeone, setIsFollowingSomeone] = useState(false);
   const { user } = useContext(UserContext);
   const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
   useEffect(() => {
-    getUsersIFollow(user.token)
-      .then(res => {
-        const followedUsers = res.data.users
-        if (followedUsers.length > 0) setIsFollowingSomeone(true)
-      })
-      .catch(err => setListPosts(err.status))
-
     getData();
     return () => setRenderPosts(false);
   }, [renderPosts]);
@@ -33,8 +25,9 @@ export default function MyPostsRoute() {
     getUserPosts(user.token, user.id, lastPostID)
       .then((res) => {
         const allPosts = res.data.posts;
+        console.log(allPosts);
         if (allPosts.length === 0) {
-          if (!isFollowingSomeone) {
+          if (!lastPostID) {
             setListPosts([]);
             return
           }
@@ -62,7 +55,7 @@ export default function MyPostsRoute() {
             scrollThreshold={1}
             next={getData}
             hasMore={hasMore}
-            loader={listPosts !== null ? "" : <LoadingSection isScrolling={true} />}
+            loader={listPosts === null ? "" : <LoadingSection isScrolling={true} />}
             endMessage={
               <ScrollToTop
                 style={{
