@@ -40,7 +40,6 @@ export default function Timeline() {
   }
 
   function filterPosts(allPosts) {
-    console.log(allPosts);
     if (allPosts.length === 0) {
       if (!isFollowingSomeone) {
         setListPosts([])
@@ -58,7 +57,6 @@ export default function Timeline() {
     } else {
       setListPosts(...listPosts);
     }
-    console.log("peloamor", listPosts);
     const lastID = postsFromFollowedUsers[postsFromFollowedUsers.length - 1].id;
     setLastPostID(lastID)
     setItems(items + 10)

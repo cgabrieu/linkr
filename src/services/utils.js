@@ -7,7 +7,14 @@ const renderPostsOrNot = (listPosts, isFollowingSomeone = true) => {
   if (listPosts === null) return <LoadingSection />
   else if (listPosts.length > 0) {
     return listPosts.map((postInfo) => (
-      <Post key={postInfo.id} idPost={postInfo.id} userPost={postInfo.user} likes={postInfo.likes} content={postInfo} />
+      <Post
+        key={postInfo.id}
+        idPost={postInfo.id}
+        userPost={postInfo.user}
+        likes={postInfo.likes}
+        content={postInfo}
+        qtyReposts={postInfo.repostCount}
+      />
     ));
   } else if (listPosts.length === 0) {
     if (!isFollowingSomeone) {

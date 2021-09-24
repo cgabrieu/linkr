@@ -13,10 +13,9 @@ const Container = styled.div`
 `;
 
 const UserContainer = styled.div`
-    margin-right: 18px;
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
 `;
 
 const UserPic = styled.img`

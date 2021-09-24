@@ -16,7 +16,7 @@ import { FaRetweet } from 'react-icons/fa';
 Modal.setAppElement('#root');
 
 export default function Post({ idPost, userPost, likes, content }) {
-
+	const { repostCount, repostedBy } = content
 	const { username } = userPost;
 	const { user } = useContext(UserContext);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -70,10 +70,10 @@ export default function Post({ idPost, userPost, likes, content }) {
 	return (
 		<>
 			<PostContainer>
-				<RepostContainer>
+				<RepostContainer isReposted={repostedBy}>
 					<div>
-						<RepostButton />
-						<p>Re-posted by <strong>you</strong></p>
+						<RepostIcon />
+						<p>Re-posted by <strong>{repostedBy && repostedBy.username !== user.username ? repostedBy.username : "you"}</strong></p>
 					</div>
 				</RepostContainer>
 				<UserContainer>
@@ -135,6 +135,7 @@ const PostContainer = styled.div`
     border-radius: 16px;
     padding: 18px 20px 20px 18px;
     display: flex;
+		gap: 22px;
     margin-bottom: 35px;
 		margin-top: 50px;
 		position: relative;
@@ -143,7 +144,7 @@ const PostContainer = styled.div`
     }
 `;
 
-const RepostButton = styled(FaRetweet)`
+const RepostIcon = styled(FaRetweet)`
 	width: 20px;
   height: 18px;
   cursor: pointer;
@@ -154,10 +155,11 @@ const RepostContainer = styled.div`
 	background-color: #1E1E1E;
 	height: 100px;
 	width: 100%;
-	bottom: 175px;
+	top: -32px;
 	left: 0;
 	border-radius: 16px;
 	z-index: -1;
+	display: ${({ isReposted }) => isReposted ? "initial" : "none"};
 
 	div {
 		margin-top: 7px;

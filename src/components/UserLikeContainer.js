@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import React, { useState, useContext, useEffect } from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { FaRetweet } from 'react-icons/fa';
 import UserContext from "../contexts/UserContext";
 import ReactTooltip from "react-tooltip";
 import { UserContainer, UserPic } from "../styles/styles";
 import { postLike, postDislike, getUserInfo } from "../services/api";
 import { useHistory } from "react-router-dom";
 
-export default function UserLikeContainer({ userPost, idPost, likes }) {
+export default function UserLikeContainer({ userPost, idPost, likes, qtyReposts }) {
 
   let history = useHistory();
   const { username, avatar } = userPost;
@@ -113,6 +114,14 @@ export default function UserLikeContainer({ userPost, idPost, likes }) {
       <LikesInfo data-tip data-for={idPost.toString()}>
         {listWhoLiked.length + ((listWhoLiked.length === 1) ? " like" : " likes")}
       </LikesInfo>
+      <RepostButton />
+      <LikesInfo data-tip data-for={1}>
+        {"comments"}
+      </LikesInfo>
+      <RepostButton onClick={() => console.log("compartilhou")} />
+      <LikesInfo data-tip data-for={1}>
+        {"10 re-posts"}
+      </LikesInfo>
       <ReactTooltip
         place='bottom'
         type='light'
@@ -138,7 +147,16 @@ const LikeButtonClicked = styled(AiFillHeart)`
   cursor: pointer;
 `;
 
+const RepostButton = styled(FaRetweet)`
+  width: 20px;
+  height: 18px;
+  margin-top: 19px;
+  cursor: pointer;
+`
+
 const LikesInfo = styled.span`
+  text-align: center;
   font-size: 11px;
   margin: 4px;
+  width: 55px;
 `;
