@@ -33,38 +33,39 @@ export default function Header() {
   }
 
   return (
-    <HeaderBar>
-      <Tittle to="/timeline">linkr</Tittle>
-      <ArrowAndPhoto>
-        <Arrow
-          onClick={(event) => toggleOpen(event)}
+    <>
+      <HeaderBar>
+        <Tittle to="/timeline">linkr</Tittle>
+        <ArrowAndPhoto>
+          <Arrow
+            onClick={(event) => toggleOpen(event)}
+            isExpandableMenuOpen={isExpandableMenuOpen}
+            src={arrow}
+            alt="Arrow to show expandable menu"
+          />
+          <Photo
+            onClick={(event) => toggleOpen(event)}
+            src={avatar}
+            alt="User photo"
+          />
+        </ArrowAndPhoto>
+
+        <ExpandableMenu
+          onClick={(event) => event.stopPropagation()}
           isExpandableMenuOpen={isExpandableMenuOpen}
-          src={arrow}
-          alt="Arrow to show expandable menu"
-        />
-        <Photo
-          onClick={(event) => toggleOpen(event)}
-          src={avatar}
-          alt="User photo"
-        />
-      </ArrowAndPhoto>
-
+        >
+          <Link onClick={(event) => toggleOpen(event)} to="/my-posts">
+            <p>My posts</p>
+          </Link>
+          <Link onClick={(event) => toggleOpen(event)} to="/my-likes">
+            <p>My likes</p>
+          </Link>
+          <Link onClick={(event) => cleanUserInfo(event)} to="/">
+            <p>Logout</p>
+          </Link>
+        </ExpandableMenu>
+      </HeaderBar>
       <SearchBar />
-
-      <ExpandableMenu
-        onClick={(event) => event.stopPropagation()}
-        isExpandableMenuOpen={isExpandableMenuOpen}
-      >
-        <Link onClick={(event) => toggleOpen(event)} to="/my-posts">
-          <p>My posts</p>
-        </Link>
-        <Link onClick={(event) => toggleOpen(event)} to="/my-likes">
-          <p>My likes</p>
-        </Link>
-        <Link onClick={(event) => cleanUserInfo(event)} to="/">
-          <p>Logout</p>
-        </Link>
-      </ExpandableMenu>
-    </HeaderBar>
+    </>
   );
 }

@@ -39,7 +39,7 @@ const PostContainer = styled.div`
     }
     
     @media(max-width: 935px) {
-        margin: 0 auto;
+        margin: 30px auto 0;
     }
 `;
 

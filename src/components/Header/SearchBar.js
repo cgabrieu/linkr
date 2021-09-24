@@ -66,6 +66,15 @@ const SearchContainer = styled.div`
   max-height: 350px;
   top: calc((72px - 45px) / 2);
   left: calc((100% - 560px) / 2);
+  z-index: 2;
+
+  @media (max-width: 935px) {
+    position: absolute;
+    top: 90px;
+    left: 15px;
+    width: calc(100vw - 30px);
+    z-index: 0;
+  }
 `;
 
 const Form = styled.form`
@@ -96,6 +105,12 @@ const Form = styled.form`
     height: 45px;
     border-radius: 0 8px 8px 0;
     background-color: transparent;
+  }
+
+  @media (max-width: 610px) {
+    input {
+      width: 100%;
+    }
   }
 `;
 
