@@ -4,7 +4,7 @@ import Post from "../components/Post";
 import { HashtagLink } from "../styles/styles"
 
 const renderPostsOrNot = (listPosts, isFollowingSomeone = true) => {
-  if (listPosts === null) return <LoadingSection />
+  if (!listPosts) return <LoadingSection />;
   else if (listPosts.length > 0) {
     return listPosts.map((postInfo) => (
       <Post key={postInfo.id} idPost={postInfo.id} userPost={postInfo.user} likes={postInfo.likes} content={postInfo} />

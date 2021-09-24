@@ -63,7 +63,7 @@ export default function MyLikesRoute() {
             scrollThreshold={1}
             next={getData}
             hasMore={hasMore}
-            loader={lastPostID === 10000 ? "" : <LoadingSection isScrolling={true} />}
+            loader={lastPostID === null ? "" : <LoadingSection isScrolling={true} />}
             endMessage={
               <ScrollToTop
                 style={{

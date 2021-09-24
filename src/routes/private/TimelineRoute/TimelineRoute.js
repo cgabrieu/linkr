@@ -12,7 +12,7 @@ import LoadingSection from "../../../components/LoadingSection";
 import ScrollToTop from "react-scroll-up";
 
 export default function Timeline() {
-  const [lastPostID, setLastPostID] = useState(null)
+  const [lastPostID, setLastPostID] = useState(null);
   const [hasMore, setHasMore] = useState(true);
   const [items, setItems] = useState(10);
   const [listPosts, setListPosts] = useState(null);
@@ -24,7 +24,7 @@ export default function Timeline() {
     getUsersIFollow(user.token)
       .then(res => {
         const followedUsers = res.data.users
-        if (followedUsers.length > 0) setIsFollowingSomeone(true)
+        if (followedUsers.length > 0) setIsFollowingSomeone(true);
       })
       .catch(err => setListPosts(err.status));
     getData();
@@ -41,16 +41,23 @@ export default function Timeline() {
   }
 
   function filterPosts(allPosts) {
-    console.log(allPosts);
     if (allPosts.length === 0) {
       if (!isFollowingSomeone) {
-        setListPosts([]);
-        return;
+        setListPosts([])
+        return
+      }
+      setHasMore(false);
+      return
+    }
+    const postsFromFollowedUsers = allPosts.filter(post => post.user.id !== user.id);
+    if (postsFromFollowedUsers.length === 0) {
+      if (!isFollowingSomeone) {
+        setListPosts([])
+        return
       }
       setHasMore(false);
       return;
     }
-    const postsFromFollowedUsers = allPosts.filter(post => post.user.id !== user.id);
     if (listPosts === null) {
       setListPosts(postsFromFollowedUsers)
     } else if (postsFromFollowedUsers.length !== 0) {
@@ -59,8 +66,8 @@ export default function Timeline() {
       setListPosts(...listPosts);
     }
     const lastID = postsFromFollowedUsers[postsFromFollowedUsers.length - 1].id;
-    setLastPostID(lastID);
-    setItems(items + 10);
+    setLastPostID(lastID)
+    setItems(items + 10)
   }
 
   return (
@@ -74,7 +81,7 @@ export default function Timeline() {
             scrollThreshold={1}
             next={getData}
             hasMore={hasMore}
-            loader={lastPostID === 10000 ? "" : <LoadingSection isScrolling={true} />}
+            loader={lastPostID === null ? "" : <LoadingSection isScrolling={true} />}
             endMessage={
               <ScrollToTop
                 style={{
@@ -92,5 +99,3 @@ export default function Timeline() {
     </Div >
   );
 }
-
-
