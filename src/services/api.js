@@ -106,6 +106,11 @@ function getUsersIFollow(token) {
   return axios.get(`${BASE_URL}/users/follows`, getConfig(token));
 }
 
+function repost(token, postID) {
+  const promise = axios.post(`${BASE_URL}/posts/${postID}/share`, {}, getConfig(token));
+  return promise;
+}
+
 export {
   SignUp,
   LogIn,
@@ -121,6 +126,7 @@ export {
   getPostsUserLiked,
   putEditUserPost,
   toggleFollowAPI,
-  getUsersIFollow
+  getUsersIFollow,
+  repost
 };
 

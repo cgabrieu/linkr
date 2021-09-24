@@ -5,8 +5,11 @@ import { FaRetweet } from 'react-icons/fa';
 import UserContext from "../contexts/UserContext";
 import ReactTooltip from "react-tooltip";
 import { UserContainer, UserPic } from "../styles/styles";
-import { postLike, postDislike, getUserInfo } from "../services/api";
+import { postLike, postDislike, getUserInfo, repost } from "../services/api";
 import { useHistory } from "react-router-dom";
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 export default function UserLikeContainer({ userPost, idPost, likes, repostCount }) {
 
@@ -19,6 +22,8 @@ export default function UserLikeContainer({ userPost, idPost, likes, repostCount
   const [listWhoLiked, setListWhoLiked] = useState(listAux);
   let messageAux = 'Ninguém curtiu ainda :(';
   const [likedMessage, setLikedMessage] = useState(messageAux);
+  const [isModalRepostOpen, setIsModalRepostOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => whoLiked(), []);
 
@@ -37,6 +42,17 @@ export default function UserLikeContainer({ userPost, idPost, likes, repostCount
     const i = listWhoLiked.indexOf(user.username);
     listWhoLiked.splice(i, 1);
     createLikedMessage();
+  }
+
+  function repostPost() {
+    setIsLoading(true);
+    repost(user.token, idPost)
+      .then(() => {
+        setIsLoading(false);
+        toggleModelRepost();
+      })
+      .catch(() => alert("Não foi possível repostar esse link"))
+    console.log("compartilhou")
   }
 
   function whoLiked() {
@@ -105,6 +121,10 @@ export default function UserLikeContainer({ userPost, idPost, likes, repostCount
     }
   }
 
+  function toggleModelRepost() {
+    setIsModalRepostOpen(!isModalRepostOpen);
+  }
+
   return (
     <UserContainer>
       <UserPic onClick={() => history.push(`/user/${userPost.id}`)} src={avatar} alt={username} />
@@ -118,10 +138,23 @@ export default function UserLikeContainer({ userPost, idPost, likes, repostCount
       <LikesInfo data-tip data-for={1}>
         {"comments"}
       </LikesInfo>
-      <RepostButton onClick={() => console.log("compartilhou")} />
+      <RepostButton onClick={toggleModelRepost} />
       <LikesInfo data-tip data-for={1}>
         {repostCount === 1 ? `${repostCount} re-post` : `${repostCount} re-posts`}
       </LikesInfo>
+      <Modal
+        isOpen={isModalRepostOpen}
+        onRequestClose={toggleModelRepost}
+        style={modalStyles}
+      >
+        <ModalContent>
+          <ModalQuestion>Tem certeza que quer repostar esse link?</ModalQuestion>
+          <ContainerButtonsModal>
+            <ButtonCancel disabled={isLoading} onClick={toggleModelRepost}><p>Não, voltar</p></ButtonCancel>
+            <ButtonDelete disabled={isLoading} onClick={repostPost}><p>Sim, repostar</p></ButtonDelete>
+          </ContainerButtonsModal>
+        </ModalContent>
+      </Modal>
       <ReactTooltip
         place='bottom'
         type='light'
@@ -159,4 +192,69 @@ const LikesInfo = styled.span`
   font-size: 11px;
   margin: 4px;
   width: 55px;
+`;
+
+const modalStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: '#333333',
+    borderRadius: '50px',
+  }
+};
+
+const ModalContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 600px;
+    height: 260px;
+	font-size: 34px;
+	padding: 40px 50px;
+	@media(max-width: 610px) {
+		font-size: 22px;
+        padding: 10px 20px;
+		width: 300px;
+    	height: 160px;
+    }
+`;
+
+const ModalQuestion = styled.p`
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color: rgb(255, 255, 255);
+	text-align: center;
+	
+`;
+
+const ContainerButtonsModal = styled.div`
+	margin-top: 40px;
+	@media(max-width: 610px) {
+		margin-top: 10px;	
+    }
+`;
+
+const Button = styled.button`
+	margin: 0 13px;
+	padding: 8px 23px;
+	font-size: 18px;
+	font-weight: bold;
+	@media(max-width: 610px) {
+		font-size: 14px;
+        padding: 6px 15px;
+    }
+`;
+
+const ButtonCancel = styled(Button)`
+	color: #1877F2;
+	background-color: #FFFFFF;
+`;
+
+const ButtonDelete = styled(Button)`
+	color: #FFFFFF;
 `;
