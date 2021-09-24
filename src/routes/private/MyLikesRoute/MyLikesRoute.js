@@ -14,17 +14,10 @@ export default function MyLikesRoute() {
   const [hasMore, setHasMore] = useState(true);
   const [items, setItems] = useState(10);
   const [posts, setPosts] = useState(null);
-  const [isFollowingSomeone, setIsFollowingSomeone] = useState(false);
   const { user } = useContext(UserContext);
   const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
   useEffect(() => {
-    getUsersIFollow(user.token)
-      .then(res => {
-        const followedUsers = res.data.users
-        if (followedUsers.length > 0) setIsFollowingSomeone(true)
-      })
-      .catch(err => setPosts(err.status))
     getData();
     return () => setRenderPosts(false);
   }, [renderPosts]);
@@ -34,21 +27,21 @@ export default function MyLikesRoute() {
       .then(res => {
         const allPosts = res.data.posts;
         if (allPosts.length === 0) {
-          if (!isFollowingSomeone) {
+          if (!lastPostID) {
             setPosts([]);
-            return;
+            return
           }
-          setHasMore(false);
-          return;
+          setHasMore(false)
+          return
         }
         if (posts === null) {
           setPosts(allPosts)
         } else {
           setPosts(posts => [...posts, ...allPosts]);
         }
-        const lastID = allPosts[allPosts.length - 1].id;
-        setLastPostID(lastID);
-        setItems(items + 10);
+        const lastID = allPosts[allPosts.length - 1].id
+        setLastPostID(lastID)
+        setItems(items + 10)
       })
       .catch(err => setPosts(err.status));
   }
