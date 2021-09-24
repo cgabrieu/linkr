@@ -36,19 +36,19 @@ export default function MyLikesRoute() {
         if (allPosts.length === 0) {
           if (!isFollowingSomeone) {
             setPosts([]);
-            return
+            return;
           }
-          setHasMore(false)
-          return
+          setHasMore(false);
+          return;
         }
         if (posts === null) {
           setPosts(allPosts)
         } else {
           setPosts(posts => [...posts, ...allPosts]);
         }
-        const lastID = allPosts[allPosts.length - 1].id
-        setLastPostID(lastID)
-        setItems(items + 10)
+        const lastID = allPosts[allPosts.length - 1].id;
+        setLastPostID(lastID);
+        setItems(items + 10);
       })
       .catch(err => setPosts(err.status));
   }
