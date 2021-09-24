@@ -33,20 +33,20 @@ function App() {
           <Route exact path="/sign-up" component={SignUpRoute} />
           <Route exact path="/" component={LogInRoute} />
           <RenderPostsContext.Provider value={{ renderPosts, setRenderPosts }}>
-          <ExpandableMenuContext.Provider value={{ isExpandableMenuOpen, setIsExpandableMenuOpen }}>
-            <div onClick={() => setIsExpandableMenuOpen(false)}>
-            <Header />
-              <Switch>
-                <PrivateRoute exact path="/timeline" component={TimelineRoute} />
-                <PrivateRoute exact path="/user/:id" component={UserPostsRoute} />
-                <PrivateRoute exact path="/hashtag/:hashtag" component={HashtagRoute} />
-                <PrivateRoute exact path="/my-posts" component={MyPostsRoute} />
-                <PrivateRoute exact path="/my-likes" component={MyLikesRoute} />
-                <Redirect to="/" />
-              </Switch>
-              <TrendingHashtags />
-            </div>
-          </ExpandableMenuContext.Provider>
+            <ExpandableMenuContext.Provider value={{ isExpandableMenuOpen, setIsExpandableMenuOpen }}>
+              <div onClick={() => setIsExpandableMenuOpen(false)}>
+                <Header />
+                <Switch>
+                  <PrivateRoute exact path="/timeline" component={TimelineRoute} />
+                  <PrivateRoute exact path="/user/:id" component={UserPostsRoute} />
+                  <PrivateRoute exact path="/hashtag/:hashtag" component={HashtagRoute} />
+                  <PrivateRoute exact path="/my-posts" component={MyPostsRoute} />
+                  <PrivateRoute exact path="/my-likes" component={MyLikesRoute} />
+                  <Redirect to="/" />
+                </Switch>
+                <TrendingHashtags />
+              </div>
+            </ExpandableMenuContext.Provider>
           </RenderPostsContext.Provider>
         </Switch>
       </UserContext.Provider>

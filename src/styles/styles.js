@@ -8,6 +8,8 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 `;
 
 const UserContainer = styled.div`
@@ -48,10 +50,17 @@ const HashtagLink = styled(Link)`
   color: #FFFFFF;
 `;
 
+const Div = styled.div`
+  & ::-webkit-scrollbar {
+    width: 0px;
+}
+`
+
 export {
     Container,
     UserContainer,
     UserPic,
     PostContainer,
-    HashtagLink
+    HashtagLink,
+    Div
 };
