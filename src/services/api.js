@@ -30,9 +30,12 @@ function LogIn(request) {
   return promise;
 }
 
-function getListPosts(token) {
-  const promise = axios.get(`${BASE_URL}/following/posts`, getConfig(token));
-  return promise;
+function getListPosts(token, lastPostID = null) {
+  if (!lastPostID) {
+    return axios.get(`${BASE_URL}/following/posts/`, getConfig(token));
+  } else {
+    return axios.get(`${BASE_URL}/following/posts/?olderThan=${lastPostID}`, getConfig(token));
+  }
 }
 
 function getTrendings(token) {
@@ -59,8 +62,12 @@ function postDislike(token, postId) {
   );
 }
 
-function getUserPosts(token, userId) {
-  return axios.get(`${BASE_URL}/users/${userId}/posts`, getConfig(token));
+function getUserPosts(token, userId, lastPostID = null) {
+  if (!lastPostID) {
+    return axios.get(`${BASE_URL}/users/${userId}/posts/`, getConfig(token))
+  } else {
+    return axios.get(`${BASE_URL}/users/${userId}/posts/?olderThan=${lastPostID}`, getConfig(token))
+  }
 }
 
 function getHashtagPosts(token, hashtag) {
@@ -80,9 +87,12 @@ function getUserInfo(token, userId) {
   return axios.get(`${BASE_URL}/users/${userId}`, getConfig(token));
 }
 
-function getPostsUserLiked(token) {
-  const promise = axios.get(`${BASE_URL}/posts/liked`, getConfig(token));
-  return promise;
+function getPostsUserLiked(token, lastPostID = null) {
+  if (!lastPostID) {
+    return axios.get(`${BASE_URL}/posts/liked`, getConfig(token))
+  } else {
+    return axios.get(`${BASE_URL}/posts/liked/?olderThan=${lastPostID}`, getConfig(token))
+  }
 }
 
 function putEditUserPost(postId, description, token) {
@@ -104,9 +114,13 @@ function getUsersIFollow(token) {
   return axios.get(`${BASE_URL}/users/follows`, getConfig(token));
 }
 
+<<<<<<< HEAD
 function getSearchedUser(token, username) {
   return axios.get(`${BASE_URL}/users/search?username=${username}`, getConfig(token));
 }
+=======
+let getYoutubeId = require('get-youtube-id');
+>>>>>>> 4fac56f306f4fd10e5e3d46dfa7d6f9ba3d72f57
 
 export {
   SignUp,
@@ -124,5 +138,9 @@ export {
   putEditUserPost,
   toggleFollowAPI,
   getUsersIFollow,
+<<<<<<< HEAD
   getSearchedUser
+=======
+  getYoutubeId
+>>>>>>> 4fac56f306f4fd10e5e3d46dfa7d6f9ba3d72f57
 };
