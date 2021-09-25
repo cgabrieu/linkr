@@ -122,8 +122,8 @@ export default function Post({ idPost, userPost, likes, content }) {
 					<>
 						<ReactPlayer
 							url={content.link}
-							width='100%'
-							controls='true'
+							width={'100%'}
+							controls={true}
 						/>
 						<LinkYoutube href={content.link} target='_blank'>{content.link}</LinkYoutube>
 					</>

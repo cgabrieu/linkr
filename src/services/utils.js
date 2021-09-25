@@ -6,8 +6,8 @@ import { HashtagLink } from "../styles/styles"
 const renderPostsOrNot = (listPosts, isFollowingSomeone = true) => {
   if (!listPosts) return <LoadingSection />;
   else if (listPosts.length > 0) {
-    return listPosts.map((postInfo) => (
-      <Post key={postInfo.id} idPost={postInfo.id} userPost={postInfo.user} likes={postInfo.likes} content={postInfo} />
+    return listPosts.map((postInfo, index) => (
+      <Post key={index} idPost={postInfo.id} userPost={postInfo.user} likes={postInfo.likes} content={postInfo} />
     ));
   } else if (listPosts.length === 0) {
     if (!isFollowingSomeone) {
