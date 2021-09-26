@@ -13,7 +13,7 @@ export default function MyPostsRoute() {
   const [hasMore, setHasMore] = useState(true);
   const [listPosts, setListPosts] = useState(null);
   const { user } = useContext(UserContext);
-  const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
+  const { renderPosts } = useContext(RenderPostsContext);
 
   useEffect(() => {
     if (listPosts) {
@@ -23,11 +23,6 @@ export default function MyPostsRoute() {
     getData();
   }, [renderPosts]);
 
-
-  function removePost() {
-    console.log("executou")
-    
-  }
 
   function getData() {
     getUserPosts(user.token, user.id, lastPostID)

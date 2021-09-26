@@ -12,14 +12,17 @@ import ScrollToTop from "react-scroll-up";
 export default function MyLikesRoute() {
   const [lastPostID, setLastPostID] = useState(null)
   const [hasMore, setHasMore] = useState(true);
-  const [items, setItems] = useState(10);
   const [posts, setPosts] = useState(null);
   const { user } = useContext(UserContext);
-  const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
+  const { renderPosts } = useContext(RenderPostsContext);
 
   useEffect(() => {
+    if (posts) {
+      getPostsUserLiked(user.token)
+        .then((res) => setPosts(res.data.posts));
+    }
     getData();
-  }, []);
+  }, [renderPosts]);
 
   function getData() {
     getPostsUserLiked(user.token, lastPostID)
@@ -40,9 +43,8 @@ export default function MyLikesRoute() {
         }
         const lastID = allPosts[allPosts.length - 1].id;
         setLastPostID(lastID);
-        setItems(items + 10);
       })
-      .catch(err => setPosts(err.status));
+      .catch((err) => setPosts(err.status));
   }
 
   return (
@@ -51,11 +53,11 @@ export default function MyLikesRoute() {
         <PostContainer>
           <h1>my likes</h1>
           <InfiniteScroll
-            dataLength={items}
+            dataLength={posts && posts.length}
             scrollThreshold={1}
             next={getData}
             hasMore={hasMore}
-            loader={lastPostID === null ? "" : <LoadingSection isScrolling={true} />}
+            loader={posts && <LoadingSection isScrolling={true} />}
             endMessage={
               <ScrollToTop
                 style={{
