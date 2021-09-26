@@ -35,7 +35,7 @@ export default function ContainerModal({ username, geolocation, isLoading, isDel
               center={[geolocation.latitude, geolocation.longitude]}
               zoom={15}
               scrollWheelZoom={false}
-              style={{ height: "100%", width: "100%" }}
+              style={{ height: "100%", width: "100%", borderRadius: "10px", }}
             >
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -30,9 +30,13 @@ function LogIn(request) {
   return promise;
 }
 
-function getListPosts(token) {
-  const promise = axios.get(`${BASE_URL}/posts`, getConfig(token));
-  return promise;
+function getListPosts(token, lastPostID = null, firstPostID = null) {
+  if (lastPostID) {
+    return axios.get(`${BASE_URL}/following/posts/?olderThan=${lastPostID}`, getConfig(token));
+  } else if (firstPostID) {
+    return axios.get(`${BASE_URL}/following/posts/?earlierThan=${firstPostID}`, getConfig(token));
+  }
+  return axios.get(`${BASE_URL}/following/posts/`, getConfig(token));
 }
 
 function getTrendings(token) {
@@ -63,15 +67,16 @@ function postDislike(token, postId) {
   return axios.post(`${BASE_URL}/posts/${postId}/dislike`, '', getConfig(token))
 }
 
-function getUserPosts(token, userId) {
-  return axios.get(`${BASE_URL}/users/${userId}/posts`, getConfig(token));
+function getUserPosts(token, userId, lastPostID = null) {
+  if (!lastPostID) {
+    return axios.get(`${BASE_URL}/users/${userId}/posts/`, getConfig(token))
+  } else {
+    return axios.get(`${BASE_URL}/users/${userId}/posts/?olderThan=${lastPostID}`, getConfig(token))
+  }
 }
 
 function getHashtagPosts(token, hashtag) {
-  const promise = axios.get(
-    `${BASE_URL}/hashtags/${hashtag}/posts`,
-    getConfig(token)
-  );
+  const promise = axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, getConfig(token));
   return promise;
 }
 
@@ -84,9 +89,12 @@ function getUserInfo(token, userId) {
   return axios.get(`${BASE_URL}/users/${userId}`, getConfig(token));
 }
 
-function getPostsUserLiked(token) {
-  const promise = axios.get(`${BASE_URL}/posts/liked`, getConfig(token));
-  return promise;
+function getPostsUserLiked(token, lastPostID = null) {
+  if (!lastPostID) {
+    return axios.get(`${BASE_URL}/posts/liked`, getConfig(token))
+  } else {
+    return axios.get(`${BASE_URL}/posts/liked/?olderThan=${lastPostID}`, getConfig(token))
+  }
 }
 
 function putEditUserPost(postId, description, token) {
@@ -96,6 +104,13 @@ function putEditUserPost(postId, description, token) {
   return axios.put(`${BASE_URL}/posts/${postId}`, body, getConfig(token));
 }
 
+function toggleFollowAPI(token, userID, whatToDo) {
+  return axios.post(`${BASE_URL}/users/${userID}/${whatToDo}`, '', getConfig(token));
+}
+
+function getUsersIFollow(token) {
+  return axios.get(`${BASE_URL}/users/follows`, getConfig(token));
+}
 
 export {
   SignUp,
@@ -111,5 +126,7 @@ export {
   deletePost,
   getPostsUserLiked,
   putEditUserPost,
+  toggleFollowAPI,
+  getUsersIFollow,
 };
 

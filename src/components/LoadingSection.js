@@ -1,16 +1,16 @@
 import Loader from "react-loader-spinner";
 import styled from "styled-components";
 
-export default function LoadingSection() {
+export default function LoadingSection({ isScrolling }) {
   return (
     <LoaderContainer>
-      <Loader 
+      <Loader
         type="Oval"
-        color="#FFFFFF"
+        color="#6D6D6D"
         height={70}
-        width={70} 
+        width={70}
       />
-      <p>Carregando...</p>
+      <p>{isScrolling ? "Loading more posts..." : "Loading..."}</p>
     </LoaderContainer >
   );
 }
@@ -24,5 +24,6 @@ const LoaderContainer = styled.div`
     font-size: 23px;
     p {
         margin-top: 20px;
+        color: #6D6D6D;
     }
 `;

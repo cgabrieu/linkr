@@ -5,13 +5,14 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import UserContext from "../contexts/UserContext";
 import ContainerLinkPreview from "./ContainerLinkPreview";
 import { deletePost, getListPosts, putEditUserPost } from "../services/api";
-import Edit from '../assets/Edit.svg';
-import TrashCan from '../assets/TrashCan.svg';
+import Edit from "../assets/Edit.svg";
+import TrashCan from "../assets/TrashCan.svg";
 import { Hashtags, getHashtagsLowerCase } from "../services/utils";
-import RenderPostsContext from '../contexts/RenderPostsContext';
-import UserLikeContainer from './UserLikeContainer'
+import RenderPostsContext from "../contexts/RenderPostsContext";
+import UserLikeContainer from "./UserLikeContainer"
 import { ReactComponent as PinPointIcon } from "../assets/PinPoint.svg"
 import ContainerModal from "./ContainerModal" 
+import ReactPlayer from "react-player/youtube"
 
 export default function Post({ content }) {
 
@@ -32,9 +33,9 @@ export default function Post({ content }) {
 		deletePost(user.token, id).then(() => {
 			setIsLoading(false);
 			setIsDeleteModalOpen(false);
-			getListPosts(user.token).then(() => {
-				setRenderPosts(!renderPosts);
-			}).catch(() => alert('Não foi possível excluir o post'));
+			getListPosts(user.token)
+				.then(() => setRenderPosts(!renderPosts))
+				.catch(() => alert('Não foi possível excluir o post'));
 		}).catch(() => alert('Não foi possível excluir o post'));
 	}
 
@@ -54,6 +55,11 @@ export default function Post({ content }) {
 				});
 		}
 	};
+
+	function isYoutube(urlVideo) {
+		const rule = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/
+		return rule.test(urlVideo);
+	}
 
 	useEffect(() => {
 		if (isEditing) {
@@ -102,10 +108,21 @@ export default function Post({ content }) {
 						onChange={(e) => setTextareaDescription(e.target.value)}
 						onKeyDown={editThisPost}
 						ref={editFieldRef}
-					/>}
-				<Link to={{ pathname: link }} target="_blank">
-					<ContainerLinkPreview content={content} />
-				</Link>
+					/>
+				}
+				{isYoutube(link) ?
+					<>
+						<ReactPlayer
+							url={link}
+							width={'100%'}
+							controls={true}
+						/>
+						<LinkYoutube href={link} target='_blank'>{link}</LinkYoutube>
+					</>
+					:
+					<Link to={{ pathname: link }} target="_blank">
+						<ContainerLinkPreview content={content} />
+					</Link>}
 			</MainPostContainer>
 			<ContainerModal 
 				username={username}
@@ -128,6 +145,8 @@ const PostContainer = styled.div`
     padding: 18px 20px 20px 18px;
     display: flex;
     margin-bottom: 16px;
+	overflow-wrap: break-word;
+
     @media(max-width: 610px) {
         border-radius: 0;
     }
@@ -151,8 +170,10 @@ const TextAreaPostDescription = styled.textarea`
 `;
 
 const MainPostContainer = styled.div`
+	width: 100%;
     max-width: 505px;
     @media(max-width: 610px) {
+		width: 100%;
         max-width: 510px;
     }
 `;
@@ -192,4 +213,11 @@ const MyPostIcons = styled.div`
         margin-left: 10px;
 		cursor: pointer;
     }
+`;
+
+const LinkYoutube = styled.a`
+	font-size: 17px;
+	color: rgb(183, 183, 183);
+	display: flex;
+	padding-top: 20px;
 `;
