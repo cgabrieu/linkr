@@ -30,12 +30,13 @@ function LogIn(request) {
   return promise;
 }
 
-function getListPosts(token, lastPostID = null) {
-  if (!lastPostID) {
-    return axios.get(`${BASE_URL}/following/posts/`, getConfig(token));
-  } else {
+function getListPosts(token, lastPostID = null, firstPostID = null) {
+  if (lastPostID) {
     return axios.get(`${BASE_URL}/following/posts/?olderThan=${lastPostID}`, getConfig(token));
+  } else if (firstPostID) {
+    return axios.get(`${BASE_URL}/following/posts/?earlierThan=${firstPostID}`, getConfig(token));
   }
+  return axios.get(`${BASE_URL}/following/posts/`, getConfig(token));
 }
 
 function getTrendings(token) {
@@ -67,10 +68,7 @@ function getUserPosts(token, userId, lastPostID = null) {
 }
 
 function getHashtagPosts(token, hashtag) {
-  const promise = axios.get(
-    `${BASE_URL}/hashtags/${hashtag}/posts`,
-    getConfig(token)
-  );
+  const promise = axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, getConfig(token));
   return promise;
 }
 
@@ -106,8 +104,6 @@ function getUsersIFollow(token) {
   return axios.get(`${BASE_URL}/users/follows`, getConfig(token));
 }
 
-let getYoutubeId = require('get-youtube-id');
-
 export {
   SignUp,
   LogIn,
@@ -124,6 +120,5 @@ export {
   putEditUserPost,
   toggleFollowAPI,
   getUsersIFollow,
-  getYoutubeId
 };
 

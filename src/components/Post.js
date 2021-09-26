@@ -117,7 +117,8 @@ export default function Post({ idPost, userPost, likes, content }) {
 						onChange={(e) => setTextareaDescription(e.target.value)}
 						onKeyDown={editThisPost}
 						ref={editFieldRef}
-					/>}
+					/>
+				}
 				{isYoutube(content.link) ?
 					<>
 						<ReactPlayer

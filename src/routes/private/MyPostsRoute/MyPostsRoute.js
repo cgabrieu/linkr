@@ -29,21 +29,21 @@ export default function MyPostsRoute() {
         if (allPosts.length === 0) {
           if (!lastPostID) {
             setListPosts([]);
-            return
+            return;
           }
-          setHasMore(false)
-          return
+          setHasMore(false);
+          return;
         }
         if (listPosts === null) {
           setListPosts(allPosts);
         } else {
           setListPosts(listPosts => [...listPosts, ...allPosts]);
         }
-        const lastID = allPosts[allPosts.length - 1].id
-        setLastPostID(lastID)
-        setItems(items + 10)
+        const lastID = allPosts[allPosts.length - 1].id;
+        setLastPostID(lastID);
+        setItems(items + 10);
       })
-      .catch((err) => setListPosts(err.status))
+      .catch((err) => setListPosts(err.status));
   }
 
   return (
