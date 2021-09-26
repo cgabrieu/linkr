@@ -57,7 +57,7 @@ export default function MyPostsRoute() {
             scrollThreshold={1}
             next={getData}
             hasMore={hasMore}
-            loader={listPosts && <LoadingSection isScrolling={true} />}
+            loader={lastPostID && <LoadingSection isScrolling={true} />}
             endMessage={
               <ScrollToTop
                 style={{
