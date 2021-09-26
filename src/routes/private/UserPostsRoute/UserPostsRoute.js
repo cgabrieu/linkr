@@ -40,7 +40,7 @@ export default function UserPostsRoute() {
       .catch((err) => setListPosts(err.status));
 
     getData();
-  }, []);
+  }, [id]);
 
   function getData() {
     getUserPosts(user.token, id, lastPostID)
@@ -60,11 +60,7 @@ export default function UserPostsRoute() {
         setItems(items + 10)
       })
       .catch((err) => setListPosts(err.status));
-<<<<<<< HEAD
-  }, [id]);
-=======
   }
->>>>>>> 4fac56f306f4fd10e5e3d46dfa7d6f9ba3d72f57
 
   function toggleIsFollowing() {
     setIsFollowing(!isFollowing);
@@ -85,20 +81,6 @@ export default function UserPostsRoute() {
   }
 
   return (
-<<<<<<< HEAD
-    <Container>
-      <TopUserPage>
-        <NameAndPhoto>
-          <img src={avatar} alt="Foto de perfil"/>
-          <h1>{username}</h1>
-        </NameAndPhoto>
-        <FollowButton onClick={toggleIsFollowing} isFollowing={isFollowing}>{isFollowing ? 'Unfollow' : 'Follow'}</FollowButton>
-      </TopUserPage>
-      <PostContainer>
-        {renderPostsOrNot(listPosts)}
-      </PostContainer>
-    </Container>
-=======
     <Div>
       <Container>
         <TopUserPage>
@@ -131,7 +113,6 @@ export default function UserPostsRoute() {
         </PostContainer>
       </Container>
     </Div>
->>>>>>> 4fac56f306f4fd10e5e3d46dfa7d6f9ba3d72f57
   );
 }
 

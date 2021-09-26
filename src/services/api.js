@@ -114,13 +114,10 @@ function getUsersIFollow(token) {
   return axios.get(`${BASE_URL}/users/follows`, getConfig(token));
 }
 
-<<<<<<< HEAD
 function getSearchedUser(token, username) {
   return axios.get(`${BASE_URL}/users/search?username=${username}`, getConfig(token));
 }
-=======
 let getYoutubeId = require('get-youtube-id');
->>>>>>> 4fac56f306f4fd10e5e3d46dfa7d6f9ba3d72f57
 
 export {
   SignUp,
@@ -138,9 +135,6 @@ export {
   putEditUserPost,
   toggleFollowAPI,
   getUsersIFollow,
-<<<<<<< HEAD
-  getSearchedUser
-=======
+  getSearchedUser,
   getYoutubeId
->>>>>>> 4fac56f306f4fd10e5e3d46dfa7d6f9ba3d72f57
 };

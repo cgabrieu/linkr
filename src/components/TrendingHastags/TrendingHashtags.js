@@ -8,7 +8,6 @@ import UserContext from "../../contexts/UserContext";
 export default function TrendingHashtags() {
   const { user } = useContext(UserContext);
   const [hashtags, setHashtags] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -29,16 +28,13 @@ export default function TrendingHashtags() {
     <FixedContainer>
       <TitleSection>
         <h2>trending</h2>
-        <SearchHashtag
-          isSearching={isSearching}
-          setIsSearching={setIsSearching}
-        />
       </TitleSection>
       <Hashtags>
         {hashtags.map((hashtag, key) => (
           <Hashtag key={key} hashtag={hashtag} />
         ))}
       </Hashtags>
+      <SearchHashtag />
     </FixedContainer>
   );
 }
@@ -58,9 +54,6 @@ const FixedContainer = styled.div`
 `;
 
 const TitleSection = styled.div`
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
   padding: 15px;
   border-bottom: solid 1px #484848;
 
