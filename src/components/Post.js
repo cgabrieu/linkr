@@ -11,7 +11,7 @@ import { Hashtags, getHashtagsLowerCase } from "../services/utils";
 import RenderPostsContext from "../contexts/RenderPostsContext";
 import UserLikeContainer from "./UserLikeContainer"
 import { ReactComponent as PinPointIcon } from "../assets/PinPoint.svg"
-import ContainerModal from "./ContainerModal" 
+import ContainerModal from "./ContainerModal"
 import ReactPlayer from "react-player/youtube"
 
 export default function Post({ content }) {
@@ -19,13 +19,14 @@ export default function Post({ content }) {
 	const { id, user: userPost, likes, geolocation, link, text } = content;
 
 	const { username } = userPost;
+	const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 	const { user } = useContext(UserContext);
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 	const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
-	const [isEditing, setIsEditing] = useState(false);
 	const [textareaDescription, setTextareaDescription] = useState(text);
+	const [isEditing, setIsEditing] = useState(false);
+	const [showComments, setShowComments] = useState(true);
 	const editFieldRef = useRef();
 
 	function deleteThisPost() {
@@ -71,72 +72,100 @@ export default function Post({ content }) {
 	}, [isEditing]);
 
 	return (
-		<PostContainer>
-			<UserContainer>
-				<UserLikeContainer userPost={userPost} idPost={id} likes={likes} />
-			</UserContainer>
-			<MainPostContainer>
-				<TopContainer>
-					<UserName>
-						<p>{username}</p>
-						{geolocation &&
-							<PinPointIcon
-								onClick={() => setIsLocationModalOpen(true)}
-							/>}
-					</UserName>
-					{(userPost.id === user.id) &&
-						<MyPostIcons>
-							<img onClick={() => setIsDeleteModalOpen(true)} src={TrashCan} alt='Delete post' />
-							<img
-								onClick={() => {
-									setIsEditing(!isEditing);
-									setTextareaDescription(text);
-								}}
-								src={Edit} alt='Edit post'
-							/>
-						</MyPostIcons>}
-				</TopContainer>
-				{!isEditing ?
-					<PostDescription>
-						<Hashtags>
-							{text}
-						</Hashtags>
-					</PostDescription> :
-					<TextAreaPostDescription
-						value={textareaDescription}
-						disabled={isLoading}
-						onChange={(e) => setTextareaDescription(e.target.value)}
-						onKeyDown={editThisPost}
-						ref={editFieldRef}
-					/>
-				}
-				{isYoutube(link) ?
-					<>
-						<ReactPlayer
-							url={link}
-							width={'100%'}
-							controls={true}
+		<>
+			<PostContainer>
+				<UserContainer>
+					<UserLikeContainer userPost={userPost} idPost={id} likes={likes} />
+					<button onClick={() => setShowComments(!showComments)}>0 Comments</button>
+				</UserContainer>
+				<MainPostContainer>
+					<TopContainer>
+						<UserName>
+							<p>{username}</p>
+							{geolocation &&
+								<PinPointIcon
+									onClick={() => setIsLocationModalOpen(true)}
+								/>}
+						</UserName>
+						{(userPost.id === user.id) &&
+							<MyPostIcons>
+								<img onClick={() => setIsDeleteModalOpen(true)} src={TrashCan} alt='Delete post' />
+								<img
+									onClick={() => {
+										setIsEditing(!isEditing);
+										setTextareaDescription(text);
+									}}
+									src={Edit} alt='Edit post'
+								/>
+							</MyPostIcons>}
+					</TopContainer>
+					{!isEditing ?
+						<PostDescription>
+							<Hashtags>
+								{text}
+							</Hashtags>
+						</PostDescription> :
+						<TextAreaPostDescription
+							value={textareaDescription}
+							disabled={isLoading}
+							onChange={(e) => setTextareaDescription(e.target.value)}
+							onKeyDown={editThisPost}
+							ref={editFieldRef}
 						/>
-						<LinkYoutube href={link} target='_blank'>{link}</LinkYoutube>
-					</>
-					:
-					<Link to={{ pathname: link }} target="_blank">
-						<ContainerLinkPreview content={content} />
-					</Link>}
-			</MainPostContainer>
-			<ContainerModal 
-				username={username}
-				isLoading={isLoading}
-				isDeleteModalOpen={isDeleteModalOpen}
-				setIsDeleteModalOpen={setIsDeleteModalOpen}
-				isLocationModalOpen={isLocationModalOpen}
-				setIsLocationModalOpen={setIsLocationModalOpen}
-				deleteThisPost={deleteThisPost}
-				geolocation={geolocation}
-			/>
-		</PostContainer>
+					}
+					{isYoutube(link) ?
+						<>
+							<ReactPlayer
+								url={link}
+								width={'100%'}
+								controls={true}
+							/>
+							<LinkYoutube href={link} target='_blank'>{link}</LinkYoutube>
+						</>
+						:
+						<Link to={{ pathname: link }} target="_blank">
+							<ContainerLinkPreview content={content} />
+						</Link>}
+				</MainPostContainer>
+				<ContainerModal
+					username={username}
+					isLoading={isLoading}
+					isDeleteModalOpen={isDeleteModalOpen}
+					setIsDeleteModalOpen={setIsDeleteModalOpen}
+					isLocationModalOpen={isLocationModalOpen}
+					setIsLocationModalOpen={setIsLocationModalOpen}
+					deleteThisPost={deleteThisPost}
+					geolocation={geolocation}
+				/>
+			</PostContainer>
+			{showComments &&
+				<CommentsContainer>
+					<ul>
+						<li>TESTE</li>
+						<li>TESTE</li>
+						<li>TESTE</li>
+						<li>TESTE</li>
+						<li>TESTE</li>
+						<li>TESTE</li>
+						<li>TESTE</li>
+						<li>TESTE</li>
+						<li>TESTE</li>
+						<li>TESTE</li>
+					</ul>
+				</CommentsContainer>}
+		</>
 	);
 };
+
+const CommentsContainer = styled.div`
+	width: 100%;
+	position: relative;
+	top: -40px;
+	padding: 45px 20px 25px 20px;
+	background-color: #1E1E1E;
+	z-index: -1;
+	border-radius: 16px;
+`;
 
 const PostContainer = styled.div`
     width: 100%;
@@ -144,9 +173,8 @@ const PostContainer = styled.div`
     border-radius: 16px;
     padding: 18px 20px 20px 18px;
     display: flex;
-    margin-bottom: 16px;
 	overflow-wrap: break-word;
-
+	margin-bottom: 16px;
     @media(max-width: 610px) {
         border-radius: 0;
     }
