@@ -19,8 +19,7 @@ export default function MyLikesRoute() {
 
   useEffect(() => {
     getData();
-    return () => setRenderPosts(false);
-  }, [renderPosts]);
+  }, []);
 
   function getData() {
     getPostsUserLiked(user.token, lastPostID)

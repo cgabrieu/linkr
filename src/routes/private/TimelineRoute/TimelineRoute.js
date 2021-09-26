@@ -90,7 +90,7 @@ export default function Timeline() {
             scrollThreshold={1}
             next={getData}
             hasMore={hasMore}
-            loader={lastPostID === null ? "" : <LoadingSection isScrolling={true} />}
+            loader={lastPostID && <LoadingSection isScrolling={true} />}
             endMessage={
               <ScrollToTop
                 style={{

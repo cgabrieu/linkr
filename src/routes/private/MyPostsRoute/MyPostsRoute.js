@@ -11,16 +11,23 @@ import LoadingSection from "../../../components/LoadingSection";
 export default function MyPostsRoute() {
   const [lastPostID, setLastPostID] = useState(null)
   const [hasMore, setHasMore] = useState(true);
-  const [items, setItems] = useState(10);
   const [listPosts, setListPosts] = useState(null);
   const { user } = useContext(UserContext);
   const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
   useEffect(() => {
-    console.log("Entrou");
+    if (listPosts) {
+      getUserPosts(user.token, user.id)
+        .then((res) => setListPosts(res.data.posts));
+    }
     getData();
-    return () => setRenderPosts(false);
   }, [renderPosts]);
+
+
+  function removePost() {
+    console.log("executou")
+    
+  }
 
   function getData() {
     getUserPosts(user.token, user.id, lastPostID)
@@ -37,11 +44,10 @@ export default function MyPostsRoute() {
         if (listPosts === null) {
           setListPosts(allPosts);
         } else {
-          setListPosts(listPosts => [...listPosts, ...allPosts]);
+          setListPosts([...listPosts, ...allPosts]);
         }
         const lastID = allPosts[allPosts.length - 1].id;
         setLastPostID(lastID);
-        setItems(items + allPosts.length);
       })
       .catch((err) => setListPosts(err.status));
   }
@@ -52,18 +58,19 @@ export default function MyPostsRoute() {
         <PostContainer>
           <h1>my posts</h1>
           <InfiniteScroll
-            dataLength={items}
+            dataLength={listPosts && listPosts.length}
             scrollThreshold={1}
             next={getData}
             hasMore={hasMore}
-            loader={listPosts === null ? "" : <LoadingSection isScrolling={true} />}
+            loader={listPosts && <LoadingSection isScrolling={true} />}
             endMessage={
               <ScrollToTop
                 style={{
                   position: 'initial',
                   textAlign: 'center',
                 }}
-                showUnder={0}>
+                showUnder={0}
+              >
                 You have seen it all :) click here to scroll top
               </ScrollToTop>
             }

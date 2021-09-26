@@ -21,7 +21,7 @@ export default function Post({ idPost, userPost, likes, content }) {
 	const { user } = useContext(UserContext);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const { setRenderPosts } = useContext(RenderPostsContext);
+	const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 	const [isEditing, setIsEditing] = useState(false);
 	const [textareaDescription, setTextareaDescription] = useState(content.text);
 	const editFieldRef = useRef();
@@ -35,10 +35,11 @@ export default function Post({ idPost, userPost, likes, content }) {
 		deletePost(user.token, idPost).then(() => {
 			setIsLoading(false);
 			toggleModal();
-			getListPosts(user.token).then((res) => {
-				setRenderPosts(true);
-			}).catch(() => alert('Não foi possível excluir o post'));
-		}).catch(() => alert('Não foi possível excluir o post'));
+			getListPosts(user.token)
+				.then(() => setRenderPosts(!renderPosts))
+				.catch(() => alert('Não foi possível excluir o post'));
+		})
+		.catch(() => alert('Não foi possível excluir o post'));
 	}
 
 	function editThisPost(e) {
