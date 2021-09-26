@@ -5,7 +5,6 @@ import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { getUsersIFollow, getListPosts } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
-import RenderPostsContext from "../../../contexts/RenderPostsContext";
 import useInterval from 'react-useinterval';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingSection from "../../../components/LoadingSection";
@@ -16,14 +15,14 @@ export default function TimelineRoute() {
   const [firstPostID, setFirstPostID] = useState(null);
   const [hasMore, setHasMore] = useState(true);
   const [listPosts, setListPosts] = useState(null);
-  const [isFollowingSomeone, setIsFollowingSomeone] = useState(false);
+  const [listFollowing, setListFollowing] = useState(null);
   const { user } = useContext(UserContext);
 
   useEffect(() => {
     getUsersIFollow(user.token)
       .then((res) => {
         const followedUsers = res.data.users;
-        if (followedUsers.length > 0) setIsFollowingSomeone(true);
+        if (followedUsers.length > 0) setListFollowing(followedUsers);
       })
       .catch((err) => setListPosts(err.status));
     getData();
@@ -53,7 +52,7 @@ export default function TimelineRoute() {
 
   function filterPosts(allPosts) {
     if (allPosts.length === 0) {
-      if (!isFollowingSomeone) {
+      if (!listFollowing) {
         setListPosts([]);
         return;
       }
@@ -62,7 +61,7 @@ export default function TimelineRoute() {
     }
     const postsFromFollowedUsers = allPosts.filter(post => post.user.id !== user.id);
     if (postsFromFollowedUsers.length === 0) {
-      if (!isFollowingSomeone) {
+      if (!listFollowing) {
         setListPosts([]);
         return;
       }
@@ -102,7 +101,7 @@ export default function TimelineRoute() {
                 You have seen it all :) click here to scroll top
               </ScrollToTop>
             }>
-            {renderPostsOrNot(listPosts, isFollowingSomeone)}
+            {renderPostsOrNot(listPosts, listFollowing)}
           </InfiniteScroll>
         </PostContainer>
       </Container >

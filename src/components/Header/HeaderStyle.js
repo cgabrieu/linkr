@@ -12,7 +12,7 @@ export const HeaderBar = styled.header`
     align-items: center;
     justify-content: space-between;
     padding: 0 2%;
-    z-index: 1;
+    z-index: 2;
 `
 
 export const Tittle = styled(Link)`

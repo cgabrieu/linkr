@@ -62,10 +62,3 @@ const ContentContainer = styled.div`
         padding: 7px;
     }
 `;
-
-const ImageContainer = styled.div`
-
-    @media(max-width: 610px) {
-        
-    }
-`;

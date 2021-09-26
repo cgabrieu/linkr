@@ -7,15 +7,16 @@ import ContainerLinkPreview from "./ContainerLinkPreview";
 import { deletePost, getListPosts, putEditUserPost } from "../services/api";
 import Edit from "../assets/Edit.svg";
 import TrashCan from "../assets/TrashCan.svg";
-import { Hashtags, getHashtagsLowerCase } from "../services/utils";
+import { Hashtags, getHashtagsLowerCase, isYoutubeLink } from "../services/utils";
 import RenderPostsContext from "../contexts/RenderPostsContext";
 import UserLikeContainer from "./UserLikeContainer"
 import { ReactComponent as PinPointIcon } from "../assets/PinPoint.svg"
 import ContainerModal from "./ContainerModal"
 import ReactPlayer from "react-player/youtube"
-import { UserPic } from "../styles/styles";
+import { getListComments } from "../services/api";
+import Comment from "./Comment";
 
-export default function Post({ content }) {
+export default function Post({ content, listFollowing }) {
 
 	const { id, user: userPost, likes, geolocation, link, text } = content;
 
@@ -28,6 +29,7 @@ export default function Post({ content }) {
 	const [textareaDescription, setTextareaDescription] = useState(text);
 	const [isEditing, setIsEditing] = useState(false);
 	const [showComments, setShowComments] = useState(false);
+	const [listComments, setListComments] = useState([]);
 	const editFieldRef = useRef();
 
 	function deleteThisPost() {
@@ -58,10 +60,10 @@ export default function Post({ content }) {
 		}
 	};
 
-	function isYoutube(urlVideo) {
-		const rule = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/
-		return rule.test(urlVideo);
-	}
+	useEffect(() => {
+		getListComments(user.token, id)
+			.then((res) => setListComments(res.data.comments));
+	}, []);
 
 	useEffect(() => {
 		if (isEditing) {
@@ -77,7 +79,9 @@ export default function Post({ content }) {
 			<PostContainer>
 				<UserContainer>
 					<UserLikeContainer userPost={userPost} idPost={id} likes={likes} />
-					<button onClick={() => setShowComments(!showComments)}>0 Comments</button>
+					<button onClick={() => setShowComments(!showComments)}>
+						{listComments.length} Comments
+					</button>
 				</UserContainer>
 				<MainPostContainer>
 					<TopContainer>
@@ -114,7 +118,7 @@ export default function Post({ content }) {
 							ref={editFieldRef}
 						/>
 					}
-					{isYoutube(link) ?
+					{isYoutubeLink(link) ?
 						<>
 							<ReactPlayer
 								url={link}
@@ -126,74 +130,48 @@ export default function Post({ content }) {
 						:
 						<Link to={{ pathname: link }} target="_blank">
 							<ContainerLinkPreview content={content} />
-						</Link>}
+						</Link>
+					}
 				</MainPostContainer>
-				<ContainerModal
-					username={username}
-					isLoading={isLoading}
-					isDeleteModalOpen={isDeleteModalOpen}
-					setIsDeleteModalOpen={setIsDeleteModalOpen}
-					isLocationModalOpen={isLocationModalOpen}
-					setIsLocationModalOpen={setIsLocationModalOpen}
-					deleteThisPost={deleteThisPost}
-					geolocation={geolocation}
-				/>
 			</PostContainer>
 			{showComments &&
 				<CommentsContainer>
-					<Comment>
-						<UserPic src={userPost.avatar} alt={userPost.username} />
-						<div>
-							<h3>{userPost.username} <span> • following</span></h3>
-							<p>Adorei esse post, ajuda muito a usar Material UI com React!</p>
-						</div>
-					</Comment>
-				</CommentsContainer>}
+					{listComments.map((comment) => 
+						<Comment 
+							key={comment.id}
+							userPost={userPost}
+							text={comment.text}
+							user={comment.user}
+							isFollowing={(listFollowing.findIndex((userComment) =>
+								(userComment.id === comment.user.id)) > -1)}
+						/>
+					)}
+				</CommentsContainer>
+			}
 		</>
 	);
 };
-
-const Comment = styled.li`
-	padding: 15px 5px;
-	border-bottom: 1px solid #353535;
-	display: flex;
-	img {
-		width: 39px;
-		height: 39px;
-		margin-right: 18px;
-	}
-	div {
-		font-size: 14px;
-		h3 {
-			font-weight: bold;
-			margin-bottom: 5px;
-			span {
-				color: #565656;
-				font-weight: 400;
-			}
-		}
-		p {
-			color: #ACACAC;
-		}
-	}
-`;
 
 const CommentsContainer = styled.ul`
 	width: 100%;
 	position: relative;
 	top: -40px;
-	padding: 25px 20px 25px 20px;
+	padding: 25px 20px;
 	background-color: #1E1E1E;
-	z-index: -1;
 	border-radius: 16px;
+	@media(max-width: 610px) {
+        border-radius: 0;
+    }
 `;
 
 const PostContainer = styled.div`
+	position: relative;
     width: 100%;
     background-color: #171717;
     border-radius: 16px;
-    padding: 18px 20px 20px 18px;
+    padding: 18px 20px;
     display: flex;
+	z-index: 1;
 	overflow-wrap: break-word;
 	margin-bottom: 16px;
     @media(max-width: 610px) {

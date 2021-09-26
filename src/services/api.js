@@ -112,6 +112,10 @@ function getUsersIFollow(token) {
   return axios.get(`${BASE_URL}/users/follows`, getConfig(token));
 }
 
+function getListComments(token, postId) {
+  return axios.get(`${BASE_URL}/posts/${postId}/comments`, getConfig(token));
+}
+
 export {
   SignUp,
   LogIn,
@@ -128,5 +132,6 @@ export {
   putEditUserPost,
   toggleFollowAPI,
   getUsersIFollow,
+  getListComments,
 };
 

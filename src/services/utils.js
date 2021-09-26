@@ -3,14 +3,14 @@ import NotFound from "../components/NotFound";
 import Post from "../components/Post";
 import { HashtagLink } from "../styles/styles"
 
-const renderPostsOrNot = (listPosts, isFollowingSomeone = true) => {
+const renderPostsOrNot = (listPosts, listFollowing = true) => {
   if (!listPosts) return <LoadingSection />;
   else if (listPosts.length > 0) {
-    return listPosts.map((postInfo) => (
-      <Post key={postInfo.id} content={postInfo} />
+    return listPosts.map((postInfo, index) => (
+      <Post key={index} content={postInfo} listFollowing={listFollowing} />
     ));
   } else if (listPosts.length === 0) {
-    if (!isFollowingSomeone) {
+    if (!listFollowing) {
       return <NotFound typeError={"Você não segue ninguém ainda, procure por perfis na busca"} />;
     }
     return <NotFound typeError={"Nenhum post encontrado."} />;
@@ -46,5 +46,10 @@ const getHashtagsLowerCase = (description) => {
   return description;
 }
 
+const isYoutubeLink = (urlVideo) => {
+  const rule = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/
+  return rule.test(urlVideo);
+}
 
-export { renderPostsOrNot, Hashtags, getHashtagsLowerCase };
+
+export { renderPostsOrNot, Hashtags, getHashtagsLowerCase, isYoutubeLink };

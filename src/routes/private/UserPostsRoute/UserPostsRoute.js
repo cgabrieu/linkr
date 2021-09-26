@@ -121,6 +121,9 @@ const NameAndPhoto = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 70%;
   img {
     width: 50px;
     height: 50px;
@@ -129,9 +132,12 @@ const NameAndPhoto = styled.div`
     object-fit: cover;
   }
   h1 {
-        font-size: 43px;
-        font-weight: bold;
+    font-size: 43px;
+    font-weight: bold;
+    @media(max-width: 610px) {
+      font-size: 22px;
     }
+  }
 `;
 
 const TopUserPage = styled.div`
