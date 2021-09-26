@@ -44,7 +44,7 @@ export default function Timeline() {
           if (newPosts.length > 0) setFirstPostID(newPosts[0].id);
         });
     } else {
-      setFirstPostID(listPosts[0].id);
+      listPosts && setFirstPostID(listPosts[0].id);
     }
   }
 

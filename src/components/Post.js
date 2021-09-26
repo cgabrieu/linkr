@@ -50,7 +50,7 @@ export default function Post({ idPost, userPost, likes, content }) {
 				.then(() => {
 					setIsEditing(false);
 					setIsLoading(false);
-					setRenderPosts(true);
+					setRenderPosts(!renderPosts);
 				})
 				.catch(() => {
 					setIsLoading(false);
