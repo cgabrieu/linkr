@@ -13,6 +13,7 @@ import UserLikeContainer from "./UserLikeContainer"
 import { ReactComponent as PinPointIcon } from "../assets/PinPoint.svg"
 import ContainerModal from "./ContainerModal"
 import ReactPlayer from "react-player/youtube"
+import { UserPic } from "../styles/styles";
 
 export default function Post({ content }) {
 
@@ -26,7 +27,7 @@ export default function Post({ content }) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [textareaDescription, setTextareaDescription] = useState(text);
 	const [isEditing, setIsEditing] = useState(false);
-	const [showComments, setShowComments] = useState(true);
+	const [showComments, setShowComments] = useState(false);
 	const editFieldRef = useRef();
 
 	function deleteThisPost() {
@@ -140,28 +141,48 @@ export default function Post({ content }) {
 			</PostContainer>
 			{showComments &&
 				<CommentsContainer>
-					<ul>
-						<li>TESTE</li>
-						<li>TESTE</li>
-						<li>TESTE</li>
-						<li>TESTE</li>
-						<li>TESTE</li>
-						<li>TESTE</li>
-						<li>TESTE</li>
-						<li>TESTE</li>
-						<li>TESTE</li>
-						<li>TESTE</li>
-					</ul>
+					<Comment>
+						<UserPic src={userPost.avatar} alt={userPost.username} />
+						<div>
+							<h3>{userPost.username} <span> • following</span></h3>
+							<p>Adorei esse post, ajuda muito a usar Material UI com React!</p>
+						</div>
+					</Comment>
 				</CommentsContainer>}
 		</>
 	);
 };
 
-const CommentsContainer = styled.div`
+const Comment = styled.li`
+	padding: 15px 5px;
+	border-bottom: 1px solid #353535;
+	display: flex;
+	img {
+		width: 39px;
+		height: 39px;
+		margin-right: 18px;
+	}
+	div {
+		font-size: 14px;
+		h3 {
+			font-weight: bold;
+			margin-bottom: 5px;
+			span {
+				color: #565656;
+				font-weight: 400;
+			}
+		}
+		p {
+			color: #ACACAC;
+		}
+	}
+`;
+
+const CommentsContainer = styled.ul`
 	width: 100%;
 	position: relative;
 	top: -40px;
-	padding: 45px 20px 25px 20px;
+	padding: 25px 20px 25px 20px;
 	background-color: #1E1E1E;
 	z-index: -1;
 	border-radius: 16px;
