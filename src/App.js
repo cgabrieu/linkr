@@ -23,7 +23,7 @@ import MyLikesRoute from "./routes/private/MyLikesRoute/MyLikesRoute";
 function App() {
   const [user, setUser] = useState("");
   const [isExpandableMenuOpen, setIsExpandableMenuOpen] = useState(false);
-  const [renderPosts, setRenderPosts] = useState(null);
+  const [renderPosts, setRenderPosts] = useState(false);
 
   return (
     <Router>
