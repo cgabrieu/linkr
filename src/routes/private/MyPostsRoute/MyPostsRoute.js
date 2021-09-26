@@ -11,12 +11,13 @@ import LoadingSection from "../../../components/LoadingSection";
 export default function MyPostsRoute() {
   const [lastPostID, setLastPostID] = useState(null)
   const [hasMore, setHasMore] = useState(true);
-  const [items, setItems] = useState(10)
+  const [items, setItems] = useState(10);
   const [listPosts, setListPosts] = useState(null);
   const { user } = useContext(UserContext);
   const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
   useEffect(() => {
+    console.log("Entrou");
     getData();
     return () => setRenderPosts(false);
   }, [renderPosts]);
@@ -25,7 +26,6 @@ export default function MyPostsRoute() {
     getUserPosts(user.token, user.id, lastPostID)
       .then((res) => {
         const allPosts = res.data.posts;
-        console.log(allPosts);
         if (allPosts.length === 0) {
           if (!lastPostID) {
             setListPosts([]);
@@ -41,7 +41,7 @@ export default function MyPostsRoute() {
         }
         const lastID = allPosts[allPosts.length - 1].id;
         setLastPostID(lastID);
-        setItems(items + 10);
+        setItems(items + allPosts.length);
       })
       .catch((err) => setListPosts(err.status));
   }
@@ -50,6 +50,7 @@ export default function MyPostsRoute() {
     <Div>
       <Container>
         <PostContainer>
+          <h1>my posts</h1>
           <InfiniteScroll
             dataLength={items}
             scrollThreshold={1}
@@ -67,7 +68,6 @@ export default function MyPostsRoute() {
               </ScrollToTop>
             }
           >
-            <h1>my posts</h1>
             {renderPostsOrNot(listPosts)}
           </InfiniteScroll>
         </PostContainer>

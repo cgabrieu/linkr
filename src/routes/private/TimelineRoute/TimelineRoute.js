@@ -15,7 +15,6 @@ export default function Timeline() {
   const [lastPostID, setLastPostID] = useState(null);
   const [firstPostID, setFirstPostID] = useState(null);
   const [hasMore, setHasMore] = useState(true);
-  const [items, setItems] = useState(10);
   const [listPosts, setListPosts] = useState(null);
   const [isFollowingSomeone, setIsFollowingSomeone] = useState(false);
   const { user } = useContext(UserContext);
@@ -41,7 +40,6 @@ export default function Timeline() {
       getListPosts(user.token, null, firstPostID)
         .then((res) => {
           const newPosts = res.data.posts;
-          console.log("AQUI", newPosts);
           setListPosts([...listPosts, ...newPosts]);
           if (newPosts.length > 0) setFirstPostID(newPosts[0].id);
         });
@@ -50,9 +48,9 @@ export default function Timeline() {
     }
   }
 
-  useInterval(getRecentPosts, 5000);
+  useInterval(getRecentPosts, 15000);
 
-  function filterPosts(allPosts, isRecentPost = null) {
+  function filterPosts(allPosts) {
     if (allPosts.length === 0) {
       if (!isFollowingSomeone) {
         setListPosts([]);
@@ -79,7 +77,6 @@ export default function Timeline() {
     }
     const lastID = postsFromFollowedUsers[postsFromFollowedUsers.length - 1].id;
     setLastPostID(lastID);
-    setItems(items + postsFromFollowedUsers.length);
   }
 
   return (
@@ -89,7 +86,7 @@ export default function Timeline() {
           <h1>timeline</h1>
           <CreatePost />
           <InfiniteScroll
-            dataLength={items}
+            dataLength={listPosts && listPosts.length}
             scrollThreshold={1}
             next={getData}
             hasMore={hasMore}
