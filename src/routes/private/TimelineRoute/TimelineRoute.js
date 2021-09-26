@@ -40,11 +40,12 @@ export default function Timeline() {
       getListPosts(user.token, null, firstPostID)
         .then((res) => {
           const newPosts = res.data.posts;
-          setListPosts([...listPosts, ...newPosts]);
+          if (listPosts.length > 10) setListPosts([...listPosts, ...newPosts]);
+          else setListPosts([...newPosts, ...listPosts]);
           if (newPosts.length > 0) setFirstPostID(newPosts[0].id);
         });
     } else {
-      listPosts && setFirstPostID(listPosts[0].id);
+      setFirstPostID(listPosts[0].id);
     }
   }
 
