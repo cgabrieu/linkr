@@ -12,8 +12,8 @@ export const HeaderBar = styled.header`
     align-items: center;
     justify-content: space-between;
     padding: 0 2%;
-    z-index: 2;
-`
+    z-index: 4;
+`;
 
 export const Tittle = styled(Link)`
     font-family: 'Passion One', cursive;

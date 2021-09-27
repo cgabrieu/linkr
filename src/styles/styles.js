@@ -13,7 +13,6 @@ const Container = styled.div`
 `;
 
 const UserContainer = styled.div`
-    margin-right: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;

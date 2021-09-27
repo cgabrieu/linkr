@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 import { UserContainer, UserPic } from "../styles/styles";
 import React, { useState, useContext, useEffect, useRef } from "react";
 import UserContext from "../contexts/UserContext";
@@ -16,24 +16,27 @@ import ReactPlayer from "react-player/youtube"
 import { getListComments, postComment } from "../services/api";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import Comment from "./Comment";
+import { FaRetweet } from 'react-icons/fa';
 
 export default function Post({ content }) {
 
-	const { id, user: userPost, likes, geolocation, link, text } = content;
-
+	const { id, user: userPost, likes, geolocation, link, text, repostCount, repostedBy } = content;
 	const { username } = userPost;
 	const { renderPosts, setRenderPosts, listFollowing } = useContext(UtilsContext);
 	const { user } = useContext(UserContext);
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 	const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [textareaDescription, setTextareaDescription] = useState(text);
+	const [isReposted, setIsReposted] = useState(repostedBy ? true : false);
 	const [isEditing, setIsEditing] = useState(false);
+	const [textareaDescription, setTextareaDescription] = useState(text);
 	const [showComments, setShowComments] = useState(false);
 	const [listComments, setListComments] = useState([]);
 	const [inputComment, setInputComment] = useState("");
 	const [renderComments, setRenderComments] = useState(false);
 	const editFieldRef = useRef();
+
+	const history = useHistory();
 
 	function deleteThisPost() {
 		setIsLoading(true);
@@ -88,12 +91,30 @@ export default function Post({ content }) {
 
 	return (
 		<>
-			<PostContainer>
+			{isReposted &&
+				<RepostContainer isReposted={isReposted}>
+					<RepostIcon />
+					<p>{"Re-posted by "}
+						<strong onClick={() => history.push("/user/" + repostedBy.id)}>
+							{repostedBy &&
+								repostedBy.username !== user.username ?
+								repostedBy.username : "you"}
+						</strong>
+					</p>
+				</RepostContainer>
+			}
+			<PostContainer id="post" isReposted={isReposted}>
 				<UserContainer>
-					<UserLikeContainer userPost={userPost} idPost={id} likes={likes} />
-					<button onClick={() => setShowComments(!showComments)}>
-						{listComments.length} Comments
-					</button>
+					<UserLikeContainer
+						userPost={userPost}
+						idPost={id} likes={likes}
+						repostCount={repostCount}
+						repostedBy={repostedBy}
+						setIsReposted={setIsReposted}
+						showComments={showComments}
+						setShowComments={setShowComments}
+						quantityComments={listComments.length}
+					/>
 				</UserContainer>
 				<MainPostContainer>
 					<TopContainer>
@@ -139,10 +160,7 @@ export default function Post({ content }) {
 							/>
 							<LinkYoutube href={link} target='_blank'>{link}</LinkYoutube>
 						</>
-						:
-						<Link to={{ pathname: link }} target="_blank">
-							<ContainerLinkPreview content={content} />
-						</Link>
+						: <ContainerLinkPreview content={content} />
 					}
 				</MainPostContainer>
 			</PostContainer>
@@ -215,7 +233,7 @@ const InputCommentContainer = styled.div`
 const CommentsContainer = styled.ul`
 	width: 100%;
 	position: relative;
-	top: -40px;
+	top: -25px;
 	padding: 25px 20px 0 20px;
 	background-color: #1E1E1E;
 	border-radius: 16px;
@@ -234,15 +252,50 @@ const PostContainer = styled.div`
     width: 100%;
     background-color: #171717;
     border-radius: 16px;
-    padding: 18px 20px;
+    padding: 18px 15px;
     display: flex;
-	z-index: 1;
-	overflow-wrap: break-word;
-	margin-bottom: 16px;
+	gap: 15px;
+	z-index: 2;
+	position: relative;
+	margin-bottom: 25px;
     @media(max-width: 610px) {
         border-radius: 0;
     }
 `;
+
+const RepostIcon = styled(FaRetweet)`
+	font-size: 20px;
+  	cursor: pointer;
+	position: relative;
+	top: -4px;
+`
+
+const RepostContainer = styled.div`
+	position: relative;
+	width: 100%;
+	top: 25px;
+	height: 60px;
+	padding: 12px 0px 12px 13px;
+	background-color: #1E1E1E;
+	border-radius: 16px;
+	display: flex;
+	text-align: center;
+	p {
+		margin-left: 5px;
+		font-size: 13px;
+		white-space: nowrap;
+  		overflow: hidden;
+  		text-overflow: ellipsis;
+		width: 80%;
+		strong {
+			font-weight: 700;
+			cursor: pointer;
+		}
+	}
+	@media(max-width: 610px) {
+		border-radius: 0;
+	}
+`
 
 const TopContainer = styled.div`
     display: flex;
@@ -262,8 +315,7 @@ const TextAreaPostDescription = styled.textarea`
 `;
 
 const MainPostContainer = styled.div`
-	width: 100%;
-    max-width: 505px;
+    max-width: 490px;
     @media(max-width: 610px) {
 		width: 100%;
         max-width: 510px;
@@ -313,4 +365,7 @@ const LinkYoutube = styled.a`
 	color: rgb(183, 183, 183);
 	display: flex;
 	padding-top: 20px;
+	&:hover{
+		color: #ffffff;
+	}
 `;
