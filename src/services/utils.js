@@ -4,26 +4,23 @@ import Post from "../components/Post";
 import { HashtagLink } from "../styles/styles"
 
 const renderPostsOrNot = (listPosts, isFollowingSomeone = true) => {
-  if (listPosts === null) return <LoadingSection />
+  if (!listPosts) return <LoadingSection />;
   else if (listPosts.length > 0) {
     return listPosts.map((postInfo) => (
-      <Post key={postInfo.id} idPost={postInfo.id} userPost={postInfo.user} likes={postInfo.likes} content={postInfo} />
+      <Post key={postInfo.id} content={postInfo} />
     ));
   } else if (listPosts.length === 0) {
     if (!isFollowingSomeone) {
       return <NotFound typeError={"Você não segue ninguém ainda, procure por perfis na busca"} />;
     }
-    else return <NotFound typeError={"Nenhuma publicação encontrada"} />;
+    return <NotFound typeError={"Nenhum post encontrado."} />;
   }
   return (
     <NotFound
-      typeError={
-        listPosts +
-        " - Houve uma falha ao obter os post, por favor atualize a página."
-      }
+      typeError={listPosts + " - Houve uma falha ao obter os post, por favor atualize a página."}
     />
   );
-};
+}
 
 const Hashtags = ({ children }) => {
   if (children.indexOf("#") === -1) return children;
@@ -42,9 +39,10 @@ const Hashtags = ({ children }) => {
 
 const getHashtagsLowerCase = (description) => {
   const listHashtags = description.match(/#[A-Za-z0-9\u00C0-\u017F]*/g);
-  listHashtags.forEach((e, index) => {
-    description = description.replace(e, listHashtags[index].toLowerCase());
-  });
+  listHashtags &&
+    listHashtags.forEach((e, index) => {
+      description = description.replace(e, listHashtags[index].toLowerCase());
+    });
   return description;
 }
 

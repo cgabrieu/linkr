@@ -30,24 +30,33 @@ function LogIn(request) {
   return promise;
 }
 
-function getListPosts(token, lastPostID = null) {
-  if (!lastPostID) {
-    return axios.get(`${BASE_URL}/following/posts/`, getConfig(token));
-  } else {
+function getListPosts(token, lastPostID = null, firstPostID = null) {
+  if (lastPostID) {
     return axios.get(`${BASE_URL}/following/posts/?olderThan=${lastPostID}`, getConfig(token));
+  } else if (firstPostID) {
+    return axios.get(`${BASE_URL}/following/posts/?earlierThan=${firstPostID}`, getConfig(token));
   }
+  return axios.get(`${BASE_URL}/following/posts/`, getConfig(token));
 }
 
 function getTrendings(token) {
   return axios.get(`${BASE_URL}/hashtags/trending`, getConfig(token));
 }
 
-function postPublish(link, description, token) {
-  const body = {
-    text: description,
-    link: link,
-  };
-  return axios.post(`${BASE_URL}/posts`, body, getConfig(token));
+function postPublish(link, description, location, token) {
+  const body = () => (
+    (location !== null)
+      ? {
+        text: description,
+        link: link,
+        geolocation: {
+          latitude: location.latitude,
+          longitude: location.longitude
+        }
+      }
+      : { text: description, link: link }
+  );
+  return axios.post(`${BASE_URL}/posts`, body(), getConfig(token));
 }
 
 function postLike(token, postId) {
@@ -71,10 +80,7 @@ function getUserPosts(token, userId, lastPostID = null) {
 }
 
 function getHashtagPosts(token, hashtag) {
-  const promise = axios.get(
-    `${BASE_URL}/hashtags/${hashtag}/posts`,
-    getConfig(token)
-  );
+  const promise = axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, getConfig(token));
   return promise;
 }
 
@@ -114,10 +120,16 @@ function getUsersIFollow(token) {
   return axios.get(`${BASE_URL}/users/follows`, getConfig(token));
 }
 
+<<<<<<< HEAD
 function getSearchedUser(token, username) {
   return axios.get(`${BASE_URL}/users/search?username=${username}`, getConfig(token));
 }
 let getYoutubeId = require('get-youtube-id');
+=======
+function repost(token, postID) {
+  return axios.post(`${BASE_URL}/posts/${postID}/share`, "", getConfig(token));
+}
+>>>>>>> c09b93ac52e91febf030599704f8055b87319c06
 
 export {
   SignUp,
@@ -135,6 +147,10 @@ export {
   putEditUserPost,
   toggleFollowAPI,
   getUsersIFollow,
+<<<<<<< HEAD
   getSearchedUser,
   getYoutubeId
+=======
+  repost
+>>>>>>> c09b93ac52e91febf030599704f8055b87319c06
 };

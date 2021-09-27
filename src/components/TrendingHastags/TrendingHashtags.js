@@ -41,7 +41,7 @@ export default function TrendingHashtags() {
 
 const FixedContainer = styled.div`
   position: fixed;
-  top: 225px;
+  top: 213px;
   left: calc((100% + 345px) / 2);
 
   width: 300px;

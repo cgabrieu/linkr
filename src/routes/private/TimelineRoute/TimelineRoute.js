@@ -5,63 +5,71 @@ import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { getUsersIFollow, getListPosts } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
-import RenderPostsContext from "../../../contexts/RenderPostsContext";
+import useInterval from 'react-useinterval';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingSection from "../../../components/LoadingSection";
 import ScrollToTop from "react-scroll-up";
 
-export default function Timeline() {
-  const [lastPostID, setLastPostID] = useState(null)
+export default function TimelineRoute() {
+  const [lastPostID, setLastPostID] = useState(null);
+  const [firstPostID, setFirstPostID] = useState(null);
   const [hasMore, setHasMore] = useState(true);
-  const [items, setItems] = useState(10);
   const [listPosts, setListPosts] = useState(null);
   const [isFollowingSomeone, setIsFollowingSomeone] = useState(false);
   const { user } = useContext(UserContext);
-  const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 
   useEffect(() => {
     getUsersIFollow(user.token)
-      .then(res => {
-        const followedUsers = res.data.users
-        if (followedUsers.length > 0) setIsFollowingSomeone(true)
+      .then((res) => {
+        const followedUsers = res.data.users;
+        if (followedUsers.length > 0) setIsFollowingSomeone(true);
       })
-      .catch(err => setListPosts(err.status))
-
+      .catch((err) => setListPosts(err.status));
     getData();
-    return () => setRenderPosts(false);
-  }, [renderPosts]);
+  }, []);
 
   function getData() {
     getListPosts(user.token, lastPostID)
-      .then((res) => {
-        filterPosts(res.data.posts)
-      })
+      .then((res) => filterPosts(res.data.posts))
       .catch((err) => setListPosts(err.status));
   }
 
+  function getRecentPosts() {
+    if (firstPostID) {
+      getListPosts(user.token, null, firstPostID)
+        .then((res) => {
+          const newPosts = res.data.posts.filter(post => post.user.id !== user.id);
+          if (listPosts.length > 10) setListPosts([...listPosts, ...newPosts]);
+          else setListPosts([...newPosts, ...listPosts]);
+          if (newPosts.length > 0) setFirstPostID(newPosts[0].id);
+        });
+    } else {
+      listPosts[0] && setFirstPostID(listPosts[0].id);
+    }
+  }
+
+  useInterval(getRecentPosts, 15000);
+
   function filterPosts(allPosts) {
-    console.log(allPosts);
     if (allPosts.length === 0) {
       if (!isFollowingSomeone) {
-        setListPosts([])
-        return
+        setListPosts([]);
+        return;
       }
       setHasMore(false);
-      return
+      return;
     }
     const postsFromFollowedUsers = allPosts.filter(post => post.user.id !== user.id);
-    console.log(postsFromFollowedUsers);
+
     if (listPosts === null) {
-      setListPosts(postsFromFollowedUsers)
+      setListPosts(postsFromFollowedUsers);
     } else if (postsFromFollowedUsers.length !== 0) {
-      setListPosts(listPosts => [...listPosts, ...postsFromFollowedUsers]);
+      setListPosts([...listPosts, ...postsFromFollowedUsers]);
     } else {
       setListPosts(...listPosts);
     }
-    console.log("peloamor", listPosts);
     const lastID = postsFromFollowedUsers[postsFromFollowedUsers.length - 1].id;
-    setLastPostID(lastID)
-    setItems(items + 10)
+    setLastPostID(lastID);
   }
 
   return (
@@ -71,11 +79,11 @@ export default function Timeline() {
           <h1>timeline</h1>
           <CreatePost />
           <InfiniteScroll
-            dataLength={items}
+            dataLength={listPosts && listPosts.length}
             scrollThreshold={1}
             next={getData}
             hasMore={hasMore}
-            loader={lastPostID === 10000 ? "" : <LoadingSection isScrolling={true} />}
+            loader={lastPostID && <LoadingSection isScrolling={true} />}
             endMessage={
               <ScrollToTop
                 style={{
@@ -90,8 +98,6 @@ export default function Timeline() {
           </InfiniteScroll>
         </PostContainer>
       </Container >
-    </Div >
+    </Div>
   );
 }
-
-

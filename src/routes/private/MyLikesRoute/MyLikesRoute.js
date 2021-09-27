@@ -12,21 +12,16 @@ import ScrollToTop from "react-scroll-up";
 export default function MyLikesRoute() {
   const [lastPostID, setLastPostID] = useState(null)
   const [hasMore, setHasMore] = useState(true);
-  const [items, setItems] = useState(10);
   const [posts, setPosts] = useState(null);
-  const [isFollowingSomeone, setIsFollowingSomeone] = useState(false);
   const { user } = useContext(UserContext);
-  const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
+  const { renderPosts } = useContext(RenderPostsContext);
 
   useEffect(() => {
-    getUsersIFollow(user.token)
-      .then(res => {
-        const followedUsers = res.data.users
-        if (followedUsers.length > 0) setIsFollowingSomeone(true)
-      })
-      .catch(err => setPosts(err.status))
+    if (posts) {
+      getPostsUserLiked(user.token)
+        .then((res) => setPosts(res.data.posts));
+    }
     getData();
-    return () => setRenderPosts(false);
   }, [renderPosts]);
 
   function getData() {
@@ -34,23 +29,22 @@ export default function MyLikesRoute() {
       .then(res => {
         const allPosts = res.data.posts;
         if (allPosts.length === 0) {
-          if (!isFollowingSomeone) {
+          if (!lastPostID) {
             setPosts([]);
-            return
+            return;
           }
-          setHasMore(false)
-          return
+          setHasMore(false);
+          return;
         }
         if (posts === null) {
-          setPosts(allPosts)
+          setPosts(allPosts);
         } else {
-          setPosts(posts => [...posts, ...allPosts]);
+          setPosts([...posts, ...allPosts]);
         }
-        const lastID = allPosts[allPosts.length - 1].id
-        setLastPostID(lastID)
-        setItems(items + 10)
+        const lastID = allPosts[allPosts.length - 1].id;
+        setLastPostID(lastID);
       })
-      .catch(err => setPosts(err.status));
+      .catch((err) => setPosts(err.status));
   }
 
   return (
@@ -59,11 +53,11 @@ export default function MyLikesRoute() {
         <PostContainer>
           <h1>my likes</h1>
           <InfiniteScroll
-            dataLength={items}
+            dataLength={posts && posts.length}
             scrollThreshold={1}
             next={getData}
             hasMore={hasMore}
-            loader={lastPostID === 10000 ? "" : <LoadingSection isScrolling={true} />}
+            loader={lastPostID && <LoadingSection isScrolling={true} />}
             endMessage={
               <ScrollToTop
                 style={{
