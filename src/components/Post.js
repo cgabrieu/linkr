@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import { UserContainer } from "../styles/styles";
 import React, { useState, useContext, useEffect, useRef } from "react";
 import UserContext from "../contexts/UserContext";
@@ -128,9 +127,7 @@ export default function Post({ idPost, userPost, likes, content }) {
 						<LinkYoutube href={content.link} target='_blank'>{content.link}</LinkYoutube>
 					</>
 					:
-					<Link to={{ pathname: content.link }} target="_blank">
-						<ContainerLinkPreview content={content} />
-					</Link>
+					<ContainerLinkPreview content={content} />
 				}
 			</MainPostContainer>
 		</PostContainer>
