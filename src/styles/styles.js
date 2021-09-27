@@ -15,7 +15,7 @@ const Container = styled.div`
 const UserContainer = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
 `;
 
 const UserPic = styled.img`

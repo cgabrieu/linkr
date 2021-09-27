@@ -12,7 +12,6 @@ import Modal from 'react-modal';
 Modal.setAppElement('#root');
 
 export default function UserLikeContainer({ userPost, idPost, likes, repostCount, repostedBy, setIsReposted }) {
-
   let history = useHistory();
   const { username, avatar } = userPost;
   const { user } = useContext(UserContext);
@@ -228,6 +227,9 @@ const ModalContent = styled.div`
 `;
 
 const ModalQuestion = styled.p`
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
   font-family: 'Lato', sans-serif;
   font-weight: 700;
   color: rgb(255, 255, 255);

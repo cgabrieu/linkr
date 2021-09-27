@@ -18,7 +18,6 @@ import { FaRetweet } from 'react-icons/fa';
 export default function Post({ content }) {
 
 	const { id, user: userPost, likes, geolocation, link, text, repostCount, repostedBy } = content;
-
 	const { username } = userPost;
 	const { user } = useContext(UserContext);
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -156,6 +155,8 @@ const PostContainer = styled.div`
 		gap: 22px;
     margin-bottom: ${({ isReposted }) => isReposted ? "50px" : "30px"};
 		margin-top: ${({ isReposted }) => isReposted ? "50px" : "30px"};
+    margin-bottom: 35px;
+		margin-top: 50px;
 		position: relative;
     @media(max-width: 610px) {
         border-radius: 0;
