@@ -6,24 +6,21 @@ import { HashtagLink } from "../styles/styles"
 const renderPostsOrNot = (listPosts, isFollowingSomeone = true) => {
   if (!listPosts) return <LoadingSection />;
   else if (listPosts.length > 0) {
-    return listPosts.map((postInfo, index) => (
-      <Post key={index} idPost={postInfo.id} userPost={postInfo.user} likes={postInfo.likes} content={postInfo} />
+    return listPosts.map((postInfo) => (
+      <Post key={postInfo.id} content={postInfo} />
     ));
   } else if (listPosts.length === 0) {
     if (!isFollowingSomeone) {
       return <NotFound typeError={"Você não segue ninguém ainda, procure por perfis na busca"} />;
     }
-    else return <NotFound typeError={"Nenhuma publicação encontrada"} />;
+    return <NotFound typeError={"Nenhum post encontrado."} />;
   }
   return (
     <NotFound
-      typeError={
-        listPosts +
-        " - Houve uma falha ao obter os post, por favor atualize a página."
-      }
+      typeError={listPosts + " - Houve uma falha ao obter os post, por favor atualize a página."}
     />
   );
-};
+}
 
 const Hashtags = ({ children }) => {
   if (children.indexOf("#") === -1) return children;

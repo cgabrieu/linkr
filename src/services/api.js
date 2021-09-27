@@ -43,12 +43,20 @@ function getTrendings(token) {
   return axios.get(`${BASE_URL}/hashtags/trending`, getConfig(token));
 }
 
-function postPublish(link, description, token) {
-  const body = {
-    text: description,
-    link: link,
-  };
-  return axios.post(`${BASE_URL}/posts`, body, getConfig(token));
+function postPublish(link, description, location, token) {
+  const body = () => (
+    (location !== null) 
+    ? { 
+        text: description,
+        link: link, 
+        geolocation: { 
+          latitude: location.latitude,
+          longitude: location.longitude 
+        } 
+      }
+    : { text: description, link: link }
+  );
+  return axios.post(`${BASE_URL}/posts`, body(), getConfig(token));
 }
 
 function postLike(token, postId) {

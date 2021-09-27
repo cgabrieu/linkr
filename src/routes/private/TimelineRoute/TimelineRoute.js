@@ -5,13 +5,12 @@ import React, { useState, useContext, useEffect } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { getUsersIFollow, getListPosts } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
-import RenderPostsContext from "../../../contexts/RenderPostsContext";
 import useInterval from 'react-useinterval';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingSection from "../../../components/LoadingSection";
 import ScrollToTop from "react-scroll-up";
 
-export default function Timeline() {
+export default function TimelineRoute() {
   const [lastPostID, setLastPostID] = useState(null);
   const [firstPostID, setFirstPostID] = useState(null);
   const [hasMore, setHasMore] = useState(true);
@@ -45,7 +44,7 @@ export default function Timeline() {
           if (newPosts.length > 0) setFirstPostID(newPosts[0].id);
         });
     } else {
-      setFirstPostID(listPosts[0].id);
+      listPosts[0] && setFirstPostID(listPosts[0].id);
     }
   }
 

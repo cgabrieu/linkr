@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Container, Div, PostContainer } from "../../../styles/styles";
 import UserContext from "../../../contexts/UserContext";
-import { getUserPosts, getUsersIFollow } from "../../../services/api";
+import { getUserPosts } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
 import RenderPostsContext from "../../../contexts/RenderPostsContext";
 import InfiniteScroll from "react-infinite-scroll-component";
