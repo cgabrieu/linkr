@@ -234,7 +234,7 @@ const InputCommentContainer = styled.div`
 const CommentsContainer = styled.ul`
 	width: 100%;
 	position: relative;
-	top: -25px;
+	top: -50px;
 	padding: 25px 20px 0 20px;
 	background-color: #1E1E1E;
 	border-radius: 16px;

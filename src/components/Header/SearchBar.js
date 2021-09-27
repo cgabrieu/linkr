@@ -82,6 +82,7 @@ const Form = styled.form`
   display: flex;
   align-items: center;
   background-color: #fff;
+  justify-content: space-between;
   border-radius: 8px;
 
   input {
