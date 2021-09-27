@@ -1,40 +1,47 @@
 import { useState } from "react";
-import { IoSearchOutline } from "react-icons/io5";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 
-export default function SearchHashtag({ isSearching, setIsSearching }) {
-
+export default function SearchHashtag() {
   const history = useHistory();
   const [hashtag, setHashtag] = useState("");
 
   function search(e) {
     e.preventDefault();
-    if (!isSearching) return setIsSearching(true);
-    setIsSearching(false);
     history.push(`/hashtag/${hashtag}`);
   }
 
   return (
-    <Flex onSubmit={search}>
-      {isSearching ? (
+    <form onSubmit={search}>
+      <InputContainer type="submit">
+        <span>#</span>
         <input
           type="text"
           value={hashtag}
           onChange={(e) => setHashtag(e.target.value)}
           placeholder="Pesquise aqui"
         />
-      ) : null}
-      <button type="submit">
-        <IoSearchOutline color="black" size="16px" />
-      </button>
-    </Flex>
+      </InputContainer>
+    </form>
   );
 }
 
-const Flex = styled.form`
-  display: inherit;
+const InputContainer = styled.div`
+  display: flex;
   align-items: center;
+  gap: 3.75px;
+  width: 270px;
+  margin: 0 15px 15px;
+  padding: 3.75px 15px;
+  border-radius: 8px;
+  background-color: #252525;
+  color: white;
+
+  span {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 20px;
+  }
 
   input {
     font-size: 13px;
@@ -43,20 +50,14 @@ const Flex = styled.form`
     font-family: "Lato";
     color: #fff;
 
-    width: 100px;
-    padding: 5px 10px;
+    width: 100%;
+    padding: 5px 0;
     background-color: transparent;
     border: none;
     outline: none;
   }
 
-  button {
-    display: grid;
-    place-items: center;
-    background-color: white;
-    padding: 7px;
-    cursor: pointer;
-    border: none;
-    border-radius: 50%;
+  input::placeholder {
+    color: #575757;
   }
 `;

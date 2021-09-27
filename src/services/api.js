@@ -60,11 +60,15 @@ function postPublish(link, description, location, token) {
 }
 
 function postLike(token, postId) {
-  return axios.post(`${BASE_URL}/posts/${postId}/like`, '', getConfig(token))
+  return axios.post(`${BASE_URL}/posts/${postId}/like`, "", getConfig(token));
 }
 
 function postDislike(token, postId) {
-  return axios.post(`${BASE_URL}/posts/${postId}/dislike`, '', getConfig(token))
+  return axios.post(
+    `${BASE_URL}/posts/${postId}/dislike`,
+    "",
+    getConfig(token)
+  );
 }
 
 function getUserPosts(token, userId, lastPostID = null) {
@@ -82,7 +86,7 @@ function getHashtagPosts(token, hashtag) {
 
 function deletePost(token, postId) {
   const promise = axios.delete(`${BASE_URL}/posts/${postId}`, getConfig(token));
-  return (promise);
+  return promise;
 }
 
 function getUserInfo(token, userId) {
@@ -105,12 +109,21 @@ function putEditUserPost(postId, description, token) {
 }
 
 function toggleFollowAPI(token, userID, whatToDo) {
-  return axios.post(`${BASE_URL}/users/${userID}/${whatToDo}`, '', getConfig(token));
+  return axios.post(
+    `${BASE_URL}/users/${userID}/${whatToDo}`,
+    "",
+    getConfig(token)
+  );
 }
 
 function getUsersIFollow(token) {
   return axios.get(`${BASE_URL}/users/follows`, getConfig(token));
 }
+
+function getSearchedUser(token, username) {
+  return axios.get(`${BASE_URL}/users/search?username=${username}`, getConfig(token));
+}
+let getYoutubeId = require('get-youtube-id');
 
 function repost(token, postID) {
   return axios.post(`${BASE_URL}/posts/${postID}/share`, "", getConfig(token));
@@ -132,6 +145,7 @@ export {
   putEditUserPost,
   toggleFollowAPI,
   getUsersIFollow,
+  getSearchedUser,
+  getYoutubeId,
   repost
 };
-

@@ -122,6 +122,7 @@ export default function Post({ content }) {
 						<ReactPlayer
 							url={link}
 							width={'100%'}
+							height={'250px'}
 							controls={true}
 						/>
 						<LinkYoutube href={link} target='_blank'>{link}</LinkYoutube>
@@ -220,12 +221,8 @@ const TextAreaPostDescription = styled.textarea`
 `;
 
 const MainPostContainer = styled.div`
-	width: 100%;
+	width: calc(100% - 81px);
     max-width: 505px;
-    @media(max-width: 610px) {
-		width: 100%;
-        max-width: 510px;
-    }
 `;
 
 const PostDescription = styled.div`
@@ -270,4 +267,8 @@ const LinkYoutube = styled.a`
 	color: rgb(183, 183, 183);
 	display: flex;
 	padding-top: 20px;
+`
+
+const YoutubeContainer = styled.div`
+	width: 100%;
 `;
