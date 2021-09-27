@@ -9,14 +9,15 @@ import useInterval from 'react-useinterval';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingSection from "../../../components/LoadingSection";
 import ScrollToTop from "react-scroll-up";
+import UtilsContext from "../../../contexts/UtilsContext";
 
-export default function TimelineRoute() {
+export default function Timeline() {
   const [lastPostID, setLastPostID] = useState(null);
   const [firstPostID, setFirstPostID] = useState(null);
   const [hasMore, setHasMore] = useState(true);
   const [listPosts, setListPosts] = useState(null);
-  const [listFollowing, setListFollowing] = useState(null);
   const { user } = useContext(UserContext);
+  const { setListFollowing, listFollowing } = useContext(UtilsContext);
 
   useEffect(() => {
     getUsersIFollow(user.token)
@@ -38,13 +39,13 @@ export default function TimelineRoute() {
     if (firstPostID) {
       getListPosts(user.token, null, firstPostID)
         .then((res) => {
-          const newPosts = res.data.posts;
+          const newPosts = res.data.posts.filter(post => post.user.id !== user.id);
           if (listPosts.length > 10) setListPosts([...listPosts, ...newPosts]);
           else setListPosts([...newPosts, ...listPosts]);
           if (newPosts.length > 0) setFirstPostID(newPosts[0].id);
         });
     } else {
-      listPosts[0] && setFirstPostID(listPosts[0].id);
+      setFirstPostID(listPosts[0].id);
     }
   }
 
@@ -60,14 +61,7 @@ export default function TimelineRoute() {
       return;
     }
     const postsFromFollowedUsers = allPosts.filter(post => post.user.id !== user.id);
-    if (postsFromFollowedUsers.length === 0) {
-      if (!listFollowing) {
-        setListPosts([]);
-        return;
-      }
-      setHasMore(false);
-      return;
-    }
+
     if (listPosts === null) {
       setListPosts(postsFromFollowedUsers);
     } else if (postsFromFollowedUsers.length !== 0) {

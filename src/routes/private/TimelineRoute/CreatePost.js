@@ -4,13 +4,13 @@ import React, { useContext, useState } from "react";
 import UserContext from "../../../contexts/UserContext";
 import { postPublish } from "../../../services/api";
 import { getHashtagsLowerCase } from "../../../services/utils";
-import RenderPostsContext from "../../../contexts/RenderPostsContext";
+import UtilsContext from "../../../contexts/UtilsContext";
 import { ReactComponent as LocationIcon } from "../../../assets/Location.svg"
 
 
 export default function CreatePost() {
     const { user } = useContext(UserContext);
-    const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
+    const { renderPosts, setRenderPosts } = useContext(UtilsContext);
 
     const [location, setLocation] = useState(null);
     const [isLoading, setIsLoading] = useState(false);

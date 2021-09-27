@@ -3,7 +3,7 @@ import { Container, Div, PostContainer } from "../../../styles/styles";
 import UserContext from "../../../contexts/UserContext";
 import { getUserPosts } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
-import RenderPostsContext from "../../../contexts/RenderPostsContext";
+import UtilsContext from "../../../contexts/UtilsContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ScrollToTop from "react-scroll-up";
 import LoadingSection from "../../../components/LoadingSection";
@@ -13,7 +13,7 @@ export default function MyPostsRoute() {
   const [hasMore, setHasMore] = useState(true);
   const [listPosts, setListPosts] = useState(null);
   const { user } = useContext(UserContext);
-  const { renderPosts } = useContext(RenderPostsContext);
+  const { renderPosts } = useContext(UtilsContext);
 
   useEffect(() => {
     if (listPosts) {

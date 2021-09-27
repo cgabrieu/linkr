@@ -8,7 +8,7 @@ import { deletePost, getListPosts, putEditUserPost } from "../services/api";
 import Edit from "../assets/Edit.svg";
 import TrashCan from "../assets/TrashCan.svg";
 import { Hashtags, getHashtagsLowerCase, isYoutubeLink } from "../services/utils";
-import RenderPostsContext from "../contexts/RenderPostsContext";
+import UtilsContext from "../contexts/UtilsContext";
 import UserLikeContainer from "./UserLikeContainer"
 import { ReactComponent as PinPointIcon } from "../assets/PinPoint.svg"
 import ContainerModal from "./ContainerModal"
@@ -17,12 +17,12 @@ import { getListComments, postComment } from "../services/api";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import Comment from "./Comment";
 
-export default function Post({ content, listFollowing }) {
+export default function Post({ content }) {
 
 	const { id, user: userPost, likes, geolocation, link, text } = content;
 
 	const { username } = userPost;
-	const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
+	const { renderPosts, setRenderPosts, listFollowing } = useContext(UtilsContext);
 	const { user } = useContext(UserContext);
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 	const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
@@ -32,17 +32,18 @@ export default function Post({ content, listFollowing }) {
 	const [showComments, setShowComments] = useState(false);
 	const [listComments, setListComments] = useState([]);
 	const [inputComment, setInputComment] = useState("");
+	const [renderComments, setRenderComments] = useState(false);
 	const editFieldRef = useRef();
 
 	function deleteThisPost() {
 		setIsLoading(true);
-		deletePost(user.token, id).then(() => {
-			setIsLoading(false);
-			setIsDeleteModalOpen(false);
-			getListPosts(user.token)
-				.then(() => setRenderPosts(!renderPosts))
-				.catch(() => alert('Não foi possível excluir o post'));
-		}).catch(() => alert('Não foi possível excluir o post'));
+		deletePost(user.token, id)
+			.then(() => {
+				setIsLoading(false);
+				setIsDeleteModalOpen(false);
+				setRenderPosts(!renderPosts);
+			})
+			.catch(() => alert('Não foi possível excluir o post'));
 	}
 
 	function editThisPost(e) {
@@ -62,10 +63,19 @@ export default function Post({ content, listFollowing }) {
 		}
 	};
 
+	function postNewComment() {
+		inputComment.length > 0 &&
+			postComment(user.token, id, inputComment)
+				.then(() => {
+					setRenderComments(!renderComments);
+					setInputComment("");
+				});
+	}
+
 	useEffect(() => {
 		getListComments(user.token, id)
 			.then((res) => setListComments(res.data.comments));
-	}, []);
+	}, [renderComments]);
 
 	useEffect(() => {
 		if (isEditing) {
@@ -156,10 +166,10 @@ export default function Post({ content, listFollowing }) {
 							onChange={(e) => setInputComment(e.target.value)}
 							placeholder="write a comment..."
 						/>
-						<PostCommentIcon onClick={() => {
-							postComment(user.token, id, inputComment)
-								.then((res) => console.log(res.data))
-						}} />
+						<PostCommentIcon
+							onClick={postNewComment}
+							onKeyDown={(e) => (e.key === 'Enter') && postNewComment()}
+						/>
 					</InputCommentContainer>
 				</CommentsContainer>
 			}

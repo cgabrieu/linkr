@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import UserContext from "./contexts/UserContext";
 import ExpandableMenuContext from "./contexts/ExpandableMenuContext";
-import RenderPostsContext from "./contexts/RenderPostsContext";
+import UtilsContext from "./contexts/UtilsContext";
 import GlobalStyle from "./styles/global";
 import TimelineRoute from "./routes/private/TimelineRoute/TimelineRoute";
 import {
@@ -23,6 +23,7 @@ import MyLikesRoute from "./routes/private/MyLikesRoute/MyLikesRoute";
 function App() {
   const [user, setUser] = useState("");
   const [isExpandableMenuOpen, setIsExpandableMenuOpen] = useState(false);
+  const [listFollowing, setListFollowing] = useState(null);
   const [renderPosts, setRenderPosts] = useState(false);
 
   return (
@@ -32,7 +33,7 @@ function App() {
         <Switch>
           <Route exact path="/sign-up" component={SignUpRoute} />
           <Route exact path="/" component={LogInRoute} />
-          <RenderPostsContext.Provider value={{ renderPosts, setRenderPosts }}>
+          <UtilsContext.Provider value={{ renderPosts, setRenderPosts, listFollowing, setListFollowing }}>
             <ExpandableMenuContext.Provider value={{ isExpandableMenuOpen, setIsExpandableMenuOpen }}>
               <div onClick={() => setIsExpandableMenuOpen(false)}>
                 <Header />
@@ -47,7 +48,7 @@ function App() {
                 <TrendingHashtags />
               </div>
             </ExpandableMenuContext.Provider>
-          </RenderPostsContext.Provider>
+          </UtilsContext.Provider>
         </Switch>
       </UserContext.Provider>
     </Router>
