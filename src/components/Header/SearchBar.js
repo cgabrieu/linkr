@@ -66,7 +66,7 @@ const SearchContainer = styled.div`
   max-height: 350px;
   top: calc((72px - 45px) / 2);
   left: calc((100% - 560px) / 2);
-  z-index: 2;
+  z-index: 5;
 
   @media (max-width: 935px) {
     position: absolute;

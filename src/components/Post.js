@@ -155,7 +155,8 @@ export default function Post({ content }) {
 						<>
 							<ReactPlayer
 								url={link}
-								width={'100%'}
+								width={'99%'}
+								height={'250px'}
 								controls={true}
 							/>
 							<LinkYoutube href={link} target='_blank'>{link}</LinkYoutube>
@@ -314,8 +315,11 @@ const TextAreaPostDescription = styled.textarea`
 `;
 
 const MainPostContainer = styled.div`
-	width: calc(100% - 81px);
+	width: 100%;
     max-width: 505px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
 `;
 
 const PostDescription = styled.div`
@@ -361,11 +365,10 @@ const LinkYoutube = styled.a`
 	color: rgb(183, 183, 183);
 	display: flex;
 	padding-top: 20px;
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
 	&:hover{
 		color: #ffffff;
 	}
-`;
-
-const YoutubeContainer = styled.div`
-	width: 100%;
 `;

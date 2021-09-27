@@ -23,7 +23,10 @@ export default function Timeline() {
     getUsersIFollow(user.token)
       .then((res) => {
         const followedUsers = res.data.users;
-        if (followedUsers.length > 0) setListFollowing(followedUsers);
+        if (followedUsers.length > 0) {
+          setListPosts([]);
+          setListFollowing(followedUsers);
+        }
       })
       .catch((err) => setListPosts(err.status));
     getData();

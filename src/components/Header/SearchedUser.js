@@ -29,6 +29,7 @@ const Flex = styled.li`
     width: 39px;
     height: 39px;
     border-radius: 100%;
+    object-fit: cover;
   }
 
   strong {
