@@ -5,6 +5,7 @@ import UserContext from "../../../contexts/UserContext";
 import { getUserInfo, getUserPosts, toggleFollowAPI, getUsersIFollow } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
 import { Container, Div, PostContainer } from "../../../styles/styles";
+import DefaultUserIcon from "../../../assets/DefaultUser.jpg";
 import InfiniteScroll from "react-infinite-scroll-component";
 import LoadingSection from "../../../components/LoadingSection";
 import ScrollToTop from "react-scroll-up";
@@ -14,12 +15,12 @@ export default function UserPostsRoute() {
   const [hasMore, setHasMore] = useState(true);
   const [items, setItems] = useState(10);
   const [listPosts, setListPosts] = useState(null);
-  const [isFollowingSomeone, setIsFollowingSomeone] = useState(false)
-  let userAux = '';
+  const [isFollowingSomeone, setIsFollowingSomeone] = useState(false);
+  let userAux = "";
   const [username, setUsername] = useState("");
-  const [avatar, setAvatar] = useState('');
+  const [avatar, setAvatar] = useState("");
   const [isFollowing, setIsFollowing] = useState(false);
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState("");
 
   const { user } = useContext(UserContext);
   const { id } = useParams();
@@ -77,7 +78,7 @@ export default function UserPostsRoute() {
         setIsFollowing(true);
         return;
       }
-    })
+    });
   }
 
   return (
@@ -85,7 +86,7 @@ export default function UserPostsRoute() {
       <Container>
         <TopUserPage>
           <NameAndPhoto>
-            <img src={avatar} />
+            <img src={listPosts === null ? DefaultUserIcon : avatar} />
             <h1>{username}</h1>
           </NameAndPhoto>
           <FollowButton onClick={toggleIsFollowing} isFollowing={isFollowing}>{isFollowing ? 'Unfollow' : 'Follow'}</FollowButton>
@@ -120,19 +121,18 @@ const NameAndPhoto = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-
   img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     margin-right: 25px;
+    object-fit: cover;
   }
-  
   h1 {
         font-size: 43px;
         font-weight: bold;
     }
-`
+`;
 
 const TopUserPage = styled.div`
   display: flex;
@@ -140,7 +140,7 @@ const TopUserPage = styled.div`
   justify-content: space-between;
   margin-bottom: 50px;
   width: 100%;
-`
+`;
 
 const FollowButton = styled.button`
   height: 31px;
@@ -150,4 +150,4 @@ const FollowButton = styled.button`
   font-family: 'lato', sans-serif;
   font-weight: 700;
   font-size: 14px;
-`
+`;
