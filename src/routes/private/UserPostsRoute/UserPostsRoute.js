@@ -41,7 +41,7 @@ export default function UserPostsRoute() {
       .catch((err) => setListPosts(err.status));
 
     getData();
-  }, []);
+  }, [id]);
 
   function getData() {
     getUserPosts(user.token, id, lastPostID)
@@ -145,8 +145,12 @@ const TopUserPage = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 50px;
-  width: 100%;
-`;
+  width: calc(100% - 30px);
+
+  @media (max-width: 935px) {
+    margin: 45px 15px 0;    
+  }
+`
 
 const FollowButton = styled.button`
   height: 31px;

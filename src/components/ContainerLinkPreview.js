@@ -74,6 +74,7 @@ const ContainerLink = styled.div`
         }
     }
     @media(max-width: 610px) {
+        width: 100%;
         max-width: 288px;
         max-height: 115px;
         font-size: 9px;

@@ -92,7 +92,7 @@ export default function Post({ content }) {
 	return (
 		<>
 			{isReposted &&
-				<RepostContainer isReposted={isReposted}>
+				<RepostContainer>
 					<RepostIcon />
 					<p>{"Re-posted by "}
 						<strong onClick={() => history.push("/user/" + repostedBy.id)}>
@@ -279,7 +279,6 @@ const RepostContainer = styled.div`
 	background-color: #1E1E1E;
 	border-radius: 16px;
 	display: flex;
-	text-align: center;
 	p {
 		margin-left: 5px;
 		font-size: 13px;
@@ -315,11 +314,8 @@ const TextAreaPostDescription = styled.textarea`
 `;
 
 const MainPostContainer = styled.div`
-    max-width: 490px;
-    @media(max-width: 610px) {
-		width: 100%;
-        max-width: 510px;
-    }
+	width: calc(100% - 81px);
+    max-width: 505px;
 `;
 
 const PostDescription = styled.div`
@@ -368,4 +364,8 @@ const LinkYoutube = styled.a`
 	&:hover{
 		color: #ffffff;
 	}
+`;
+
+const YoutubeContainer = styled.div`
+	width: 100%;
 `;
