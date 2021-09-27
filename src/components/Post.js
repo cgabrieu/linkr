@@ -122,7 +122,7 @@ export default function Post({ content }) {
 						<ReactPlayer
 							url={link}
 							width={'100%'}
-							height={'200px'}
+							height={'250px'}
 							controls={true}
 						/>
 						<LinkYoutube href={link} target='_blank'>{link}</LinkYoutube>

@@ -90,15 +90,6 @@ const ContentContainer = styled.div`
         padding: 7px;
     }
 `;
-<<<<<<< HEAD
-=======
-
-const ImageContainer = styled.div`
-
-    @media(max-width: 610px) {
-        
-    }
-`;
 
 const previewModalStyle = {
     content: {
@@ -151,4 +142,3 @@ const CloseModal = styled.button`
     background-color: inherit;
     color: white;
 `
->>>>>>> c09b93ac52e91febf030599704f8055b87319c06

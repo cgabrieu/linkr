@@ -32,6 +32,9 @@ const Flex = styled.li`
   }
 
   strong {
+    width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 19px;
     line-height: 23px;
     font-weight: 400;
