@@ -155,7 +155,6 @@ const CreatePostContainer = styled.div`
     border-radius: 16px;
     padding: 16px;
     display: flex;
-    gap: 12px;
     margin-bottom: 30px;
     form {
         width: 100%;
