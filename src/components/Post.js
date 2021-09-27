@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import { UserContainer } from "../styles/styles";
 import React, { useState, useContext, useEffect, useRef } from "react";
 import UserContext from "../contexts/UserContext";
@@ -13,6 +12,7 @@ import UserLikeContainer from "./UserLikeContainer"
 import { ReactComponent as PinPointIcon } from "../assets/PinPoint.svg"
 import ContainerModal from "./ContainerModal" 
 import ReactPlayer from "react-player/youtube"
+import { Link } from "react-router-dom";
 
 export default function Post({ content }) {
 
@@ -122,7 +122,8 @@ export default function Post({ content }) {
 					:
 					<Link to={{ pathname: link }} target="_blank">
 						<ContainerLinkPreview content={content} />
-					</Link>}
+					</Link>
+				}
 			</MainPostContainer>
 			<ContainerModal 
 				username={username}
