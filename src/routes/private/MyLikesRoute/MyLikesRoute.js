@@ -2,9 +2,9 @@ import "../../../styles/tooltip.css";
 import { Container, Div, PostContainer } from "../../../styles/styles";
 import UserContext from "../../../contexts/UserContext";
 import { useContext, useEffect, useState } from "react";
-import { getPostsUserLiked, getUsersIFollow } from "../../../services/api";
+import { getPostsUserLiked } from "../../../services/api";
 import { renderPostsOrNot } from "../../../services/utils";
-import RenderPostsContext from "../../../contexts/RenderPostsContext";
+import UtilsContext from "../../../contexts/UtilsContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 import LoadingSection from "../../../components/LoadingSection";
 import ScrollToTop from "react-scroll-up";
@@ -14,7 +14,7 @@ export default function MyLikesRoute() {
   const [hasMore, setHasMore] = useState(true);
   const [posts, setPosts] = useState(null);
   const { user } = useContext(UserContext);
-  const { renderPosts } = useContext(RenderPostsContext);
+  const { renderPosts } = useContext(UtilsContext);
 
   useEffect(() => {
     if (posts) {

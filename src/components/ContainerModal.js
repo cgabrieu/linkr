@@ -58,7 +58,8 @@ const modalStyles = {
     transform: 'translate(-50%, -50%)',
     backgroundColor: '#333333',
     borderRadius: '20px',
-  }
+  },
+  overlay: {zIndex: 5}
 };
 
 const ModalDeleteContent = styled.div`

@@ -103,7 +103,8 @@ const previewModalStyle = {
         borderRadius: '50px',
         width: '80vw',
         height: '80vh'
-    }
+    },
+    overlay: { zIndex: 5 }
 };
 
 const ModalContent = styled.div`

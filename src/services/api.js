@@ -120,10 +120,17 @@ function getUsersIFollow(token) {
   return axios.get(`${BASE_URL}/users/follows`, getConfig(token));
 }
 
+function getListComments(token, postId) {
+  return axios.get(`${BASE_URL}/posts/${postId}/comments`, getConfig(token));
+}
+
+function postComment(token, postId, text) {
+  return axios.post(`${BASE_URL}/posts/${postId}/comment`, { text }, getConfig(token));
+
+}
 function getSearchedUser(token, username) {
   return axios.get(`${BASE_URL}/users/search?username=${username}`, getConfig(token));
 }
-let getYoutubeId = require('get-youtube-id');
 
 function repost(token, postID) {
   return axios.post(`${BASE_URL}/posts/${postID}/share`, "", getConfig(token));
@@ -145,7 +152,8 @@ export {
   putEditUserPost,
   toggleFollowAPI,
   getUsersIFollow,
+  getListComments,
+  postComment,
   getSearchedUser,
-  getYoutubeId,
   repost
 };

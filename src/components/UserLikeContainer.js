@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { useState, useContext, useEffect } from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { FaRetweet } from 'react-icons/fa';
+import { AiOutlineComment } from 'react-icons/ai';
 import UserContext from "../contexts/UserContext";
 import ReactTooltip from "react-tooltip";
 import { UserContainer, UserPic } from "../styles/styles";
@@ -11,7 +12,7 @@ import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
 
-export default function UserLikeContainer({ userPost, idPost, likes, repostCount, repostedBy, setIsReposted }) {
+export default function UserLikeContainer({ userPost, idPost, likes, repostCount, repostedBy, setIsReposted, showComments, setShowComments, quantityComments }) {
   let history = useHistory();
   const { username, avatar } = userPost;
   const { user } = useContext(UserContext);
@@ -132,17 +133,17 @@ export default function UserLikeContainer({ userPost, idPost, likes, repostCount
       {isLiked
         ? <LikeButtonClicked onClick={dislikePost} />
         : <LikeButton onClick={likePost} />}
-      <LikesInfo data-tip data-for={idPost.toString()}>
+      <Info data-tip data-for={idPost.toString()}>
         {listWhoLiked.length + ((listWhoLiked.length === 1) ? " like" : " likes")}
-      </LikesInfo>
-      <RepostButton />
-      <LikesInfo data-tip data-for={1}>
-        {"comments"}
-      </LikesInfo>
+      </Info>
+      <CommentButton onClick={() => setShowComments(!showComments)} />
+      <Info>
+        {quantityComments + ((quantityComments === 1) ? " comment" : " comments")}
+      </Info>
       <RepostButton onClick={repostedBy && repostedBy.username === user.username ? () => alert("Você já repostou esse link!") : toggleModelRepost} />
-      <LikesInfo data-tip data-for={1}>
+      <Info>
         {qtyRepost === 1 ? `${qtyRepost} re-post` : `${qtyRepost} re-posts`}
-      </LikesInfo>
+      </Info>
       <Modal
         isOpen={isModalRepostOpen}
         onRequestClose={toggleModelRepost}
@@ -167,28 +168,31 @@ export default function UserLikeContainer({ userPost, idPost, likes, repostCount
 };
 
 const LikeButton = styled(AiOutlineHeart)`
-  width: 20px;
-  height: 18px;
+  font-size: 22px;
   margin-top: 19px;
   cursor: pointer;
 `;
 
 const LikeButtonClicked = styled(AiFillHeart)`
-  width: 20px;
-  height: 18px;
+  font-size: 22px;
   margin-top: 19px;
   color:#AC0000;
   cursor: pointer;
 `;
 
 const RepostButton = styled(FaRetweet)`
-  width: 20px;
-  height: 18px;
+  font-size: 20px;
   margin-top: 19px;
   cursor: pointer;
-`
+`;
 
-const LikesInfo = styled.span`
+const CommentButton = styled(AiOutlineComment)`
+  font-size: 22px;
+  margin-top: 19px;
+  cursor: pointer;
+`;
+
+const Info = styled.span`
   text-align: center;
   font-size: 11px;
   margin: 4px;
@@ -205,7 +209,8 @@ const modalStyles = {
     transform: 'translate(-50%, -50%)',
     backgroundColor: '#333333',
     borderRadius: '50px',
-  }
+  },
+  overlay: { zIndex: 5 }
 };
 
 const ModalContent = styled.div`

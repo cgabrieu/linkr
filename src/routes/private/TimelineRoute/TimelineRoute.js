@@ -9,20 +9,21 @@ import useInterval from 'react-useinterval';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingSection from "../../../components/LoadingSection";
 import ScrollToTop from "react-scroll-up";
+import UtilsContext from "../../../contexts/UtilsContext";
 
-export default function TimelineRoute() {
+export default function Timeline() {
   const [lastPostID, setLastPostID] = useState(null);
   const [firstPostID, setFirstPostID] = useState(null);
   const [hasMore, setHasMore] = useState(true);
   const [listPosts, setListPosts] = useState(null);
-  const [isFollowingSomeone, setIsFollowingSomeone] = useState(false);
   const { user } = useContext(UserContext);
+  const { setListFollowing, listFollowing } = useContext(UtilsContext);
 
   useEffect(() => {
     getUsersIFollow(user.token)
       .then((res) => {
         const followedUsers = res.data.users;
-        if (followedUsers.length > 0) setIsFollowingSomeone(true);
+        if (followedUsers.length > 0) setListFollowing(followedUsers);
       })
       .catch((err) => setListPosts(err.status));
     getData();
@@ -44,7 +45,7 @@ export default function TimelineRoute() {
           if (newPosts.length > 0) setFirstPostID(newPosts[0].id);
         });
     } else {
-      listPosts[0] && setFirstPostID(listPosts[0].id);
+      setFirstPostID(listPosts[0].id);
     }
   }
 
@@ -52,7 +53,7 @@ export default function TimelineRoute() {
 
   function filterPosts(allPosts) {
     if (allPosts.length === 0) {
-      if (!isFollowingSomeone) {
+      if (!listFollowing) {
         setListPosts([]);
         return;
       }
@@ -94,7 +95,7 @@ export default function TimelineRoute() {
                 You have seen it all :) click here to scroll top
               </ScrollToTop>
             }>
-            {renderPostsOrNot(listPosts, isFollowingSomeone)}
+            {renderPostsOrNot(listPosts, listFollowing)}
           </InfiniteScroll>
         </PostContainer>
       </Container >
