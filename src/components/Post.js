@@ -119,14 +119,15 @@ export default function Post({ idPost, userPost, likes, content }) {
 						ref={editFieldRef}
 					/>}
 				{isYoutube(content.link) ?
-					<>
+					<YoutubeContainer>
 						<ReactPlayer
 							url={content.link}
 							width='100%'
+							height='200px'
 							controls='true'
 						/>
 						<LinkYoutube href={content.link} target='_blank'>{content.link}</LinkYoutube>
-					</>
+					</YoutubeContainer>
 					:
 					<Link to={{ pathname: content.link }} target="_blank">
 						<ContainerLinkPreview content={content} />
@@ -169,12 +170,8 @@ const TextAreaPostDescription = styled.textarea`
 `;
 
 const MainPostContainer = styled.div`
-	width: 100%;
+	width: calc(100% - 81px);
     max-width: 505px;
-    @media(max-width: 610px) {
-		width: 100%;
-        max-width: 510px;
-    }
 `;
 
 const PostDescription = styled.div`
@@ -276,3 +273,7 @@ const LinkYoutube = styled.a`
 	display: flex;
 	padding-top: 20px;
 `
+
+const YoutubeContainer = styled.div`
+	width: 100%;
+`;

@@ -30,7 +30,7 @@ const UserPic = styled.img`
 const PostContainer = styled.div`
     width: 610px;
     
-    h1 {
+    h1 {        
         margin-bottom: 45px;
         font-size: 43px;
         font-weight: bold;
@@ -41,7 +41,8 @@ const PostContainer = styled.div`
     }
     
     @media(max-width: 935px) {
-        margin: 30px auto 0;
+        width: 100%;
+        margin: 45px auto 0;
     }
 `;
 
