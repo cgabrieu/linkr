@@ -45,16 +45,16 @@ function getTrendings(token) {
 
 function postPublish(link, description, location, token) {
   const body = () => (
-    (location !== null) 
-    ? { 
+    (location !== null)
+      ? {
         text: description,
-        link: link, 
-        geolocation: { 
+        link: link,
+        geolocation: {
           latitude: location.latitude,
-          longitude: location.longitude 
-        } 
+          longitude: location.longitude
+        }
       }
-    : { text: description, link: link }
+      : { text: description, link: link }
   );
   return axios.post(`${BASE_URL}/posts`, body(), getConfig(token));
 }
@@ -112,6 +112,10 @@ function getUsersIFollow(token) {
   return axios.get(`${BASE_URL}/users/follows`, getConfig(token));
 }
 
+function repost(token, postID) {
+  return axios.post(`${BASE_URL}/posts/${postID}/share`, "", getConfig(token));
+}
+
 export {
   SignUp,
   LogIn,
@@ -128,5 +132,6 @@ export {
   putEditUserPost,
   toggleFollowAPI,
   getUsersIFollow,
+  repost
 };
 

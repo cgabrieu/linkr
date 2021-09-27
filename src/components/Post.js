@@ -10,19 +10,21 @@ import { Hashtags, getHashtagsLowerCase } from "../services/utils";
 import RenderPostsContext from "../contexts/RenderPostsContext";
 import UserLikeContainer from "./UserLikeContainer"
 import { ReactComponent as PinPointIcon } from "../assets/PinPoint.svg"
-import ContainerModal from "./ContainerModal" 
+import ContainerModal from "./ContainerModal"
 import ReactPlayer from "react-player/youtube"
 import { Link } from "react-router-dom";
+import { FaRetweet } from 'react-icons/fa';
 
 export default function Post({ content }) {
 
-	const { id, user: userPost, likes, geolocation, link, text } = content;
+	const { id, user: userPost, likes, geolocation, link, text, repostCount, repostedBy } = content;
 
 	const { username } = userPost;
 	const { user } = useContext(UserContext);
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 	const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isReposted, setIsReposted] = useState(repostedBy ? true : false);
 	const { renderPosts, setRenderPosts } = useContext(RenderPostsContext);
 	const [isEditing, setIsEditing] = useState(false);
 	const [textareaDescription, setTextareaDescription] = useState(text);
@@ -71,9 +73,15 @@ export default function Post({ content }) {
 	}, [isEditing]);
 
 	return (
-		<PostContainer>
+		<PostContainer id="post" isReposted={isReposted} onClick={() => console.log(document.querySelector("#post").clientHeight)}>
+			<RepostContainer isReposted={isReposted} isYoutube={isYoutube(link)}>
+				<div>
+					<RepostIcon />
+					<p>Re-posted by <strong>{repostedBy && repostedBy.username !== user.username ? repostedBy.username : "you"}</strong></p>
+				</div>
+			</RepostContainer>
 			<UserContainer>
-				<UserLikeContainer userPost={userPost} idPost={id} likes={likes} />
+				<UserLikeContainer userPost={userPost} idPost={id} likes={likes} repostCount={repostCount} repostedBy={repostedBy} setIsReposted={setIsReposted} />
 			</UserContainer>
 			<MainPostContainer>
 				<TopContainer>
@@ -125,7 +133,7 @@ export default function Post({ content }) {
 					</Link>
 				}
 			</MainPostContainer>
-			<ContainerModal 
+			<ContainerModal
 				username={username}
 				isLoading={isLoading}
 				isDeleteModalOpen={isDeleteModalOpen}
@@ -145,13 +153,53 @@ const PostContainer = styled.div`
     border-radius: 16px;
     padding: 18px 20px 20px 18px;
     display: flex;
-    margin-bottom: 16px;
-	overflow-wrap: break-word;
-
+		gap: 22px;
+    margin-bottom: ${({ isReposted }) => isReposted ? "50px" : "30px"};
+		margin-top: ${({ isReposted }) => isReposted ? "50px" : "30px"};
+		position: relative;
     @media(max-width: 610px) {
         border-radius: 0;
     }
 `;
+
+const RepostIcon = styled(FaRetweet)`
+	width: 20px;
+  height: 18px;
+  cursor: pointer;
+`
+
+const RepostContainer = styled.div`
+	position: absolute;
+	background-color: #1E1E1E;
+	height: 100px;
+	width: 100%;
+	bottom: ${({ isYoutube }) => isYoutube ? "420px" : "187px"};
+	left: 0;
+	border-radius: 16px;
+	z-index: -1;
+	display: ${({ isReposted }) => isReposted ? "initial" : "none"};
+
+	div {
+		margin-top: 7px;
+		margin-left: 12px;
+		display: flex;
+		align-items: center;
+		gap: 5px;
+
+		p {
+			font-size: 13px;
+			
+			strong {
+				font-weight: 700;
+				cursor: pointer;
+			}
+		}
+	}
+
+	@media(max-width: 610px) {
+		border-radius: 0;
+	}
+`
 
 const TopContainer = styled.div`
     display: flex;
