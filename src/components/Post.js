@@ -174,7 +174,7 @@ const RepostContainer = styled.div`
 	background-color: #1E1E1E;
 	height: 100px;
 	width: 100%;
-	bottom: ${({ isYoutube }) => isYoutube ? "420px" : "187px"};
+	top: -30px;
 	left: 0;
 	border-radius: 16px;
 	z-index: -1;
