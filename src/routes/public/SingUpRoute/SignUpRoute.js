@@ -79,7 +79,7 @@ function SignUpRoute() {
             <Button disabled>
               <Loader type="ThreeDots" color="#FFFFFF" height={15} width={70} />
             </Button> :
-          <Button> Log In </Button>}
+            <Button> Sign Up </Button>}
         </form>
         <Link to="/">
           <span>Switch back to log in</span>
