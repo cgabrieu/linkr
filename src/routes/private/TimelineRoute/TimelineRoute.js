@@ -39,7 +39,7 @@ export default function Timeline() {
     if (firstPostID) {
       getListPosts(user.token, null, firstPostID)
         .then((res) => {
-          const newPosts = res.data.posts;
+          const newPosts = res.data.posts.filter(post => post.user.id !== user.id);
           if (listPosts.length > 10) setListPosts([...listPosts, ...newPosts]);
           else setListPosts([...newPosts, ...listPosts]);
           if (newPosts.length > 0) setFirstPostID(newPosts[0].id);
@@ -61,14 +61,7 @@ export default function Timeline() {
       return;
     }
     const postsFromFollowedUsers = allPosts.filter(post => post.user.id !== user.id);
-    if (postsFromFollowedUsers.length === 0) {
-      if (!isFollowingSomeone) {
-        setListPosts([]);
-        return;
-      }
-      setHasMore(false);
-      return;
-    }
+
     if (listPosts === null) {
       setListPosts(postsFromFollowedUsers);
     } else if (postsFromFollowedUsers.length !== 0) {
