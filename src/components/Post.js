@@ -72,7 +72,7 @@ export default function Post({ content }) {
 	}, [isEditing]);
 
 	return (
-		<PostContainer id="post" isReposted={isReposted} onClick={() => console.log(document.querySelector("#post").clientHeight)}>
+		<PostContainer id="post" isReposted={isReposted}>
 			<RepostContainer isReposted={isReposted} isYoutube={isYoutube(link)}>
 				<div>
 					<RepostIcon />
