@@ -42,7 +42,7 @@ export default function ContainerLinkPreview({ content }) {
 
 const ContainerLink = styled.div`
     height: 155px;
-    width: 500px;
+    max-width: 500px;
     border: 1px solid #4D4D4D;
     border-radius: 12px;
     display: flex;
@@ -75,7 +75,6 @@ const ContainerLink = styled.div`
     }
     @media(max-width: 610px) {
         width: 100%;
-        max-width: 288px;
         max-height: 115px;
         font-size: 9px;
     }

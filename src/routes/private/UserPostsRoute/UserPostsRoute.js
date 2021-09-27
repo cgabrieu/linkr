@@ -9,6 +9,7 @@ import DefaultUserIcon from "../../../assets/DefaultUser.jpg";
 import InfiniteScroll from "react-infinite-scroll-component";
 import LoadingSection from "../../../components/LoadingSection";
 import ScrollToTop from "react-scroll-up";
+import UtilsContext from "../../../contexts/UtilsContext";
 
 export default function UserPostsRoute() {
   const [lastPostID, setLastPostID] = useState(null)
@@ -21,6 +22,7 @@ export default function UserPostsRoute() {
   const [avatar, setAvatar] = useState("");
   const [isFollowing, setIsFollowing] = useState(false);
   const [userId, setUserId] = useState("");
+  const { renderPosts } = useContext(UtilsContext);
 
   const { user } = useContext(UserContext);
   const { id } = useParams();
@@ -41,7 +43,7 @@ export default function UserPostsRoute() {
       .catch((err) => setListPosts(err.status));
 
     getData();
-  }, [id]);
+  }, [renderPosts]);
 
   function getData() {
     getUserPosts(user.token, id, lastPostID)

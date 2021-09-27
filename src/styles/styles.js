@@ -27,8 +27,7 @@ const UserPic = styled.img`
 `;
 
 const PostContainer = styled.div`
-    width: 610px;
-    
+    max-width: 610px;
     h1 {        
         margin-bottom: 45px;
         font-size: 43px;
@@ -51,9 +50,9 @@ const HashtagLink = styled(Link)`
 `;
 
 const Div = styled.div`
-  & ::-webkit-scrollbar {
-    width: 0px;
-}
+    &::-webkit-scrollbar {
+        width: 0px;
+    }
 `
 
 export {
