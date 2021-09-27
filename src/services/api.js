@@ -116,6 +116,13 @@ function getListComments(token, postId) {
   return axios.get(`${BASE_URL}/posts/${postId}/comments`, getConfig(token));
 }
 
+function postComment(token, postId, inputComment) {
+  const body = {
+    text: inputComment,
+  };
+  return axios.post(`${BASE_URL}/posts/${postId}/comments`, body, getConfig(token));
+}
+
 export {
   SignUp,
   LogIn,
@@ -133,5 +140,6 @@ export {
   toggleFollowAPI,
   getUsersIFollow,
   getListComments,
+  postComment,
 };
 

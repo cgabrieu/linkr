@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { UserContainer } from "../styles/styles";
+import { UserContainer, UserPic } from "../styles/styles";
 import React, { useState, useContext, useEffect, useRef } from "react";
 import UserContext from "../contexts/UserContext";
 import ContainerLinkPreview from "./ContainerLinkPreview";
@@ -13,7 +13,8 @@ import UserLikeContainer from "./UserLikeContainer"
 import { ReactComponent as PinPointIcon } from "../assets/PinPoint.svg"
 import ContainerModal from "./ContainerModal"
 import ReactPlayer from "react-player/youtube"
-import { getListComments } from "../services/api";
+import { getListComments, postComment } from "../services/api";
+import { IoPaperPlaneOutline } from "react-icons/io5";
 import Comment from "./Comment";
 
 export default function Post({ content, listFollowing }) {
@@ -30,6 +31,7 @@ export default function Post({ content, listFollowing }) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [showComments, setShowComments] = useState(false);
 	const [listComments, setListComments] = useState([]);
+	const [inputComment, setInputComment] = useState("");
 	const editFieldRef = useRef();
 
 	function deleteThisPost() {
@@ -136,8 +138,8 @@ export default function Post({ content, listFollowing }) {
 			</PostContainer>
 			{showComments &&
 				<CommentsContainer>
-					{listComments.map((comment) => 
-						<Comment 
+					{listComments.map((comment) =>
+						<Comment
 							key={comment.id}
 							userPost={userPost}
 							text={comment.text}
@@ -146,19 +148,72 @@ export default function Post({ content, listFollowing }) {
 								(userComment.id === comment.user.id)) > -1)}
 						/>
 					)}
+					<InputCommentContainer>
+						<UserPic src={user.avatar} alt={user.username} />
+						<input
+							type="text"
+							value={inputComment}
+							onChange={(e) => setInputComment(e.target.value)}
+							placeholder="write a comment..."
+						/>
+						<PostCommentIcon onClick={() => {
+							postComment(user.token, id, inputComment)
+								.then((res) => console.log(res.data))
+						}} />
+					</InputCommentContainer>
 				</CommentsContainer>
 			}
+			<ContainerModal
+				username={userPost.username}
+				geolocation={geolocation}
+				isLoading={isLoading}
+				isDeleteModalOpen={isDeleteModalOpen}
+				setIsDeleteModalOpen={setIsDeleteModalOpen}
+				deleteThisPost={deleteThisPost}
+				isLocationModalOpen={isLocationModalOpen}
+				setIsLocationModalOpen={setIsLocationModalOpen}
+			/>
 		</>
 	);
 };
+
+const PostCommentIcon = styled(IoPaperPlaneOutline)`
+	position: absolute;
+	font-size: 18px;
+	right: 20px;
+	top: 27px;
+	cursor: pointer;
+`;
+
+const InputCommentContainer = styled.div`
+	display: flex;
+	padding: 15px 5px;
+	position: relative;
+	input {
+		width: 100%;
+		color: #817b7b;
+		padding: 10px 35px 10px 15px;
+		background-color: #252525;
+		border-radius: 8px;
+		&::placeholder {
+			font-style: italic;
+			color: #575757;
+		}
+	}
+`;
 
 const CommentsContainer = styled.ul`
 	width: 100%;
 	position: relative;
 	top: -40px;
-	padding: 25px 20px;
+	padding: 25px 20px 0 20px;
 	background-color: #1E1E1E;
 	border-radius: 16px;
+	img {
+		width: 39px;
+		height: 39px;
+		margin-right: 18px;
+	}
 	@media(max-width: 610px) {
         border-radius: 0;
     }
@@ -224,8 +279,9 @@ const UserName = styled.div`
 	p {
 		max-width: 50%;
 		font-size: 19px;
-		overflow: hidden;
-		text-overflow: ellipsis;
+		white-space: nowrap;
+  		overflow: hidden;
+  		text-overflow: ellipsis;
 	}
 	svg {
 		margin-left: 10px;

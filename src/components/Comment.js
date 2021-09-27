@@ -26,14 +26,9 @@ export default function Comment({ text, userPost, user, isFollowing }) {
 }
 
 const CommentContainer = styled.li`
-	padding: 15px 5px;
+	padding: 15px 5px 13px 5px;
 	border-bottom: 1px solid #353535;
 	display: flex;
-	img {
-		width: 39px;
-		height: 39px;
-		margin-right: 18px;
-	}
 	div {
         overflow: hidden;
         text-overflow: ellipsis;
