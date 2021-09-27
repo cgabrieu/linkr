@@ -79,9 +79,12 @@ function getUserPosts(token, userId, lastPostID = null) {
   }
 }
 
-function getHashtagPosts(token, hashtag) {
-  const promise = axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, getConfig(token));
-  return promise;
+function getHashtagPosts(token, hashtag, lastPostID = null) {
+  if (!lastPostID) {
+    return axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, getConfig(token));
+  } else {
+    return axios.get(`${BASE_URL}/hashtags/${hashtag}/posts/?olderThan=${lastPostID}`, getConfig(token));
+  }
 }
 
 function deletePost(token, postId) {
